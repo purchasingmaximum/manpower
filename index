@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kebutuhan Manpower Event</title>
+<style>
+:root{--bg:#faf7f2;--card:#fff;--tx:#1d1a22;--mut:#6b6573;--ln:#e4ddd2;--stage:#f1ece3;--ac:#6d3fc0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17121c;--card:#221a2b;--tx:#f3eef8;--mut:#a79db3;--ln:#3a2f47;--stage:#1d1626;--ac:#b48cff;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#17121c;--card:#221a2b;--tx:#f3eef8;--mut:#a79db3;--ln:#3a2f47;--stage:#1d1626;--ac:#b48cff;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:1040px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:22px;margin:0 0 4px}
+.sub0{color:var(--mut);margin:0 0 16px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.tabs button{border:1px solid var(--ln);background:var(--card);color:var(--tx);padding:8px 16px;border-radius:999px;cursor:pointer;font:inherit}
+.tabs button.on{background:var(--ac);border-color:var(--ac);color:#fff}
+.sum{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.sum div{flex:1;min-width:140px;background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:10px 14px}
+.sum small{color:var(--mut);display:block}
+.sum b{font-size:19px}
+.sum .big{border-color:var(--ac)}
+.gen{display:flex;gap:16px;flex-wrap:wrap;align-items:center;background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:10px 14px;margin-bottom:14px}
+.gen label{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.gen input{width:130px;padding:6px 8px;border:1px solid var(--ln);border-radius:8px;background:var(--bg);color:var(--tx);font:inherit}
+#stage{position:relative;background:var(--stage);border-radius:14px;overflow:hidden;margin-top:16px;transition:height .8s}
+#labels .lbl{position:absolute;text-align:center;font-size:13px;line-height:1.35;z-index:2000}#stot{position:absolute;top:8px;left:10px;z-index:2000;font-size:13px;font-weight:600;background:var(--card);border:1px solid var(--ln);border-radius:999px;padding:3px 12px}
+.fig{position:absolute;left:0;top:0;width:18px;height:34px;transition:transform 1s cubic-bezier(.45,.05,.2,1),opacity .6s,color .6s;will-change:transform}
+.fig svg{display:block}
+.a,.b{transform-box:fill-box;transform-origin:50% 0}
+.run svg{animation:bob .28s infinite}
+.run .a{animation:swA .28s infinite alternate}
+.run .b{animation:swB .28s infinite alternate}
+@keyframes bob{50%{transform:translateY(-2px)}}
+@keyframes swA{from{transform:rotate(-35deg)}to{transform:rotate(35deg)}}
+@keyframes swB{from{transform:rotate(35deg)}to{transform:rotate(-35deg)}}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:14px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:820px}
+th{text-align:left;color:var(--mut);font-weight:500;font-size:13px;padding:4px 6px}
+td{padding:5px 6px;border-top:1px solid var(--ln);white-space:nowrap}
+td input{width:100%;max-width:120px;padding:6px 8px;border:1px solid var(--ln);border-radius:8px;background:var(--bg);color:var(--tx);font:inherit}
+td.sm input{max-width:70px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px}
+.x{border:0;background:none;color:var(--mut);cursor:pointer;font-size:18px}
+.add{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.add input{padding:7px 9px;border:1px solid var(--ln);border-radius:8px;background:var(--bg);color:var(--tx);font:inherit;min-width:0}
+.add button{border:0;background:var(--ac);color:#fff;padding:8px 14px;border-radius:8px;cursor:pointer;font:inherit}
+.note{color:var(--mut);font-size:13px;margin:10px 0 0}
+</style></head>
+<body><main>
+<h1>Kebutuhan Manpower Event</h1>
+<p class="sub0">Satu figur mewakili satu orang. Ganti jenis event atau ubah jumlahnya, dan figur akan berlari ke posisi barunya.</p>
+<div class="tabs" id="tabs"></div>
+<div class="sum">
+<div><small>Total manpower</small><b id="tp">0</b> orang</div>
+<div><small>Total tarif</small><b id="tt">Rp 0</b></div>
+<div><small>Total akomodasi</small><b id="ta">Rp 0</b></div>
+<div><small>Total konsumsi</small><b id="tk">Rp 0</b></div>
+<div class="big"><small>Total biaya</small><b id="tc">Rp 0</b></div>
+</div>
+<div class="gen">
+<label for="acc">Biaya akomodasi per orang per hari <input id="acc" type="number" min="0" step="10000" value="150000"></label>
+<label for="kon">Biaya konsumsi per orang per hari <input id="kon" type="number" min="0" step="5000" value="75000"></label>
+</div>
+<div class="card">
+<table><thead><tr><th>Peran</th><th>Orang</th><th>Hari</th><th>Tarif/hari</th><th>Tarif</th><th>Akomodasi</th><th>Konsumsi</th><th>Total</th><th></th></tr></thead><tbody id="tb"></tbody></table>
+<div class="add">
+<input id="an" placeholder="Nama peran baru" style="flex:2;min-width:140px">
+<input id="aq" type="number" min="1" placeholder="Orang" style="width:80px">
+<input id="ah" type="number" min="1" placeholder="Hari" style="width:70px">
+<input id="ar" type="number" min="0" placeholder="Tarif/hari" style="width:120px">
+<button id="ab">+ Tambah peran</button>
+</div>
+<p class="note">Tarif, akomodasi, dan konsumsi di sini hanya contoh. Akomodasi dan konsumsi dihitung per orang per hari, mengikuti jumlah orang dan hari tiap peran. Silakan ubah sesuai ratecard dan kebutuhan event Anda.</p>
+</div>
+<div id="stage"><div id="stot"></div><div id="labels"></div></div>
+</main>
+<script>
+const P=['#7c4dcc','#e0457b','#1f9d8a','#e08a1e','#3b82c4','#8a9a1f','#c2452d','#5b6bd6','#b0509e','#2f8f4e','#0f8fa8'];
+const PRE={
+'Awarding':[['Usher',20,350000],['Registrasi tamu',8,300000],['Runner',10,250000],['Backstage crew',12,400000],['Security',10,400000],['Valet parkir',6,300000],['Jaga stand makanan',8,300000]],
+'Launching':[['Show Management',2,750000],['Multimedia Operator',3,600000],['Lighting Designer',2,800000],['VJ',2,750000],['Music Director',1,1000000],['Project Manager',1,1000000],['Project Officer',3,500000],['PIC',4,400000],['Crew',12,350000],['Cleaning Service',6,250000],['Security Event',8,400000]],
+'Concert':[['Jaga railing',30,300000],['Cek tiket gate',24,275000],['Security',40,375000],['Runner',15,250000],['Jaga stand makanan',20,300000],['Usher VIP',10,350000],['Medis',6,500000],['Petugas parkir',12,250000]],
+'Custom':[]};
+const data={};for(const k in PRE)data[k]=PRE[k].map(([n,q,r])=>({n,q,h:1,r}));
+let cur='Awarding',acc=150000,kon=75000,figs=[];
+const $=id=>document.getElementById(id),stage=$('stage'),labels=$('labels'),tb=$('tb');
+const fmt=n=>'Rp '+Math.round(n).toLocaleString('id-ID');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const cost=r=>{const t=r.q*r.h*r.r,a=r.q*r.h*acc,k=r.q*r.h*kon;return{t,a,k,s:t+a+k}};
+const CW=24,CH=40;
+function mk(){const f=document.createElement('div');f.className='fig';
+f.innerHTML='<svg viewBox="0 0 18 34" width="18" height="34" fill="currentColor"><circle cx="9" cy="5" r="4"/><rect x="4" y="10" width="10" height="13" rx="4"/><rect class="a" x="4.5" y="22" width="4" height="12" rx="2"/><rect class="b" x="9.5" y="22" width="4" height="12" rx="2"/></svg>';
+stage.appendChild(f);return f}
+function run(f){f.classList.add('run');clearTimeout(f._t);f._t=setTimeout(()=>f.classList.remove('run'),1500)}
+function layout(){
+const rs=data[cur],w=stage.clientWidth,cols=Math.max(1,Math.floor((w-8)/CW));
+labels.innerHTML='';const slots=[];let x=8,y=36,rowH=0,tp=0;
+rs.forEach((r,i)=>{const c=P[i%P.length],n=r.q;tp+=n;
+const sp=Math.max(4,Math.min(19,((w-24)/2-10)/Math.sqrt(n+1)));
+const sq=Math.sqrt(n),Rx=sp*sq+10,Ry=sp*sq*.55+18,cw=Math.max(2*Rx,130),ch=2*Ry+44;
+if(x>8&&x+cw>w-8){x=8;y+=rowH;rowH=0}
+const cx=x+cw/2,cy=y+Ry;
+const l=document.createElement('div');l.className='lbl';l.style.left=x+'px';l.style.width=cw+'px';l.style.top=(y+2*Ry+2)+'px';
+l.innerHTML='<b style="color:'+c+'">'+esc(r.n)+'</b><br>'+n+' orang · '+r.h+' hari';labels.appendChild(l);
+for(let k=0;k<n;k++){const rr=sp*Math.sqrt(k+.5),a=k*2.39996;slots.push({x:cx+rr*Math.cos(a)-9,y:cy+rr*Math.sin(a)*.55-17,c})}
+x+=cw+10;rowH=Math.max(rowH,ch+8)});
+$('stot').textContent='Total: '+tp+' orang';
+stage.style.height=Math.max(y+rowH+6,90)+'px';
+slots.forEach((s,i)=>{let f=figs[i];
+if(!f){f=mk();f.style.transitionDelay='0s';f.style.color=s.c;f.style.opacity=0;f.style.transform='translate(-30px,'+s.y+'px)';figs.push(f);void f.offsetWidth}
+run(f);f.style.transitionDelay=(Math.random()*.3)+'s';f.style.color=s.c;f.style.opacity=1;f.style.transform='translate('+s.x+'px,'+s.y+'px)';f._y=s.y;f.style.zIndex=Math.round(s.y)});
+while(figs.length>slots.length){const f=figs.pop();run(f);f.style.transitionDelay=(Math.random()*.2)+'s';f.style.opacity=0;f.style.transform='translate('+(w+40)+'px,'+(f._y||0)+'px)';setTimeout(()=>f.remove(),1500)}
+}
+function rowCells(i){const c=cost(data[cur][i]);
+$('t'+i).textContent=fmt(c.t);$('a'+i).textContent=fmt(c.a);$('k'+i).textContent=fmt(c.k);$('s'+i).innerHTML='<b>'+fmt(c.s)+'</b>'}
+function tot(){const rs=data[cur];let p=0,t=0,a=0,k=0;
+rs.forEach(r=>{const c=cost(r);p+=r.q;t+=c.t;a+=c.a;k+=c.k});
+$('tp').textContent=p;$('tt').textContent=fmt(t);$('ta').textContent=fmt(a);$('tk').textContent=fmt(k);$('tc').textContent=fmt(t+a+k)}
+function table(){
+tb.innerHTML=data[cur].map((r,i)=>'<tr><td><i class="dot" style="background:'+P[i%P.length]+'"></i>'+esc(r.n)+'</td><td class="sm"><input type="number" min="0" max="500" value="'+r.q+'" data-i="'+i+'" data-k="q"></td><td class="sm"><input type="number" min="1" max="60" value="'+r.h+'" data-i="'+i+'" data-k="h"></td><td><input type="number" min="0" step="10000" value="'+r.r+'" data-i="'+i+'" data-k="r"></td><td id="t'+i+'"></td><td id="a'+i+'"></td><td id="k'+i+'"></td><td id="s'+i+'"></td><td><button class="x" data-del="'+i+'" aria-label="Hapus">×</button></td></tr>').join('')||'<tr><td colspan="9" style="color:var(--mut);white-space:normal">Belum ada peran. Tambahkan di bawah.</td></tr>';
+data[cur].forEach((_,i)=>rowCells(i));tot()}
+function refresh(){table();layout()}
+tb.addEventListener('input',e=>{const t=e.target,i=+t.dataset.i;if(isNaN(i))return;
+const r=data[cur][i],k=t.dataset.k;
+r[k]=k==='q'?Math.min(500,Math.max(0,+t.value||0)):k==='h'?Math.min(60,Math.max(1,+t.value||1)):Math.max(0,+t.value||0);
+rowCells(i);tot();layout()});
+tb.addEventListener('click',e=>{const d=e.target.dataset.del;if(d===undefined)return;data[cur].splice(+d,1);refresh()});
+$('acc').addEventListener('input',e=>{acc=Math.max(0,+e.target.value||0);data[cur].forEach((_,i)=>rowCells(i));tot();layout()});
+$('kon').addEventListener('input',e=>{kon=Math.max(0,+e.target.value||0);data[cur].forEach((_,i)=>rowCells(i));tot();layout()});
+$('ab').addEventListener('click',()=>{const n=$('an').value.trim(),q=Math.min(500,+$('aq').value||0),h=Math.min(60,Math.max(1,+$('ah').value||1)),r=+$('ar').value||0;
+if(!n||q<1)return;data[cur].push({n,q,h,r});$('an').value=$('aq').value=$('ah').value=$('ar').value='';refresh()});
+const tabs=$('tabs');
+Object.keys(data).forEach(k=>{const b=document.createElement('button');b.textContent=k==='Custom'?'Event lain (kosong)':k;b.dataset.k=k;
+b.onclick=()=>{cur=k;[...tabs.children].forEach(x=>x.classList.toggle('on',x===b));refresh()};tabs.appendChild(b)});
+tabs.children[0].classList.add('on');
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,200)});
+refresh();
+</script></body></html>
