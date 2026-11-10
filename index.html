@@ -610,7 +610,7 @@ function upd(){const c=cnt();$('pgt').textContent='Nama '+c.nm+'/'+c.n+' · No H
 function nf(){const on=$('pf').checked;[...$('p2').querySelectorAll('tbody tr')].forEach(tr=>tr.hidden=on&&!tr.querySelector('td.mt'))}
 function names(){const P=PL();
 $('p2').innerHTML='<b>Nama &amp; kontak crew</b><p class="note" style="margin:2px 0 10px">Cara cepat: tempel daftar dari Excel/WhatsApp, atau ketik langsung di tabel (gunakan panah keyboard).</p>'
-+'<textarea id="pt" rows="4" placeholder="Satu baris = satu orang. Contoh:&#10;Budi	08123456789	Budi Santoso	1234567890"></textarea>'
++'<textarea id="pt" rows="4" placeholder="Satu baris = satu orang. Contoh:&#10;Budi, 08123456789, Budi Santoso, 1234567890"></textarea>'
 +'<div class="row" style="margin-bottom:6px"><label>Isi ke<select id="pto"><option value="-1">Semua peran, urut dari atas</option>'+rs().map((r,i)=>r.q>0?'<option value="'+i+'">'+esc(r.n)+'</option>':'').join('')+'</select></label><label style="flex-direction:row;align-items:center;gap:5px;color:var(--tx)"><input type="checkbox" id="pte" checked>Lewati yang sudah terisi</label><button class="primary" id="ptb">Isi otomatis</button></div>'
 +'<p class="note" style="margin:0 0 14px">Urutan kolom: Nama · No HP · Nama Lengkap · No Rekening (dipisah Tab atau koma). Boleh hanya nama saja.</p>'
 +'<p class="note" style="margin:0 0 14px">'+(S.ev.s?'Tanggal kerja, jadwal makan, dan lama sewa kamar otomatis mengikuti kolom Mulai–Sampai per peran di Langkah 1.':'⚠ Isi tanggal event di Langkah 1 dulu agar jadwal makan dan hotel bisa terisi otomatis.')+'</p>'
