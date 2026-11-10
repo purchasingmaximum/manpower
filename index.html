@@ -372,14 +372,15 @@ const nights=x=>x.ci&&x.co?Math.max(0,Math.round((new Date(x.co)-new Date(x.ci))
 const accTotal=()=>ACCF().reduce((s,x)=>s+nights(x)*(+x.k||0),0);
 const rid=r=>r.id||(r.id='r'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)),rl=id=>rs().find(q=>q.id===id);
 const plab=(r,k)=>g_(r,'nm',k).trim()||r.n+' #'+(k+1);
+const pdates=(r,k)=>{const d=rst(r,0,0);return[g_(r,'pci',k)||r.aci||d[0],g_(r,'pco',k)||r.aco||d[1]]};
 const gsel=(ri,k)=>{const v=g_(rs()[ri],'gd',k);return '<select data-gri="'+ri+'" data-gk="'+k+'" style="min-width:62px"><option value="">-</option><option value="L"'+(v==='L'?' selected':'')+'>L</option><option value="P"'+(v==='P'?' selected':'')+'>P</option></select>'};
 const pline=(r,k)=>{const nm=g_(r,'nm',k).trim();return nm?'<b>'+esc(nm)+'</b> <small style="color:var(--mut)">'+esc(r.n)+'</small>':'<b>'+esc(r.n+' #'+(k+1))+'</b>'};
 const roomOfP=(r,k)=>{const id=rid(r);return ACC().findIndex(x=>(x.pr||[]).some(p=>p.id===id&&p.k===k))};
-function rmFix(x){x.pr=(x.pr||[]).filter(p=>rl(p.id));if(!x.pr.length)return;const L=x.pr.map(p=>plab(rl(p.id),p.k)),h=rl(x.pr[0].id);x.o=L;x.n=L.join(' & ');x.g=h.g;x.p=h.n;x.nt=''}
+function rmFix(x){x.pr=(x.pr||[]).filter(p=>rl(p.id));if(!x.pr.length)return;const L=x.pr.map(p=>plab(rl(p.id),p.k)),h=rl(x.pr[0].id);x.o=L;x.n=L.join(' & ');x.g=h.g;x.p=h.n;x.nt='';x.pd=x.pr.map(p=>pdates(rl(p.id),p.k));const a=x.pd.map(q=>q[0]).filter(Boolean).sort(),b=x.pd.map(q=>q[1]).filter(Boolean).sort();x.ci=a[0]||'';x.co=b[b.length-1]||''}
 function newRoom(r,k){const d=rst(r,0,0),H=r.ah&&hot(r.ah),x={g:r.g,p:r.n,o:[''],n:'',j:'',ci:r.aci||d[0],co:r.aco||d[1],h:r.ah||'',bd:r.ab||'Twin',k:r.ak!=null?r.ak:(H&&H.k)||r.k,nt:'',pr:[{id:rid(r),k}]};rmFix(x);return x}
 function roomOf(r,k){const ppk=Math.max(1,S.set.pk),x=newRoom(r,k*ppk),id=rid(r);x.pr=[];for(let j=k*ppk;j<Math.min(r.q,(k+1)*ppk);j++)x.pr.push({id,k:j});rmFix(x);return x}
 function genAcc(){const a=[];rs().forEach(r=>{r.ni=[]});S.acc[S.cur]=a;rs().filter(r=>r.q>0&&r.a).forEach(r=>{for(let k=0;k<Math.ceil(r.q/Math.max(1,S.set.pk));k++)a.push(roomOf(r,k))});save()}
-function migrate(){const A=ACC(),ppk=Math.max(1,S.set.pk);A.forEach(x=>{if(x.pr)return;x.pr=[];const r=rs().find(q=>q.n===x.p);if(!r)return;const id=rid(r),want=Math.max(1,Math.min(ppk,(x.o||[]).filter(Boolean).length||1));for(let k=0;k<r.q&&x.pr.length<want;k++)if(roomOfP(r,k)<0)x.pr.push({id,k})})}
+function migrate(){const A=ACC(),ppk=Math.max(1,S.set.pk);A.forEach(x=>{if(x.pr&&x.cm&&!x.dm){x.dm=1;delete x.cm;x.pr.forEach(p=>{const r=rl(p.id);if(r){setp(r,'pci',p.k,x.ci||'');setp(r,'pco',p.k,x.co||'')}})}});A.forEach(x=>{if(x.pr)return;x.pr=[];const r=rs().find(q=>q.n===x.p);if(!r)return;const id=rid(r),want=Math.max(1,Math.min(ppk,(x.o||[]).filter(Boolean).length||1));for(let k=0;k<r.q&&x.pr.length<want;k++)if(roomOfP(r,k)<0)x.pr.push({id,k})})}
 function placeP(r,k,t){const A=ACC(),id=rid(r);r.ni=r.ni||[];const cur=roomOfP(r,k);if(typeof t==='number'&&t===cur)return;let tg=t;
 if(cur>=0){const x=A[cur];x.pr=x.pr.filter(p=>!(p.id===id&&p.k===k));if(!x.pr.length){A.splice(cur,1);if(typeof tg==='number'&&tg>cur)tg--}else rmFix(x)}
 if(tg===''||tg==='u'){if(tg==='')r.ni[k]=1;return}
@@ -387,16 +388,16 @@ if(!r.a){r.a=1;for(let j=0;j<r.q;j++)if(j!==k&&roomOfP(r,j)<0)r.ni[j]=1}
 r.ni[k]=0;if(tg==='new')A.push(newRoom(r,k));else{const x=A[tg];if(x){x.pr.push({id,k});rmFix(x)}}}
 function joinP(r,k){const A=ACC(),ppk=Math.max(1,S.set.pk);let ti=-1;for(let i=A.length-1;i>=0;i--)if(A[i].p===r.n&&(A[i].pr||[]).length&&A[i].pr.length<ppk){ti=i;break}placeP(r,k,ti>=0?ti:'new')}
 function autoPlace(){rs().forEach(r=>{if(!(r.q>0&&r.a))return;for(let k=0;k<r.q;k++){if(r.ni&&r.ni[k])continue;if(roomOfP(r,k)>=0)continue;joinP(r,k)}});
-ACC().forEach(x=>{if(!x.pr||!x.pr.length||x.cm)return;const r=rl(x.pr[0].id);if(!r)return;const d=rst(r,0,0);x.ci=r.aci||d[0];x.co=r.aco||d[1]})}
+ACC().forEach(x=>{if(x.pr&&x.pr.length)rmFix(x)})}
 function roleList(){const A=ACC(),ppk=Math.max(1,S.set.pk),RR=rs().filter(r=>r.q>0);
 const rows=RR.map(r=>{const id=rid(r),ri=rs().indexOf(r);let h='<tr class="gh"><td colspan="6">'+esc(r.n)+' · '+r.q+' orang</td></tr>';
 for(let k=0;k<r.q;k++){const rm=roomOfP(r,k),nm=g_(r,'nm',k).trim(),x=rm>=0?A[rm]:null,head=!!x&&x.pr[0].id===id&&x.pr[0].k===k;
 const opts='<option value="new">Kamar baru (sendiri)</option>'+A.map((y,i)=>{const full=(y.pr||[]).length>=ppk&&i!==rm,lb='Kamar '+(i+1)+' · '+(y.n||'kosong');return '<option value="'+i+'"'+(i===rm?' selected':'')+(full?' disabled':'')+'>'+esc(lb.length>46?lb.slice(0,45)+'…':lb)+(full?' (penuh)':'')+'</option>'}).join('');
 h+='<tr><td class="pn">'+pline(r,k)+'</td><td>'+gsel(ri,k)+'</td><td class="tc"><input type="checkbox" data-pci="'+ri+'" data-pck="'+k+'"'+(rm>=0?' checked':'')+' title="Centang = menginap"></td>';
-if(head){const i=rm,d=rst(r,0,0);h+='<td class="dt"><input type="date" value="'+esc(x.ci||'')+'" data-pr="'+i+'" data-pf="ci"'+(x.ci!==d[0]?' data-fl':'')+'></td><td class="dt"><input type="date" value="'+esc(x.co||'')+'" data-pr="'+i+'" data-pf="co"'+(x.co!==d[1]?' data-fl':'')+'></td><td style="text-align:right;padding:2px 10px"><b id="pn'+i+'">'+nights(x)+'</b></td>'}
+if(rm>=0){const pd=pdates(r,k),d=rst(r,0,0),df=[r.aci||d[0],r.aco||d[1]];h+='<td class="dt"><input type="date" value="'+esc(pd[0])+'" data-ppr="'+ri+'" data-ppk="'+k+'" data-ppf="ci"'+(pd[0]!==df[0]?' data-fl':'')+'></td><td class="dt"><input type="date" value="'+esc(pd[1])+'" data-ppr="'+ri+'" data-ppk="'+k+'" data-ppf="co"'+(pd[1]!==df[1]?' data-fl':'')+'></td><td style="text-align:right;padding:2px 10px"><b id="pn'+ri+'_'+k+'">'+nights({ci:pd[0],co:pd[1]})+'</b></td>'}
 else h+='<td colspan="3" class="fill"></td>';
 h+='</tr>'}return h}).join('');
-return '<b>Daftar personil</b><p class="note" style="margin:2px 0 8px">Satu baris = satu orang. Semua personil default menginap (centang Inap; hilangkan centang kalau tidak menginap). Pembagian kamar mengikuti Orang/kamar di bawah. Tanggal default mengikuti Langkah 1. Tanggal diisi pada baris pertama tiap kamar. Belum ada nama = tampil #1, #2, dst.</p><div class="scroll rlw" style="margin-bottom:16px"><table class="rl"><colgroup><col style="width:240px"><col style="width:84px"><col style="width:56px"><col style="width:150px"><col style="width:150px"><col style="width:64px"></colgroup><thead><tr><th>Personil</th><th>L/P</th><th class="tc">Inap</th><th>Check-in</th><th>Check-out</th><th class="tr">Malam</th></tr></thead><tbody>'+(rows||'<tr><td colspan="6" style="color:var(--mut)">Belum ada peran.</td></tr>')+'</tbody></table></div>'}
+return '<b>Daftar personil</b><p class="note" style="margin:2px 0 8px">Satu baris = satu orang. Semua personil default menginap (centang Inap; hilangkan centang kalau tidak menginap). Pembagian kamar mengikuti Orang/kamar di bawah. Tanggal default mengikuti Langkah 1. Check-in/out diisi per orang (default mengikuti Langkah 1). Biaya kamar dihitung dari check-in paling awal sampai check-out paling akhir penghuninya. Belum ada nama = tampil #1, #2, dst.</p><div class="scroll rlw" style="margin-bottom:16px"><table class="rl"><colgroup><col style="width:240px"><col style="width:84px"><col style="width:56px"><col style="width:150px"><col style="width:150px"><col style="width:64px"></colgroup><thead><tr><th>Personil</th><th>L/P</th><th class="tc">Inap</th><th>Check-in</th><th>Check-out</th><th class="tr">Malam</th></tr></thead><tbody>'+(rows||'<tr><td colspan="6" style="color:var(--mut)">Belum ada peran.</td></tr>')+'</tbody></table></div>'}
 function syncRoom(i){const x=ACC()[i];if(!x)return;const r=rs().find(q=>q.n===x.p),d=r?rst(r,0,0):['',''];
 $('acc').querySelectorAll('[data-ai="'+i+'"],[data-pr="'+i+'"]').forEach(el=>{const f=el.dataset.af||el.dataset.pf;if(!['ci','co','h','bd'].includes(f))return;if(el!==document.activeElement)el.value=x[f]==null?'':x[f];if(f==='ci'||f==='co')el.toggleAttribute('data-fl',!!r&&x[f]!==d[f==='ci'?0:1])});
 const nn=nights(x);['an','pn'].forEach(q=>{const e=$(q+i);if(e)e.textContent=nn});const at=$('at'+i);if(at)at.textContent=fmt(nn*(+x.k||0))}
@@ -407,9 +408,9 @@ function accFinal(){rcClean();const A=ACC(),R=RC().filter(c=>(c.m||[]).length);i
 const inR=new Set();R.forEach(c=>c.m.forEach(p=>inR.add(pkey(p.id,p.k))));const out=[];
 A.forEach(x=>{if(!x.pr||!x.pr.length){out.push(x);return}const keep=x.pr.filter(p=>!inR.has(pkey(p.id,p.k)));if(keep.length===x.pr.length){out.push(x);return}if(!keep.length)return;const y={...x,pr:keep};rmFix(y);out.push(y)});
 R.forEach(c=>{const mem=c.m.map(p=>({r:rl(p.id),k:p.k})).filter(q=>q.r);if(!mem.length)return;
-const ds=mem.map(q=>{const i=roomOfP(q.r,q.k),x=i>=0?A[i]:null,d=rst(q.r,0,0);return[(x&&x.ci)||d[0],(x&&x.co)||d[1]]});
+const ds=mem.map(q=>pdates(q.r,q.k));
 const ci=ds.map(d=>d[0]).filter(Boolean).sort()[0]||'',co=ds.map(d=>d[1]).filter(Boolean).sort().slice(-1)[0]||'',H=S.hotels.find(h=>h.n===c.h&&(h.bd||'')===(c.bd||'')),L=mem.map(q=>plab(q.r,q.k));
-out.push({g:mem[0].r.g,p:mem[0].r.n,o:L,n:L.join(' & '),j:'',ci,co,h:c.h||'',bd:c.bd||'Twin',k:H?(+H.k||0):(+c.k||0),nt:'',pr:mem.map(q=>({id:rid(q.r),k:q.k})),rcv:1})});
+out.push({g:mem[0].r.g,p:mem[0].r.n,o:L,n:L.join(' & '),j:'',ci,co,h:c.h||'',bd:c.bd||'Twin',k:H?(+H.k||0):(+c.k||0),nt:'',pr:mem.map(q=>({id:rid(q.r),k:q.k})),pd:ds,rcv:1})});
 return out}
 const ACCF=accFinal;
 function rcClean(){RC().forEach(c=>{c.m=(c.m||[]).filter(p=>{const r=rl(p.id);return r&&p.k<r.q&&roomOfP(r,p.k)>=0})})}
@@ -477,6 +478,7 @@ if(v){scrollBy(0,v);raf=requestAnimationFrame(tick)}}
 document.addEventListener('dragover',e=>{if(!DRG)return;my=e.clientY;if(!raf)raf=requestAnimationFrame(tick)});
 ['dragend','drop'].forEach(n=>document.addEventListener(n,()=>{my=null;cancelAnimationFrame(raf);raf=0}))})();
 $('acc').addEventListener('input',e=>{if(e.target.id==='a_pk'){S.set.pk=Math.max(1,+e.target.value||1);save();return}
+{const t=e.target;if(t.dataset.ppr!==undefined){const r=rs()[+t.dataset.ppr],k=+t.dataset.ppk,f=t.dataset.ppf,d=rst(r,0,0),df=f==='ci'?(r.aci||d[0]):(r.aco||d[1]);setp(r,f==='ci'?'pci':'pco',k,t.value===df?'':t.value);t.toggleAttribute('data-fl',!!t.value&&t.value!==df);const pe=$('pn'+t.dataset.ppr+'_'+k),pd=pdates(r,k);if(pe)pe.textContent=nights({ci:pd[0],co:pd[1]});const ri=roomOfP(r,k);if(ri>=0){rmFix(ACC()[ri]);syncRoom(ri)}tot();save();return}}
 {const t=e.target,pr=t.dataset.pr;if(pr!==undefined){const x=ACC()[+pr],f=t.dataset.pf;x[f]=t.value;if(f==='ci'||f==='co')x.cm=1;if(f==='h'){const H=hot(t.value);if(H&&H.k)x.k=H.k}syncRoom(+pr);tot();save();return}}
 {const t=e.target,rr=t.dataset.rr;if(rr!==undefined){const r=rs()[+rr],f=t.dataset.rf,v=t.value,d=rst(r,0,0),tr=t.closest('tr');
 if(f==='ak'){r.ak=Math.max(0,+v||0)}else{r[f]=v;if(!v)delete r[f]}
@@ -576,9 +578,11 @@ const flush=()=>{if(hr&&hr.r2>hr.r1)wa.mergeCells(hr.r1,6,hr.r2,6);hr=null};
 rr.forEach(x=>{no++;const nm=nmz(x),sp=Math.max(1,nm.length),r1=row,r2=row+sp-1;if(af===null)af=r1;al=r2;
 for(let c=1;c<=12;c++)box(r1,r2,c);
 set(wa,r1,1,no,{b:1,al:CTR});for(let k=0;k<sp;k++)set(wa,r1+k,2,nm[k],{b:1});
-set(wa,r1,3,x.j||undefined,{b:1,al:VM});set(wa,r1,4,x.ci?U(x.ci):undefined,{fmt:'d\\ mmm',b:1,al:CTR});set(wa,r1,5,x.co?U(x.co):undefined,{fmt:'d\\ mmm',b:1,al:CTR});
-set(wa,r1,7,x.bd||undefined,{b:1,al:CTR});set(wa,r1,8,1,{b:1,al:CTR});set(wa,r1,9,{formula:'E'+r1+'-D'+r1},{b:1,al:CTR});set(wa,r1,10,+x.k||0,{fmt:NUM,b:1,al:VM});set(wa,r1,11,{formula:'J'+r1+'*I'+r1+'*H'+r1},{fmt:'#,##0',b:1,al:VM});set(wa,r1,12,undefined,{b:1,al:{...VM,wrapText:true}});
-if(r2>r1)[1,3,4,5,7,8,9,10,11,12].forEach(c=>wa.mergeCells(r1,c,r2,c));
+set(wa,r1,3,x.j||undefined,{b:1,al:VM});const dif=!!x.pd&&x.pd.length===nm.length&&nm.length>1&&x.pd.some(q=>q[0]!==x.pd[0][0]||q[1]!==x.pd[0][1]);
+if(dif)x.pd.forEach((q,k)=>{set(wa,r1+k,4,q[0]?U(q[0]):undefined,{fmt:'d\\ mmm',b:1,al:CTR});set(wa,r1+k,5,q[1]?U(q[1]):undefined,{fmt:'d\\ mmm',b:1,al:CTR})});
+else{set(wa,r1,4,x.ci?U(x.ci):undefined,{fmt:'d\\ mmm',b:1,al:CTR});set(wa,r1,5,x.co?U(x.co):undefined,{fmt:'d\\ mmm',b:1,al:CTR})}
+set(wa,r1,7,x.bd||undefined,{b:1,al:CTR});set(wa,r1,8,1,{b:1,al:CTR});set(wa,r1,9,{formula:dif?'MAX(E'+r1+':E'+r2+')-MIN(D'+r1+':D'+r2+')':'E'+r1+'-D'+r1},{b:1,al:CTR});set(wa,r1,10,+x.k||0,{fmt:NUM,b:1,al:VM});set(wa,r1,11,{formula:'J'+r1+'*I'+r1+'*H'+r1},{fmt:'#,##0',b:1,al:VM});set(wa,r1,12,undefined,{b:1,al:{...VM,wrapText:true}});
+if(r2>r1)[1,3,4,5,7,8,9,10,11,12].filter(c=>!dif||(c!==4&&c!==5)).forEach(c=>wa.mergeCells(r1,c,r2,c));
 if(x.h&&hr&&hr.h===x.h&&hr.r2+1===r1)hr.r2=r2;else{flush();if(x.h){set(wa,r1,6,x.h,{b:1,al:CTR});hr={h:x.h,r1,r2}}}
 row=r2+1});flush()});
 let aRef='0';if(af!==null){set(wa,row+1,10,'TOTAL',{fill:'FFFF00',f:{bold:true}});set(wa,row+1,11,{formula:'SUM(K'+af+':K'+al+')'},{fill:'FFFF00',f:{bold:true},fmt:'#,##0'});aRef="'Akomodasi'!K"+(row+1)}
