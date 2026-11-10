@@ -2,137 +2,756 @@
 <html lang="id"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Kebutuhan Manpower Event</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem("maximum-theme")==="dark"?"dark":"light"}catch(e){}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <style>
-:root{--bg:#faf7f2;--card:#fff;--tx:#1d1a22;--mut:#6b6573;--ln:#e4ddd2;--stage:#f1ece3;--ac:#6d3fc0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17121c;--card:#221a2b;--tx:#f3eef8;--mut:#a79db3;--ln:#3a2f47;--stage:#1d1626;--ac:#b48cff;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#17121c;--card:#221a2b;--tx:#f3eef8;--mut:#a79db3;--ln:#3a2f47;--stage:#1d1626;--ac:#b48cff;color-scheme:dark}
+:root{--bg:#eef1f4;--card:#fff;--tx:#131d27;--mut:#647282;--ln:#dbe1e7;--ln2:#eaeef2;--stage:#e4e9ee;
+--ac:#1d5fd6;--acink:#fff;--ok:#17824f;--red:#c7352b;--amber:#a8700f;--hb:53px;
+--hl:color-mix(in srgb,var(--ac) 7%,transparent);--sh:0 6px 20px rgba(15,23,42,.07);
+--font:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color-scheme:light;box-sizing:border-box}
+:root[data-theme="dark"]{--bg:#10161d;--card:#18212b;--tx:#e8edf2;--mut:#93a1b0;--ln:#2b3947;--ln2:#222e3a;--stage:#223040;
+--ac:#4b8bff;--acink:#07101c;--ok:#4cc790;--red:#ff7a6e;--amber:#e0aa4a;--sh:0 8px 24px rgba(0,0,0,.35);color-scheme:dark}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-main{max-width:1040px;margin:0 auto;padding:20px 16px 40px}
-h1{font-size:22px;margin:0 0 4px}
-.sub0{color:var(--mut);margin:0 0 16px}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-.tabs button{border:1px solid var(--ln);background:var(--card);color:var(--tx);padding:8px 16px;border-radius:999px;cursor:pointer;font:inherit}
-.tabs button.on{background:var(--ac);border-color:var(--ac);color:#fff}
-.sum{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.sum div{flex:1;min-width:140px;background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:10px 14px}
-.sum small{color:var(--mut);display:block}
-.sum b{font-size:19px}
-.sum .big{border-color:var(--ac)}
-.gen{display:flex;gap:16px;flex-wrap:wrap;align-items:center;background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:10px 14px;margin-bottom:14px}
-.gen label{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.gen input{width:130px;padding:6px 8px;border:1px solid var(--ln);border-radius:8px;background:var(--bg);color:var(--tx);font:inherit}
-#stage{position:relative;background:var(--stage);border-radius:14px;overflow:hidden;margin-top:16px;transition:height .8s}
-#labels .lbl{position:absolute;text-align:center;font-size:13px;line-height:1.35;z-index:2000}#stot{position:absolute;top:8px;left:10px;z-index:2000;font-size:13px;font-weight:600;background:var(--card);border:1px solid var(--ln);border-radius:999px;padding:3px 12px}
+html{scroll-padding-top:calc(var(--hb) + 8px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 var(--font);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+[hidden]{display:none!important}
+button{font:inherit;cursor:pointer;transition:border-color .15s,background .15s,filter .15s}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.homebar{position:sticky;top:0;z-index:40;height:var(--hb);display:flex;align-items:center;gap:12px;padding:0 clamp(14px,3vw,28px);background:var(--card);border-bottom:1px solid var(--ln)}
+.homebar svg{width:18px;height:18px;flex:none}
+.home-btn{display:inline-flex;align-items:center;gap:7px;text-decoration:none;white-space:nowrap;font-weight:600;font-size:.88rem;padding:7px 12px;border:1px solid var(--ln);border-radius:6px;color:var(--tx);background:transparent}
+.home-btn:hover{border-color:var(--mut)}
+.brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:1.02rem;min-width:0}
+.brand svg{color:var(--ac)}
+.theme-toggle{margin-left:auto;border:1px solid var(--ln);background:var(--card);color:var(--tx);border-radius:999px;padding:8px 12px;font:600 .78rem var(--font);white-space:nowrap;flex-shrink:0}
+.theme-toggle:hover{transform:translateY(-1px);border-color:var(--tx)}
+main{max-width:1180px;margin:0 auto;padding:22px clamp(14px,3vw,28px) 56px}
+b{font-weight:700}
+.note{color:var(--mut);font-size:13px;line-height:1.5;margin:8px 0 0}
+.hint{font-size:12.5px;color:var(--mut)}
+.head{margin-bottom:18px}
+.top-title{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin:0 0 8px}
+.top-title label{font-size:28px;font-weight:700;letter-spacing:-.01em;color:var(--tx);white-space:nowrap}
+.title-in{font:inherit;font-size:28px;font-weight:700;letter-spacing:-.01em;color:var(--tx);background:transparent!important;border:0!important;border-bottom:2px solid var(--ln)!important;border-radius:0!important;padding:2px 0!important;flex:1 1 260px;min-width:0;max-width:560px;box-shadow:none!important}
+.title-in:hover{border-bottom-color:var(--mut)!important}
+.title-in:focus{outline:none!important;border-bottom-color:var(--ac)!important}
+.title-in::placeholder{color:var(--mut);font-weight:500;opacity:.7}
+.top-row{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:center}
+.top-row .ef{display:flex;flex-direction:row;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--tx)}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:16px;margin-bottom:14px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+label{display:flex;flex-direction:column;gap:3px;font-size:12.5px;font-weight:600;color:var(--mut)}
+input,select,textarea{font:inherit;font-size:14px;color:var(--tx);background:var(--card);border:1px solid var(--ln);border-radius:6px;padding:7px 10px;min-width:0}
+textarea{width:100%;margin-bottom:8px;font-size:13px}
+input:hover,select:hover,textarea:hover{border-color:var(--mut)}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--ac);outline-offset:-1px;border-color:var(--ln)}
+input[type=checkbox]{width:auto;accent-color:var(--ac)}
+input[type=date]{color-scheme:light}
+:root[data-theme="dark"] input[type=date]{color-scheme:dark}
+input[type=number]{-moz-appearance:textfield;appearance:textfield}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+details summary{cursor:pointer;font-weight:600}
+.primary{border:0;background:var(--ac);color:var(--acink);padding:8px 16px;border-radius:6px;font-weight:600;font-size:14px}
+.primary:hover{filter:brightness(1.08)}
+.ghost{border:1px solid var(--ln);background:transparent;color:var(--mut);padding:7px 12px;border-radius:6px;font-size:13.5px}
+.ghost:hover{color:var(--tx);border-color:var(--mut)}
+.x{border:0;background:transparent;color:var(--mut);font-size:17px;width:28px;height:28px;padding:0;border-radius:6px}
+.x:hover{color:var(--tx);background:var(--hl)}
+.x[data-del]:hover,.x[data-deltr]:hover,.x[data-adel]:hover,.x[data-hdel]:hover{color:var(--red);background:transparent}
+.chip{display:inline-flex;gap:6px;align-items:center;border:1px solid var(--ln);border-radius:999px;padding:2px 4px 2px 12px;margin:0 6px 6px 0;font-size:13px;font-weight:500}
+kbd{font:600 11px/1 var(--font);border:1px solid var(--ln);border-bottom-width:2px;border-radius:5px;padding:2px 6px;background:var(--card)}
+.pbar{height:8px;border-radius:4px;background:var(--stage);overflow:hidden;flex:1;min-width:140px}.pbar i{display:block;height:100%;background:var(--ac);transition:width .3s}
+.dot{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:7px;vertical-align:middle}
+.ok{color:var(--ok)}.wr{color:var(--amber)}#p4 li{margin:3px 0}
+#msg{font-size:13px;font-weight:600}
+.steps{display:flex;gap:4px;margin:0 0 14px;background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:5px;overflow-x:auto}
+.st{flex:1;text-align:center;white-space:nowrap;font-size:13px;font-weight:600;padding:9px 14px;border-radius:6px;color:var(--mut);cursor:pointer;border:0}
+.st:hover{background:var(--hl);color:var(--tx)}
+.st.on{background:var(--ac);color:var(--acink)}
+.st.done{color:var(--ok)}.st.done::after{content:" ✓"}
+#guide{border-left:4px solid var(--ac);line-height:1.55;padding:12px 16px}
+#guide b{color:var(--tx);font-size:15px}
+.tabs{display:inline-flex;flex-wrap:wrap;gap:4px;padding:4px;background:var(--stage);border-radius:8px;margin-bottom:14px}
+.tabs button{border:0;background:transparent;color:var(--mut);padding:7px 16px;border-radius:6px;font-weight:600;font-size:13.5px}
+.tabs button:hover{color:var(--tx)}
+.tabs button.on{background:var(--card);color:var(--ac);box-shadow:0 1px 3px rgba(15,23,42,.12)}
+.sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:14px}
+.sum div{background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:12px 16px}
+.sum small{display:block;color:var(--mut);font-size:12.5px}
+.sum b{font-size:1.35rem;font-weight:700;letter-spacing:-.01em}
+.sum .big{background:var(--ac);border-color:var(--ac);color:var(--acink)}
+.sum .big small{color:var(--acink);opacity:.85}
+.scroll{overflow:visible!important;max-height:none!important;background:var(--card);border:1px solid var(--ln);border-radius:10px}
+.scroll table{width:100%!important;min-width:0!important;border-collapse:separate;border-spacing:0}
+.scroll thead th{position:sticky;top:var(--hb);z-index:3;background:var(--card);color:var(--mut);font-size:.78rem;font-weight:600;text-align:left;padding:9px 6px!important;border-bottom:1px solid var(--ln);line-height:1.25;white-space:normal!important}
+.scroll thead th:first-child{border-top-left-radius:10px}.scroll thead th:last-child{border-top-right-radius:10px}
+.scroll td{padding:6px;border-bottom:1px solid var(--ln2);vertical-align:middle;white-space:nowrap}
+.scroll tbody tr:last-child td{border-bottom:0}
+.scroll tbody tr:hover td,.scroll tbody tr:focus-within td{background:var(--hl)}
+.scroll td:has(input:not([type=checkbox]),select){padding:0}
+.card:not(.pv) .scroll td input:not([type=checkbox]):not([style*=calc]),.card:not(.pv) .scroll td select{width:100%!important;min-width:0;border:0;border-radius:0;background:transparent;padding:9px 8px;font-size:13.5px;scroll-margin-top:calc(var(--hb) + 44px)}
+.scroll td input[style*=calc]{border:0;background:transparent;border-radius:0}
+.scroll td input:hover,.scroll td select:hover{background:var(--hl)}
+.scroll td input:focus,.scroll td select:focus{outline:2px solid var(--ac);outline-offset:-2px;background:var(--card)}
+.scroll td input[type=number]{text-align:right}
+.scroll td>input[type=checkbox]{display:block;margin:10px auto;width:16px;height:16px}
+.scroll td.n,.scroll td.r{min-width:0!important}
+.scroll td:has(input[type=date]){min-width:128px}
+.scroll td.dt input{font-size:12.5px;min-width:118px}
+#tb td:first-child{min-width:200px!important;padding-left:6px!important}
+.scroll td[id^=s],.scroll td[id^=at],.scroll td[id^=an]{text-align:right;padding:6px 10px}
+.scroll td[id^=s] b,.scroll td[id^=at] b{color:var(--ac)}
+.scroll td[colspan]{padding:10px!important;background:var(--bg)!important}
+.scroll td[colspan] input{border:1px solid var(--ln)!important;border-radius:6px!important;background:var(--card)!important;padding:7px 9px!important;width:100%!important}
+.scroll td.mt{background:color-mix(in srgb,var(--amber) 16%,transparent)!important}
+input[data-fl]{outline:2px solid var(--amber);outline-offset:1px;border-radius:3px}
+input.dd{color:var(--mut)}
+table:has(#tb) thead th:nth-child(9),#tb>tr[data-nm]>td:nth-child(9),#ah{display:none!important}
+#pm table{table-layout:fixed}
+#pm td:first-child,#pm th:first-child{width:170px;min-width:0!important;white-space:normal!important;overflow:hidden;text-overflow:ellipsis;font-size:12.5px;position:sticky;left:0;z-index:2;background:var(--card)!important}
+#pm thead th:first-child{z-index:5}
+#pm td{padding:0!important}
+#pm thead th{padding:6px 0!important;text-align:center}
+#pm thead tr+tr th{top:calc(var(--hb) + 35px)}
+#pm td>input[type=checkbox]{width:15px;height:15px;margin:7px auto}
+.pv table{min-width:0;margin:6px 0 16px;width:100%;border-collapse:collapse}
+.pv .scroll{border:0;background:transparent}
+.pv td,.pv th{padding:6px 10px;text-align:left;border-top:1px solid var(--ln2);position:static}
+.pv th{background:transparent;color:var(--mut);font-size:.78rem;font-weight:600;border-top:0;border-bottom:1px solid var(--ln)}
+.bulk{margin:0 0 12px;padding:12px 14px;border-radius:10px;background:var(--hl);border:1px dashed var(--ac)}
+.bulk>b{align-self:center;margin-right:4px}
+.bulk .primary,.bulk .ghost{padding:8px 14px}
+#bar{position:sticky;bottom:10px;z-index:20;margin:14px 0 0!important;padding:10px 16px!important;background:var(--card);border:1px solid var(--ln);border-radius:10px;box-shadow:var(--sh)}
+#nx{padding:9px 24px}
+details{margin-bottom:12px}details>summary{font-size:14px;margin-bottom:8px;color:var(--ac)}
+.scroll tr.gh td{background:var(--stage)!important;font-weight:700;font-size:.78rem;letter-spacing:.04em;padding:6px 10px!important;text-transform:uppercase}
+.scroll td.c{text-align:center;color:var(--mut);width:38px}
+.occ input+input{border-top:1px solid var(--ln2)!important}
+.rl td{padding:2px 8px!important;font-size:13px;white-space:nowrap}
+.rl td>input[type=checkbox]{margin:4px auto}
+.rl td.sub{color:var(--mut);font-size:12.5px;white-space:normal}
+.rl small{color:var(--mut)}
+.rc-over{outline:2px dashed var(--mut);outline-offset:2px}
+.rl .ghost{padding:1px 9px;line-height:1.3}
+.occ2{display:flex;min-width:250px}
+.occ2 input{flex:1 1 0;min-width:100px}
+.occ2 input+input{border-left:1px solid var(--ln2)!important}
+.scroll td.dt input{min-width:112px}
+#stage{position:relative;background:var(--card);border:1px solid var(--ln);border-radius:10px;overflow:hidden;transition:height .8s;margin-top:14px;
+background-image:radial-gradient(color-mix(in srgb,var(--tx) 14%,transparent) 1px,transparent 1px);background-size:18px 18px}
+#labels .lbl{position:absolute;text-align:center;font-size:13px;line-height:1.35;z-index:2000}
+#stot{position:absolute;top:8px;left:10px;z-index:2000;font-size:13px;font-weight:600;background:var(--ac);color:var(--acink);border-radius:6px;padding:4px 12px}
 .fig{position:absolute;left:0;top:0;width:18px;height:34px;transition:transform 1s cubic-bezier(.45,.05,.2,1),opacity .6s,color .6s;will-change:transform}
-.fig svg{display:block}
-.a,.b{transform-box:fill-box;transform-origin:50% 0}
-.run svg{animation:bob .28s infinite}
-.run .a{animation:swA .28s infinite alternate}
-.run .b{animation:swB .28s infinite alternate}
-@keyframes bob{50%{transform:translateY(-2px)}}
-@keyframes swA{from{transform:rotate(-35deg)}to{transform:rotate(35deg)}}
-@keyframes swB{from{transform:rotate(35deg)}to{transform:rotate(-35deg)}}
-.card{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:14px;overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:820px}
-th{text-align:left;color:var(--mut);font-weight:500;font-size:13px;padding:4px 6px}
-td{padding:5px 6px;border-top:1px solid var(--ln);white-space:nowrap}
-td input{width:100%;max-width:120px;padding:6px 8px;border:1px solid var(--ln);border-radius:8px;background:var(--bg);color:var(--tx);font:inherit}
-td.sm input{max-width:70px}
-.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px}
-.x{border:0;background:none;color:var(--mut);cursor:pointer;font-size:18px}
-.add{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.add input{padding:7px 9px;border:1px solid var(--ln);border-radius:8px;background:var(--bg);color:var(--tx);font:inherit;min-width:0}
-.add button{border:0;background:var(--ac);color:#fff;padding:8px 14px;border-radius:8px;cursor:pointer;font:inherit}
-.note{color:var(--mut);font-size:13px;margin:10px 0 0}
+.fig svg{display:block}.a,.b{transform-box:fill-box;transform-origin:50% 0}
+.run svg{animation:bob .28s infinite}.run .a{animation:swA .28s infinite alternate}.run .b{animation:swB .28s infinite alternate}
+@keyframes bob{50%{transform:translateY(-2px)}}@keyframes swA{from{transform:rotate(-35deg)}to{transform:rotate(35deg)}}@keyframes swB{from{transform:rotate(35deg)}to{transform:rotate(-35deg)}}
+.pf svg{display:block;margin:0 auto}
+.pf .gt{height:30px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;line-height:1.15;overflow:hidden}
+.pf .gt b{font-size:10.5px;font-weight:700;letter-spacing:.02em;text-transform:uppercase}
+.pf .gt small{font-size:9.5px;color:var(--mut);max-width:88px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rcroom,.rcpool{position:relative;background-color:var(--card);background-image:radial-gradient(color-mix(in srgb,var(--tx) 14%,transparent) 1px,transparent 1px);background-size:18px 18px;border:1px solid var(--ln);border-radius:10px;overflow:hidden}
+.rcroom{border-color:var(--hc,var(--ln));border-width:2px;display:flex;gap:6px;padding:34px 8px 12px;min-height:150px}
+.rcroom::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:color-mix(in srgb,var(--hc,var(--stage)) 40%,var(--stage))}
+.rcroom .rtag{position:absolute;top:8px;left:10px;z-index:2;font-size:13px;font-weight:600;background:var(--hc,var(--ac));color:#fff;border-radius:6px;padding:3px 12px}
+.rcpool{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0 16px;padding:8px;min-height:96px}
+.rcslot{width:92px;height:118px;border:1.5px dashed var(--ln);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:11px;color:var(--mut)}
+.rcslot svg{opacity:.18}
+/* --- Harga & pengaturan --- */
+.pset{display:grid;grid-template-columns:190px repeat(4,130px) auto;gap:8px 12px;align-items:center;justify-content:start;margin-top:12px}
+.pset .ph{font-size:12.5px;font-weight:600;color:var(--mut)}
+.pset .pl{font-size:13px}
+.pset input{width:100%}
+.pset .ghost{white-space:nowrap}
+@media (max-width:760px){.pset{grid-template-columns:repeat(4,minmax(0,1fr))}.pset .sx{display:none}.pset .pl{grid-column:1/-1;margin-top:8px}.pset .ghost{grid-column:1/-1}}
+/* --- Langkah 4: tabel personil & kamar hotel --- */
+.rlw{width:fit-content;max-width:100%}
+.scroll.rlw table.rl{width:auto!important;table-layout:fixed;min-width:0}
+.rl th{padding:9px 10px!important;white-space:nowrap!important}
+.rl td{padding:4px 10px!important}
+.rl td.dt{padding:0!important}
+.rl td.pn{overflow:hidden;text-overflow:ellipsis}
+.rl td.fill{background:transparent!important;padding:0!important}
+.rl .tc,.hl .tc{text-align:center}.rl .tr,.hl .tr{text-align:right}
+.rcsec{margin-top:22px;padding-top:18px;border-top:1px solid var(--ln2)}
+.hlw{overflow-x:auto;max-width:100%;margin:8px 0 20px}
+.hl{border-collapse:separate;border-spacing:0;border:1px solid var(--ln);border-radius:10px;font-size:13.5px;background:var(--card)}
+.hl th{font-size:.78rem;font-weight:600;color:var(--mut);text-align:left;padding:8px 14px;border-bottom:1px solid var(--ln);white-space:nowrap}
+.hl td{padding:7px 14px;border-bottom:1px solid var(--ln2);white-space:nowrap}
+.hl tbody tr:last-child td{border-bottom:0}
+.hl .ghost{padding:3px 12px}
+.hl .hb{display:none;color:var(--mut);font-size:11.5px;margin:1px 0 0 16px}
+.rch{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:2px 0 0}
+.rch .cnt{background:var(--stage);border-radius:999px;padding:1px 10px;font-size:12px;font-weight:700}
+.rcgrid{display:grid;grid-template-columns:repeat(auto-fill,212px);gap:14px;justify-content:start;margin-top:8px}
+.rcroom{justify-content:center}
+@media (max-width:560px){.hl .cap,.hl .bt,.hl .bed{display:none}.hl .hb{display:block}.hl td:first-child{white-space:normal}.hl .ghost{padding:3px 12px;font-weight:700}.hl th,.hl td{padding:7px 8px;font-size:12.5px}}
+@media (max-width:760px){.rlw{width:100%}.scroll.rlw table.rl{width:100%!important;table-layout:auto}.rcgrid{grid-template-columns:repeat(auto-fill,minmax(212px,1fr))}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+@media (max-width:720px){.home-btn span{display:none}.home-btn{padding:7px 9px}.top-title label,.title-in{font-size:22px}.st{padding:9px 10px}.sum b{font-size:1.15rem}}
+@media print{.homebar,#bar{display:none!important}}
 </style></head>
-<body><main>
-<h1>Kebutuhan Manpower Event</h1>
-<p class="sub0">Satu figur mewakili satu orang. Ganti jenis event atau ubah jumlahnya, dan figur akan berlari ke posisi barunya.</p>
+<body>
+<header class="homebar">
+<a class="home-btn" href="index.html" title="Menu utama"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg><span>Home</span></a>
+<div class="brand"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="0" y="0" width="6" height="6" rx="1"/><rect x="9" y="0" width="6" height="6" rx="1"/><rect x="18" y="0" width="6" height="6" rx="1"/><rect x="0" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/><rect x="18" y="9" width="6" height="6" rx="1"/><rect x="9" y="18" width="6" height="6" rx="1"/></svg>Kebutuhan Manpower</div>
+<button type="button" class="theme-toggle" id="themeBtn">🌙 Gelap</button>
+</header>
+<main>
+<div class="head">
+<div class="top-title"><label for="en">Event:</label><input id="en" class="title-in" type="text" placeholder="Nama event"></div>
+<div class="top-row">
+<label class="ef">Venue<input id="ev" type="text" style="width:150px"></label>
+<label class="ef">Mulai<input id="es" type="date"></label>
+<label class="ef">Selesai<input id="ee" type="date"></label>
+<label class="ef">PIC<input id="ep" type="text" placeholder="mis. Aya & Uni" style="width:150px"></label>
+</div>
+</div>
+
+<div class="steps" id="steps"></div>
+
+<div class="card" id="guide"></div>
 <div class="tabs" id="tabs"></div>
+
 <div class="sum">
-<div><small>Total manpower</small><b id="tp">0</b> orang</div>
-<div><small>Total tarif</small><b id="tt">Rp 0</b></div>
-<div><small>Total akomodasi</small><b id="ta">Rp 0</b></div>
-<div><small>Total konsumsi</small><b id="tk">Rp 0</b></div>
-<div class="big"><small>Total biaya</small><b id="tc">Rp 0</b></div>
+<div><small>Total orang</small><b id="tp">0</b></div>
+<div><small>Tarif crew</small><b id="tt">0</b></div>
+<div><small>Akomodasi</small><b id="ta">0</b></div>
+<div><small>Konsumsi</small><b id="tk">0</b></div>
+<div class="big"><small>Total biaya</small><b id="tc">0</b></div>
 </div>
-<div class="gen">
-<label for="acc">Biaya akomodasi per orang per hari <input id="acc" type="number" min="0" step="10000" value="150000"></label>
-<label for="kon">Biaya konsumsi per orang per hari <input id="kon" type="number" min="0" step="5000" value="75000"></label>
+
+<div id="p1">
+<div class="card"><b>Harga &amp; pengaturan</b>
+<div class="pset">
+<span class="sx"></span><span class="ph">Tarif crew / hari</span><span class="ph">Makan pagi</span><span class="ph">Makan siang</span><span class="ph">Makan malam</span><span class="sx"></span>
+<b class="pl">Tarif &amp; makan standar</b><input id="sr" type="number" min="0" step="10000"><input id="kp" type="number" min="0" step="5000"><input id="ks" type="number" min="0" step="5000"><input id="km" type="number" min="0" step="5000"><button class="ghost" id="applyr">Terapkan tarif ke semua peran</button>
+<b class="pl">Lumpsum Maksimum</b><span class="sm"></span><input id="lx0" type="number" min="0" step="5000"><input id="lx1" type="number" min="0" step="5000"><input id="lx2" type="number" min="0" step="5000"><span class="sx"></span>
+<b class="pl">Lumpsum Crew + Vendor</b><span class="sm"></span><input id="lc0" type="number" min="0" step="5000"><input id="lc1" type="number" min="0" step="5000"><input id="lc2" type="number" min="0" step="5000"><span class="sx"></span>
 </div>
+<p class="note" style="margin-top:12px">Lumpsum Maksimum dipakai untuk kelompok Maximum Team. Lumpsum Crew + Vendor dipakai untuk kelompok Crew dan Vendor. Pada tanggal yang dicentang di bawah, makan dihitung dengan harga lumpsum; pada tanggal lain memakai harga makan biasa.</p>
+<div class="row" style="margin-top:8px;align-items:center"><span style="font-size:13px;color:var(--mut)">Tanggal lumpsum:</span><div id="lsd" class="row" style="gap:6px"></div><button class="ghost" id="lsa">Semua tanggal</button><button class="ghost" id="lsn">Kosongkan</button></div></div>
+
 <div class="card">
-<table><thead><tr><th>Peran</th><th>Orang</th><th>Hari</th><th>Tarif/hari</th><th>Tarif</th><th>Akomodasi</th><th>Konsumsi</th><th>Total</th><th></th></tr></thead><tbody id="tb"></tbody></table>
-<div class="add">
-<input id="an" placeholder="Nama peran baru" style="flex:2;min-width:140px">
+<div class="row" style="margin-bottom:10px;justify-content:space-between">
+<div class="row"><label>Cari peran<input id="q" type="text" placeholder="ketik untuk menyaring"></label>
+</div>
+
+</div>
+<div class="row bulk"><b>⚡ Set tanggal cepat</b><label>Mulai<input id="bds" type="date"></label><label>Sampai<input id="bde" type="date"></label><label>Untuk<select id="bdt"><option value="all">Semua peran</option><option value="vis">Hasil pencarian saja</option><option>Maximum Team</option><option>Vendor</option><option>Crew</option></select></label><button class="primary" id="bda">Terapkan</button><button class="ghost" id="allh" title="Semua peran mengikuti tanggal mulai-selesai event">Tanggal = durasi event</button></div>
+<div class="scroll"><table><thead><tr><th>Peran</th><th>Company</th><th>Kelompok</th><th>Orang</th><th>Mulai</th><th>Sampai</th><th>Tarif/hari</th><th>Makan</th><th>Total</th><th></th></tr></thead><tbody id="tb"></tbody></table></div>
+<div class="row" style="margin-top:12px">
+<input id="an" type="text" placeholder="Nama peran baru" style="flex:2;min-width:150px">
 <input id="aq" type="number" min="1" placeholder="Orang" style="width:80px">
-<input id="ah" type="number" min="1" placeholder="Hari" style="width:70px">
-<input id="ar" type="number" min="0" placeholder="Tarif/hari" style="width:120px">
-<button id="ab">+ Tambah peran</button>
+<input id="ah" type="number" min="1" placeholder="Hari" style="width:70px"><label style="flex-direction:row;align-items:center;gap:6px">Mulai<input id="ads" type="date"></label><label style="flex-direction:row;align-items:center;gap:6px">Sampai<input id="ade" type="date"></label>
+<button class="primary" id="ab">+ Tambah peran</button>
 </div>
-<p class="note">Tarif, akomodasi, dan konsumsi di sini hanya contoh. Akomodasi dan konsumsi dihitung per orang per hari, mengikuti jumlah orang dan hari tiap peran. Silakan ubah sesuai ratecard dan kebutuhan event Anda.</p>
+<p class="note">Makan: P = pagi, S = siang, M = malam. Menginap (hotel) diatur di Langkah 4.</p>
 </div>
+
+
+</div>
+<div id="p2" class="card" hidden></div><div id="pm" class="card" hidden></div>
+<div id="p3" hidden>
+<div class="card" id="acc"></div>
+</div>
+<div id="p4" class="card pv" hidden></div>
+<div class="row" id="bar" style="justify-content:space-between;align-items:center"><div style="display:flex;gap:8px"><button class="ghost" id="bk">← Kembali</button><button class="ghost" id="pdfb" title="Unduh ringkasan Langkah 1-4 sebagai PDF">⬇ PDF</button></div><span id="msg"></span><button class="primary" id="nx">Next</button></div>
+
 <div id="stage"><div id="stot"></div><div id="labels"></div></div>
 </main>
 <script>
-const P=['#7c4dcc','#e0457b','#1f9d8a','#e08a1e','#3b82c4','#8a9a1f','#c2452d','#5b6bd6','#b0509e','#2f8f4e','#0f8fa8'];
+(()=>{const b=document.getElementById('themeBtn'),r=document.documentElement,u=()=>{b.textContent=r.dataset.theme==='dark'?'☀️ Terang':'🌙 Gelap'};u();
+b.onclick=()=>{r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';try{localStorage.setItem('maximum-theme',r.dataset.theme)}catch(e){}u()}})();
+const P=['#1f8a70','#6b4fa0','#e8552f','#c9971f','#1d5fd6','#b23a6b','#0e7c86','#c1352e','#5b6bd6','#17824f','#a8700f'];
+const rg=(f,a,b)=>Array.from({length:b-a+1},(_,i)=>[f(a+i),1]);
+const MEET=[['Registrasi',3],['Runner',1],['Photobooth/Activity',2],['Crew Floor',2],['Crew F&B',2],['Crew Talent',2],['Logistic',1],['Production Crew',1],['Crew Cue Card',1],['Usher',3]];
 const PRE={
-'Awarding':[['Usher',20,350000],['Registrasi tamu',8,300000],['Runner',10,250000],['Backstage crew',12,400000],['Security',10,400000],['Valet parkir',6,300000],['Jaga stand makanan',8,300000]],
-'Launching':[['Show Management',2,750000],['Multimedia Operator',3,600000],['Lighting Designer',2,800000],['VJ',2,750000],['Music Director',1,1000000],['Project Manager',1,1000000],['Project Officer',3,500000],['PIC',4,400000],['Crew',12,350000],['Cleaning Service',6,250000],['Security Event',8,400000]],
-'Concert':[['Jaga railing',30,300000],['Cek tiket gate',24,275000],['Security',40,375000],['Runner',15,250000],['Jaga stand makanan',20,300000],['Usher VIP',10,350000],['Medis',6,500000],['Petugas parkir',12,250000]],
+'Exhibition':[['Crew Konsumsi',1],['Crew PIC Floor/Booth',1],['Crew LO Talent',1],['Crew Media Room + Sales room',1],['PIC Cafe',1],['PIC Dealing',1],['Crew Games',2],['Kids Area',2],['Logistic',2],['Runner',2],['Car Handling',2],['Produksi',2]],
+'Meeting/Awarding':MEET,
+'Launching':[...MEET,['Car Handling',2],['Car unit',2],['Car maintenance',2]],
+'Concert':[['PIC Drop Off Shuttle 1',1],['PIC Drop Off Shuttle 2',1],['PIC Registrasi',1],['Crew Line 1 Priority - LO MC',1],
+...rg(i=>'Crew Line '+i+' Priority',2,5),...rg(i=>'Crew Line '+i+' Reguler',6,20),
+...rg(i=>'Crew Coupon '+i+' Priority',1,5),...rg(i=>'Crew Coupon '+i+' Reguler',6,20),
+['PIC Checker',1],['PIC Drop Off VIP',1],['Crew Parkir VIP',1],['Crew Parkir Panitia',1],
+['Crew Shuttle NICE PIK 2 - 1',1],['Crew Shuttle NICE PIK 2 - 2',1],['Crew Shuttle Community Park 1',1],['Crew Shuttle Community Park 2',1],['Crew Shuttle Aloha 1',1],['Crew Shuttle Aloha 2',1],
+['Runner 1',1],['Runner 2',1],['Logistik 1',1],['Crew Production',2],['LO PM',1],['PIC FNB Jkt Go',1],['PIC FNB Jacoweek',1],['Crew F&B Tenda 1',2],
+['PIC F&B UMKM Outdoor Stage 1',2],['Crew F&B UMKM Outdoor Stage 1',3],['PIC F&B UMKM Parkir 1',2],['Crew F&B UMKM Parkir 1',4],
+...[1,2,3,4].flatMap(i=>[['Crew Pop mie & le mineral (Tent '+i+')',2],['Crew toilet '+i,1]]),
+['Crew Kids Area',4],['Runner all event',2],['Logistik',1],['Runner Pop Mie',2],['Runner Livin & Kopra',1],['Wishing tree',2],
+...rg(i=>'Crew Crowd '+i,1,4),['Crew Runner',1],['Crew Logistik',1],['Crew Konsumsi/Runner (bagi makanan)',1],['Produksi',2],['Runner',1],['Logistik',1],
+['PIC Dome Kopra',1],['Konsumsi MXM & Vendor',1],['PIC Dome VIP',1],['Buggy Car + Sepeda Listrik',1],['Crowd',4]],
 'Custom':[]};
-const data={};for(const k in PRE)data[k]=PRE[k].map(([n,q,r])=>({n,q,h:1,r}));
-let cur='Awarding',acc=150000,kon=75000,figs=[];
+const GR=['Maximum Team','Vendor','Crew'];
 const $=id=>document.getElementById(id),stage=$('stage'),labels=$('labels'),tb=$('tb');
+const S={cur:'Exhibition',data:{},TR:{},set:{rate:300000,kp:20000,ks:30000,km:35000,pk:2,rm:300000},ev:{n:'Toyota Tech Expo @GAW 2026',v:'ICE BSD',s:'2026-11-20',e:'2026-11-29',p:''}};
+const mk0=(n,q)=>({n,q,h:1,r:S.set.rate,g:'Crew',c:'',a:1,k:S.set.rm,m:[1,1,1]});
+let saved=null;try{saved=JSON.parse(localStorage.getItem('mp2'))}catch(e){}
+if(saved&&saved.data){Object.assign(S,saved)}else{for(const k in PRE){S.data[k]=PRE[k].map(([n,q])=>mk0(n,q));S.TR[k]={rows:[],um:0}}}
+let hist=[],ht;function snapSoon(){clearTimeout(ht);ht=setTimeout(()=>{const j=JSON.stringify(S);if(hist[hist.length-1]!==j){hist.push(j);if(hist.length>40)hist.shift()}},500)}
+const save=()=>{snapSoon();try{localStorage.setItem('mp2',JSON.stringify(S))}catch(e){}};
 const fmt=n=>'Rp '+Math.round(n).toLocaleString('id-ID');
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const cost=r=>{const t=r.q*r.h*r.r,a=r.q*r.h*acc,k=r.q*r.h*kon;return{t,a,k,s:t+a+k}};
-const CW=24,CH=40;
-function mk(){const f=document.createElement('div');f.className='fig';
-f.innerHTML='<svg viewBox="0 0 18 34" width="18" height="34" fill="currentColor"><circle cx="9" cy="5" r="4"/><rect x="4" y="10" width="10" height="13" rx="4"/><rect class="a" x="4.5" y="22" width="4" height="12" rx="2"/><rect class="b" x="9.5" y="22" width="4" height="12" rx="2"/></svg>';
-stage.appendChild(f);return f}
+const days=()=>S.ev.s&&S.ev.e?Math.max(1,Math.round((new Date(S.ev.e)-new Date(S.ev.s))/864e5)+1):1;
+const rs=()=>S.data[S.cur],T=()=>S.TR[S.cur];
+const pm=()=>[S.set.kp,S.set.ks,S.set.km];
+S.ls=S.ls||{d:[],p:50000};if(S.ls.pm==null)S.ls.pm=S.ls.p;const lsM=()=>{S.ls.c=S.ls.c||[S.ls.p,S.ls.p,S.ls.p];S.ls.x=S.ls.x||[S.ls.pm,S.ls.pm,S.ls.pm]};lsM();
+const LSd=()=>S.ls.d||[];const lsP=(r,j=0)=>(r.g==='Maximum Team'?S.ls.x:S.ls.c)[j];
+const dayStr=i=>S.ev.s?new Date(new Date(S.ev.s+'T00:00:00Z').getTime()+i*864e5).toISOString().slice(0,10):'';
+const rS=r=>r.ds||dayStr(0),rE=(r,m)=>r.de||dayStr(Math.max(r.h-1,m||0));
+const mealDay=(r,i)=>{const p=LSd().includes(dayStr(i))?[lsP(r),lsP(r),lsP(r)]:pm();return r.m.reduce((s,x,j)=>s+(x?p[j]:0),0)};
+const pday=(r,k,i)=>{if(!S.ev.s)return i<r.h;const d=dayStr(i);return d>=rS(r)&&d<=rE(r)};
+const bs=(r,k,i,j)=>pday(r,k,i)&&r.m[j]?1:0,price=(i,j,r)=>LSd().includes(dayStr(i))?lsP(r,j):pm()[j],
+pdn=(r,k)=>r.h,
+rst=(r,a,b)=>{if(!S.ev.s)return['',''];return[rS(r),rE(r,1)]};
+const cost=r=>{const nt=Math.max(r.h-1,0),t=(()=>{let n=0;for(let q=0;q<r.q;q++)n+=pdn(r,q);return n*r.r})(),a=r.a?Math.ceil(r.q/Math.max(1,S.set.pk))*nt*r.k:0;let k=0;for(let q=0;q<r.q;q++)for(let i=0;i<Math.max(r.h,days());i++)for(let j=0;j<3;j++)if(bs(r,q,i,j))k+=price(i,j,r);for(const kk in r.mo||{})if(+kk<r.q)for(const key in r.mo[kk]){const[i,j]=key.split('-').map(Number);k+=(bs(r,+kk,i,j)?-1:1)*price(i,j,r)}return{t,a,k,s:t+a+k}};
+let figs=[];const CW=24;
+function mkFig(){const f=document.createElement('div');f.className='fig';f.innerHTML='<svg viewBox="0 0 18 34" width="18" height="34" fill="currentColor"><circle cx="9" cy="5" r="4"/><rect x="4" y="10" width="10" height="13" rx="4"/><rect class="a" x="4.5" y="22" width="4" height="12" rx="2"/><rect class="b" x="9.5" y="22" width="4" height="12" rx="2"/></svg>';stage.appendChild(f);return f}
 function run(f){f.classList.add('run');clearTimeout(f._t);f._t=setTimeout(()=>f.classList.remove('run'),1500)}
-function layout(){
-const rs=data[cur],w=stage.clientWidth,cols=Math.max(1,Math.floor((w-8)/CW));
-labels.innerHTML='';const slots=[];let x=8,y=36,rowH=0,tp=0;
-rs.forEach((r,i)=>{const c=P[i%P.length],n=r.q;tp+=n;
-const sp=Math.max(4,Math.min(19,((w-24)/2-10)/Math.sqrt(n+1)));
-const sq=Math.sqrt(n),Rx=sp*sq+10,Ry=sp*sq*.55+18,cw=Math.max(2*Rx,130),ch=2*Ry+44;
-if(x>8&&x+cw>w-8){x=8;y+=rowH;rowH=0}
-const cx=x+cw/2,cy=y+Ry;
-const l=document.createElement('div');l.className='lbl';l.style.left=x+'px';l.style.width=cw+'px';l.style.top=(y+2*Ry+2)+'px';
+function layout(){const R=rs(),w=stage.clientWidth;labels.innerHTML='';const slots=[];let x=8,y=36,rowH=0,tp=0;
+R.forEach((r,i)=>{const c=P[i%P.length],n=r.q;tp+=n;const sp=Math.max(4,Math.min(19,((w-24)/2-10)/Math.sqrt(n+1))),sq=Math.sqrt(n),Rx=sp*sq+10,Ry=sp*sq*.55+18,cw=Math.max(2*Rx,130),ch=2*Ry+44;
+if(x>8&&x+cw>w-8){x=8;y+=rowH;rowH=0}const cx=x+cw/2,cy=y+Ry,l=document.createElement('div');l.className='lbl';l.style.cssText='left:'+x+'px;width:'+cw+'px;top:'+(y+2*Ry+2)+'px';
 l.innerHTML='<b style="color:'+c+'">'+esc(r.n)+'</b><br>'+n+' orang · '+r.h+' hari';labels.appendChild(l);
-for(let k=0;k<n;k++){const rr=sp*Math.sqrt(k+.5),a=k*2.39996;slots.push({x:cx+rr*Math.cos(a)-9,y:cy+rr*Math.sin(a)*.55-17,c})}
-x+=cw+10;rowH=Math.max(rowH,ch+8)});
-$('stot').textContent='Total: '+tp+' orang';
-stage.style.height=Math.max(y+rowH+6,90)+'px';
-slots.forEach((s,i)=>{let f=figs[i];
-if(!f){f=mk();f.style.transitionDelay='0s';f.style.color=s.c;f.style.opacity=0;f.style.transform='translate(-30px,'+s.y+'px)';figs.push(f);void f.offsetWidth}
-run(f);f.style.transitionDelay=(Math.random()*.3)+'s';f.style.color=s.c;f.style.opacity=1;f.style.transform='translate('+s.x+'px,'+s.y+'px)';f._y=s.y;f.style.zIndex=Math.round(s.y)});
-while(figs.length>slots.length){const f=figs.pop();run(f);f.style.transitionDelay=(Math.random()*.2)+'s';f.style.opacity=0;f.style.transform='translate('+(w+40)+'px,'+(f._y||0)+'px)';setTimeout(()=>f.remove(),1500)}
+for(let k=0;k<n;k++){const rr=sp*Math.sqrt(k+.5),a=k*2.39996;slots.push({x:cx+rr*Math.cos(a)-9,y:cy+rr*Math.sin(a)*.55-17,c})}x+=cw+10;rowH=Math.max(rowH,ch+8)});
+$('stot').textContent='Total: '+tp+' orang';stage.style.height=Math.max(y+rowH+6,90)+'px';
+slots.forEach((s,i)=>{let f=figs[i];if(!f){f=mkFig();f.style.color=s.c;f.style.opacity=0;f.style.transform='translate(-30px,'+s.y+'px)';figs.push(f);void f.offsetWidth}
+run(f);f.style.transitionDelay=Math.random()*.3+'s';f.style.color=s.c;f.style.opacity=1;f.style.transform='translate('+s.x+'px,'+s.y+'px)';f._y=s.y;f.style.zIndex=Math.round(s.y)});
+while(figs.length>slots.length){const f=figs.pop();run(f);f.style.opacity=0;f.style.transform='translate('+(w+40)+'px,'+(f._y||0)+'px)';setTimeout(()=>f.remove(),1500)}}
+function cells(i){const c=cost(rs()[i]);$('s'+i).innerHTML='<b>'+fmt(c.s)+'</b>'}
+function tot(){let p=0,t=0,a=0,k=0;rs().forEach(r=>{const c=cost(r);p+=r.q;t+=c.t;a+=c.a;k+=c.k});if(ACCF().length)a=accTotal();const x=T().rows.reduce((s,y)=>s+y.p,0)*0;
+$('tp').textContent=p+' orang';$('tt').textContent=fmt(t);$('ta').textContent=fmt(a);$('tk').textContent=fmt(k);$('tc').textContent=fmt(t+a+k);$('ta').previousElementSibling.textContent='Akomodasi'+(ACCF().length?'':' (estimasi)');$('tc').previousElementSibling.textContent='Total biaya'+(ACCF().length?'':' (sementara)')}
+function table(){tb.innerHTML=rs().map((r,i)=>'<tr data-nm="'+esc(r.n.toLowerCase())+'"><td><i class="dot" style="background:'+P[i%P.length]+'"></i><input type="text" style="width:calc(100% - 20px)" value="'+esc(r.n)+'" data-i="'+i+'" data-k="n"></td>'
++'<td><input type="text" style="width:110px" value="'+esc(r.c)+'" data-i="'+i+'" data-k="c" placeholder="Company"></td>'
++'<td><select data-i="'+i+'" data-k="g">'+GR.map(o=>'<option'+(o===r.g?' selected':'')+'>'+o+'</option>').join('')+'</select></td>'
++'<td class="n"><input type="number" min="0" max="500" value="'+r.q+'" data-i="'+i+'" data-k="q"></td><td class="dt"><input type="date" min="'+S.ev.s+'" max="'+S.ev.e+'" value="'+rS(r)+'" data-i="'+i+'" data-k="ds"></td><td class="dt"><input type="date" min="'+S.ev.s+'" max="'+S.ev.e+'" value="'+rE(r)+'" data-i="'+i+'" data-k="de"></td>'
++'<td class="r"><input type="number" min="0" step="10000" value="'+r.r+'" data-i="'+i+'" data-k="r"></td>'
++'<td>'+[0,1,2].map(j=>'<label style="display:inline-flex;flex-direction:row;align-items:center;gap:2px;margin-right:6px;font-size:13px;color:var(--tx)"><input type="checkbox" '+(r.m[j]?'checked ':'')+'data-i="'+i+'" data-k="m'+j+'">'+'PSM'[j]+'</label>').join('')+'</td>'
++'<td id="s'+i+'"></td>'
++'<td><button class="x" data-ins="'+i+'" title="Sisipkan peran baru di bawah baris ini">＋</button><button class="x" data-dup="'+i+'" title="Gandakan">⧉</button><button class="x" data-del="'+i+'" title="Hapus">×</button></td></tr>').join('')||'<tr><td colspan="10" style="color:var(--mut)">Belum ada peran. Tambahkan di bawah.</td></tr>';
+rs().forEach((_,i)=>cells(i));tot();filt()}
+function filt(){const q=$('q').value.trim().toLowerCase();[...tb.rows].forEach(tr=>tr.style.display=!q||(tr.dataset.nm||'').includes(q)?'':'none')}
+function trr(){tot()}
+function renderLS(){const n=Math.min(days(),60);S.ls.d=LSd().filter(x=>{for(let i=0;i<n;i++)if(dayStr(i)===x)return true;return false});
+$('lsd').innerHTML=Array.from({length:S.ev.s?n:0},(_,i)=>{const s=dayStr(i);return '<label style="flex-direction:row;align-items:center;gap:3px;border:1px solid var(--ln);border-radius:6px;padding:3px 8px;color:var(--tx)"><input type="checkbox" data-ls="'+s+'" '+(LSd().includes(s)?'checked':'')+'>'+s.slice(8)+'/'+s.slice(5,7)+'</label>'}).join('')}
+function lsChanged(){rs().forEach((_,i)=>cells(i));tot();save()}
+$('lsd').addEventListener('input',e=>{const s=e.target.dataset.ls;if(!s)return;S.ls.d=e.target.checked?[...LSd(),s]:LSd().filter(x=>x!==s);lsChanged()});
+$('lsa').onclick=()=>{S.ls.d=Array.from({length:Math.min(days(),60)},(_,i)=>dayStr(i));renderLS();lsChanged()};
+$('lsn').onclick=()=>{S.ls.d=[];renderLS();lsChanged()};
+['lx','lc'].forEach(p=>[0,1,2].forEach(j=>{const f=()=>p==='lx'?S.ls.x:S.ls.c;$(p+j).value=f()[j];$(p+j).addEventListener('input',()=>{f()[j]=Math.max(0,+$(p+j).value||0);lsChanged()})}));
+['es','ee'].forEach(id=>['input','change'].forEach(ev=>$(id).addEventListener(ev,()=>{S.ev.s=$('es').value;S.ev.e=$('ee').value;renderLS();lsChanged();layout()})));
+function setRange(r,a,b,k){if(S.ev.s){if(a<S.ev.s)a=S.ev.s;if(S.ev.e&&b>S.ev.e)b=S.ev.e}if(b<a){if(k==='de')a=b;else b=a}r.ds=a;r.de=b;r.h=Math.min(60,Math.max(1,Math.round((new Date(b)-new Date(a))/864e5)+1))}
+function refresh(){renderLS();table();layout();trr();save()}
+tb.addEventListener('input',e=>{const t=e.target,i=+t.dataset.i;if(isNaN(i))return;if(t.dataset.nmk!==undefined){const q=rs()[i];q.nm=q.nm||[];q.nm[+t.dataset.nmk]=t.value;save();return}const r=rs()[i],k=t.dataset.k;
+if(k==='n'||k==='c'||k==='g'){r[k]=t.value;save();return}
+if(k==='ds'||k==='de'){if(!t.value)return;setRange(r,k==='ds'?t.value:rS(r),k==='de'?t.value:rE(r),k);const tr=t.closest('tr');tr.querySelector('[data-k=ds]').value=rS(r);tr.querySelector('[data-k=de]').value=rE(r);cells(i);tot();layout();save();return}
+if(k==='a')r.a=t.checked?1:0;else if(k[0]==='m'&&k.length===2)r.m[+k[1]]=t.checked?1:0;
+else r[k]=k==='q'?Math.min(500,Math.max(0,+t.value||0)):k==='h'?Math.min(60,Math.max(1,+t.value||1)):Math.max(0,+t.value||0);
+cells(i);tot();layout();save()});
+tb.addEventListener('click',e=>{const d=e.target.dataset;if(d.del!==undefined){rs().splice(+d.del,1);refresh()}else if(d.ins!==undefined){const i=+d.ins,b=rs()[i];let n='Peran baru',c=1;while(rs().some(x=>x.n===n))n='Peran baru '+(++c);rs().splice(i+1,0,{...mk0(n,1),h:b.h,ds:b.ds,de:b.de,g:b.g,c:b.c});refresh();const el=tb.querySelector('input[data-i="'+(i+1)+'"][data-k="n"]');if(el){el.focus();el.select()}}else if(d.dup!==undefined){{const c=JSON.parse(JSON.stringify(rs()[+d.dup]));delete c.id;c.ni=[];rs().splice(+d.dup+1,0,c)}refresh()}});
+$('q').addEventListener('input',filt);
+$('allh').onclick=()=>{rs().forEach(r=>{r.ds=r.de='';r.h=days()});refresh();msg('Semua peran diset ke tanggal event penuh',1)};
+$('bda').onclick=()=>{const a=$('bds').value,b=$('bde').value,to=$('bdt').value;if(!a&&!b)return msg('Isi tanggal mulai atau sampai dulu');
+const vis=new Set([...tb.rows].filter(tr=>tr.style.display!=='none'&&tr.querySelector('[data-k=ds]')).map(tr=>+tr.querySelector('[data-k=ds]').dataset.i));let n=0;
+rs().forEach((r,i)=>{if(to==='vis'?!vis.has(i):(to!=='all'&&r.g!==to))return;setRange(r,a||rS(r),b||rE(r),a?'ds':'de');n++});refresh();msg(n+' peran diperbarui',1)};
+$('applyr').onclick=()=>{rs().forEach(r=>{r.r=S.set.rate});refresh()};
+const setMap={sr:'rate',kp:'kp',ks:'ks',km:'km'};
+for(const id in setMap){$(id).value=S.set[setMap[id]];$(id).addEventListener('input',()=>{S.set[setMap[id]]=Math.max(0,+$(id).value||0);rs().forEach((_,i)=>cells(i));tot();save()})}
+const evMap={en:'n',ev:'v',es:'s',ee:'e',ep:'p'};
+for(const id in evMap){$(id).value=S.ev[evMap[id]];$(id).addEventListener('input',()=>{S.ev[evMap[id]]=$(id).value;save()})}
+$('ab').onclick=()=>{const n=$('an').value.trim(),q=Math.min(500,+$('aq').value||0),h=Math.min(60,Math.max(1,+$('ah').value||1));if(!n||q<1)return;const ad=$('ads').value,ae=$('ade').value,nr={...mk0(n,q),h};if(ad&&ae)setRange(nr,ad,ae,'de');rs().push(nr);$('an').value=$('aq').value=$('ah').value=$('ads').value=$('ade').value='';refresh()};
+['an','aq','ah','ads','ade'].forEach(id=>$(id).addEventListener('keydown',e=>{if(e.key==='Enter')$('ab').click()}));
+const tabs=$('tabs');Object.keys(S.data).forEach(k=>{const b=document.createElement('button');b.textContent=k==='Custom'?'Event lain (kosong)':k;b.classList.toggle('on',k===S.cur);b.onclick=()=>{S.cur=k;[...tabs.children].forEach(x=>x.classList.toggle('on',x===b));refresh()};tabs.appendChild(b)});
+function subRow(r,i){return '<tr data-nm="'+esc(r.n.toLowerCase())+'"><td colspan="10" style="white-space:normal;background:var(--bg)"><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:6px">'+Array.from({length:r.q},(_,k)=>'<input type="text" placeholder="Nama '+(k+1)+'" value="'+esc((r.nm||[])[k]||'')+'" data-i="'+i+'" data-nmk="'+k+'">').join('')+'</div></td></tr>'}
+S.acc=S.acc||{};
+const ACC=()=>S.acc[S.cur]||(S.acc[S.cur]=[]);
+const nights=x=>x.ci&&x.co?Math.max(0,Math.round((new Date(x.co)-new Date(x.ci))/864e5)):0;
+const accTotal=()=>ACCF().reduce((s,x)=>s+nights(x)*(+x.k||0),0);
+const rid=r=>r.id||(r.id='r'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)),rl=id=>rs().find(q=>q.id===id);
+const plab=(r,k)=>g_(r,'nm',k).trim()||r.n+' #'+(k+1);
+const gsel=(ri,k)=>{const v=g_(rs()[ri],'gd',k);return '<select data-gri="'+ri+'" data-gk="'+k+'" style="min-width:62px"><option value="">-</option><option value="L"'+(v==='L'?' selected':'')+'>L</option><option value="P"'+(v==='P'?' selected':'')+'>P</option></select>'};
+const pline=(r,k)=>{const nm=g_(r,'nm',k).trim();return nm?'<b>'+esc(nm)+'</b> <small style="color:var(--mut)">'+esc(r.n)+'</small>':'<b>'+esc(r.n+' #'+(k+1))+'</b>'};
+const roomOfP=(r,k)=>{const id=rid(r);return ACC().findIndex(x=>(x.pr||[]).some(p=>p.id===id&&p.k===k))};
+function rmFix(x){x.pr=(x.pr||[]).filter(p=>rl(p.id));if(!x.pr.length)return;const L=x.pr.map(p=>plab(rl(p.id),p.k)),h=rl(x.pr[0].id);x.o=L;x.n=L.join(' & ');x.g=h.g;x.p=h.n;x.nt=''}
+function newRoom(r,k){const d=rst(r,0,0),H=r.ah&&hot(r.ah),x={g:r.g,p:r.n,o:[''],n:'',j:'',ci:r.aci||d[0],co:r.aco||d[1],h:r.ah||'',bd:r.ab||'Twin',k:r.ak!=null?r.ak:(H&&H.k)||r.k,nt:'',pr:[{id:rid(r),k}]};rmFix(x);return x}
+function roomOf(r,k){const ppk=Math.max(1,S.set.pk),x=newRoom(r,k*ppk),id=rid(r);x.pr=[];for(let j=k*ppk;j<Math.min(r.q,(k+1)*ppk);j++)x.pr.push({id,k:j});rmFix(x);return x}
+function genAcc(){const a=[];rs().forEach(r=>{r.ni=[]});S.acc[S.cur]=a;rs().filter(r=>r.q>0&&r.a).forEach(r=>{for(let k=0;k<Math.ceil(r.q/Math.max(1,S.set.pk));k++)a.push(roomOf(r,k))});save()}
+function migrate(){const A=ACC(),ppk=Math.max(1,S.set.pk);A.forEach(x=>{if(x.pr)return;x.pr=[];const r=rs().find(q=>q.n===x.p);if(!r)return;const id=rid(r),want=Math.max(1,Math.min(ppk,(x.o||[]).filter(Boolean).length||1));for(let k=0;k<r.q&&x.pr.length<want;k++)if(roomOfP(r,k)<0)x.pr.push({id,k})})}
+function placeP(r,k,t){const A=ACC(),id=rid(r);r.ni=r.ni||[];const cur=roomOfP(r,k);if(typeof t==='number'&&t===cur)return;let tg=t;
+if(cur>=0){const x=A[cur];x.pr=x.pr.filter(p=>!(p.id===id&&p.k===k));if(!x.pr.length){A.splice(cur,1);if(typeof tg==='number'&&tg>cur)tg--}else rmFix(x)}
+if(tg===''||tg==='u'){if(tg==='')r.ni[k]=1;return}
+if(!r.a){r.a=1;for(let j=0;j<r.q;j++)if(j!==k&&roomOfP(r,j)<0)r.ni[j]=1}
+r.ni[k]=0;if(tg==='new')A.push(newRoom(r,k));else{const x=A[tg];if(x){x.pr.push({id,k});rmFix(x)}}}
+function joinP(r,k){const A=ACC(),ppk=Math.max(1,S.set.pk);let ti=-1;for(let i=A.length-1;i>=0;i--)if(A[i].p===r.n&&(A[i].pr||[]).length&&A[i].pr.length<ppk){ti=i;break}placeP(r,k,ti>=0?ti:'new')}
+function autoPlace(){rs().forEach(r=>{if(!(r.q>0&&r.a))return;for(let k=0;k<r.q;k++){if(r.ni&&r.ni[k])continue;if(roomOfP(r,k)>=0)continue;joinP(r,k)}});
+ACC().forEach(x=>{if(!x.pr||!x.pr.length||x.cm)return;const r=rl(x.pr[0].id);if(!r)return;const d=rst(r,0,0);x.ci=r.aci||d[0];x.co=r.aco||d[1]})}
+function roleList(){const A=ACC(),ppk=Math.max(1,S.set.pk),RR=rs().filter(r=>r.q>0);
+const rows=RR.map(r=>{const id=rid(r),ri=rs().indexOf(r);let h='<tr class="gh"><td colspan="6">'+esc(r.n)+' · '+r.q+' orang</td></tr>';
+for(let k=0;k<r.q;k++){const rm=roomOfP(r,k),nm=g_(r,'nm',k).trim(),x=rm>=0?A[rm]:null,head=!!x&&x.pr[0].id===id&&x.pr[0].k===k;
+const opts='<option value="new">Kamar baru (sendiri)</option>'+A.map((y,i)=>{const full=(y.pr||[]).length>=ppk&&i!==rm,lb='Kamar '+(i+1)+' · '+(y.n||'kosong');return '<option value="'+i+'"'+(i===rm?' selected':'')+(full?' disabled':'')+'>'+esc(lb.length>46?lb.slice(0,45)+'…':lb)+(full?' (penuh)':'')+'</option>'}).join('');
+h+='<tr><td class="pn">'+pline(r,k)+'</td><td>'+gsel(ri,k)+'</td><td class="tc"><input type="checkbox" data-pci="'+ri+'" data-pck="'+k+'"'+(rm>=0?' checked':'')+' title="Centang = menginap"></td>';
+if(head){const i=rm,d=rst(r,0,0);h+='<td class="dt"><input type="date" value="'+esc(x.ci||'')+'" data-pr="'+i+'" data-pf="ci"'+(x.ci!==d[0]?' data-fl':'')+'></td><td class="dt"><input type="date" value="'+esc(x.co||'')+'" data-pr="'+i+'" data-pf="co"'+(x.co!==d[1]?' data-fl':'')+'></td><td style="text-align:right;padding:2px 10px"><b id="pn'+i+'">'+nights(x)+'</b></td>'}
+else h+='<td colspan="3" class="fill"></td>';
+h+='</tr>'}return h}).join('');
+return '<b>Daftar personil</b><p class="note" style="margin:2px 0 8px">Satu baris = satu orang. Semua personil default menginap (centang Inap; hilangkan centang kalau tidak menginap). Pembagian kamar mengikuti Orang/kamar di bawah. Tanggal default mengikuti Langkah 1. Tanggal diisi pada baris pertama tiap kamar. Belum ada nama = tampil #1, #2, dst.</p><div class="scroll rlw" style="margin-bottom:16px"><table class="rl"><colgroup><col style="width:240px"><col style="width:84px"><col style="width:56px"><col style="width:150px"><col style="width:150px"><col style="width:64px"></colgroup><thead><tr><th>Personil</th><th>L/P</th><th class="tc">Inap</th><th>Check-in</th><th>Check-out</th><th class="tr">Malam</th></tr></thead><tbody>'+(rows||'<tr><td colspan="6" style="color:var(--mut)">Belum ada peran.</td></tr>')+'</tbody></table></div>'}
+function syncRoom(i){const x=ACC()[i];if(!x)return;const r=rs().find(q=>q.n===x.p),d=r?rst(r,0,0):['',''];
+$('acc').querySelectorAll('[data-ai="'+i+'"],[data-pr="'+i+'"]').forEach(el=>{const f=el.dataset.af||el.dataset.pf;if(!['ci','co','h','bd'].includes(f))return;if(el!==document.activeElement)el.value=x[f]==null?'':x[f];if(f==='ci'||f==='co')el.toggleAttribute('data-fl',!!r&&x[f]!==d[f==='ci'?0:1])});
+const nn=nights(x);['an','pn'].forEach(q=>{const e=$(q+i);if(e)e.textContent=nn});const at=$('at'+i);if(at)at.textContent=fmt(nn*(+x.k||0))}
+const BEDS=['Twin','King Bed','Single'],CAP={'Twin':2,'King Bed':2,'Single':1},RCB={};
+const RC=()=>{S.rc=S.rc||{};return S.rc[S.cur]=S.rc[S.cur]||[]};
+const pkey=(id,k)=>id+'|'+k;
+function accFinal(){rcClean();const A=ACC(),R=RC().filter(c=>(c.m||[]).length);if(!R.length)return A;
+const inR=new Set();R.forEach(c=>c.m.forEach(p=>inR.add(pkey(p.id,p.k))));const out=[];
+A.forEach(x=>{if(!x.pr||!x.pr.length){out.push(x);return}const keep=x.pr.filter(p=>!inR.has(pkey(p.id,p.k)));if(keep.length===x.pr.length){out.push(x);return}if(!keep.length)return;const y={...x,pr:keep};rmFix(y);out.push(y)});
+R.forEach(c=>{const mem=c.m.map(p=>({r:rl(p.id),k:p.k})).filter(q=>q.r);if(!mem.length)return;
+const ds=mem.map(q=>{const i=roomOfP(q.r,q.k),x=i>=0?A[i]:null,d=rst(q.r,0,0);return[(x&&x.ci)||d[0],(x&&x.co)||d[1]]});
+const ci=ds.map(d=>d[0]).filter(Boolean).sort()[0]||'',co=ds.map(d=>d[1]).filter(Boolean).sort().slice(-1)[0]||'',H=S.hotels.find(h=>h.n===c.h&&(h.bd||'')===(c.bd||'')),L=mem.map(q=>plab(q.r,q.k));
+out.push({g:mem[0].r.g,p:mem[0].r.n,o:L,n:L.join(' & '),j:'',ci,co,h:c.h||'',bd:c.bd||'Twin',k:H?(+H.k||0):(+c.k||0),nt:'',pr:mem.map(q=>({id:rid(q.r),k:q.k})),rcv:1})});
+return out}
+const ACCF=accFinal;
+function rcClean(){RC().forEach(c=>{c.m=(c.m||[]).filter(p=>{const r=rl(p.id);return r&&p.k<r.q&&roomOfP(r,p.k)>=0})})}
+const FIG='<circle cx="9" cy="5" r="4"/><rect x="4" y="10" width="10" height="13" rx="4"/><rect class="a" x="4.5" y="22" width="4" height="12" rx="2"/><rect class="b" x="9.5" y="22" width="4" height="12" rx="2"/>';
+const HP=['#0f766e','#b45309','#7c3aed','#be123c','#0369a1','#4d7c0f','#a21caf','#c2410c'];
+const hotelCol=n=>{const L=[];S.hotels.forEach(h=>{if(h.n&&!L.includes(h.n))L.push(h.n)});RC().forEach(c=>{if(c.h&&!L.includes(c.h))L.push(c.h)});const i=L.indexOf(n);return i<0?'var(--ln)':HP[i%HP.length]};
+const roleCol=r=>{const i=rs().indexOf(r);return P[(i<0?0:i)%P.length]};
+function stick(r,k){const nm=g_(r,'nm',k).trim(),gd=g_(r,'gd',k),col=roleCol(r);
+return '<div class="pf" draggable="true" data-rcp="'+pkey(rid(r),k)+'" title="Tarik ke kamar" style="width:92px;text-align:center;cursor:grab;user-select:none;padding:4px 2px;line-height:1.25">'
++'<div class="gt" style="color:'+col+'">'+(r.g?'<b>'+esc(r.g==='Maximum Team'?'Maximum':r.g)+'</b>':'')+(r.g!=='Maximum Team'&&r.c?'<small>'+esc(r.c)+'</small>':'')+'</div>'
++'<svg viewBox="0 0 18 34" width="27" height="51" fill="currentColor" style="color:'+col+';pointer-events:none">'+FIG+'</svg>'
++'<div style="font-size:11px;font-weight:700;color:'+col+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(r.n)+'</div>'
++'<div style="font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(nm||'#'+(k+1))+'</div>'
++'<div style="font-size:11px;font-weight:600;color:var(--mut)">'+(gd||'-')+'</div></div>'}
+function pfRun(root){(root||document).querySelectorAll('.pf').forEach(f=>{f.classList.add('run');clearTimeout(f._t);f._t=setTimeout(()=>f.classList.remove('run'),1500)})}
+function rcPool(){const used=new Set();RC().forEach(c=>c.m.forEach(p=>used.add(pkey(p.id,p.k))));
+const L=PL().filter(({r,k})=>roomOfP(r,k)>=0&&!used.has(pkey(rid(r),k)));
+return L.length?L.map(({r,k})=>stick(r,k)).join(''):'<span class="note" style="margin:0">Semua personil sudah mendapat kamar.</span>'}
+function rcCards(){rcClean();return RC().map((c,i)=>{const cap=CAP[c.bd]||2;let sl='';for(let j=0;j<cap;j++){const p=c.m[j],r=p&&rl(p.id);sl+=r?stick(r,p.k):'<div class="rcslot" style="padding-top:30px"><svg viewBox="0 0 18 34" width="27" height="51" fill="currentColor">'+FIG+'</svg>kosong</div>'}
+return '<div style="text-align:center"><div class="rcroom" data-rcroom="'+i+'" style="--hc:'+hotelCol(c.h)+'"><span class="rtag">'+c.m.length+'/'+cap+' orang</span>'+sl+'<button class="x" data-rcdel="'+i+'" title="Hapus kamar" style="position:absolute;top:4px;right:4px;z-index:3">×</button></div><div style="margin-top:6px;font-size:13px;font-weight:600;line-height:1.3"><i class="dot" style="background:'+hotelCol(c.h)+'"></i>'+esc(c.h)+(c.bd?' <span style="color:var(--mut);font-weight:400">('+esc(c.bd)+')</span>':'')+'</div></div>'}).join('')||'<span class="note" style="margin:0;grid-column:1/-1">Belum ada kamar. Klik "+ Kamar" pada hotel di atas.</span>'}
+function rcRefresh(){const a=$('rc_cards'),b=$('rc_pool'),h=$('rc_hot'),c=$('rc_cnt'),n=$('rc_rn');if(a)a.innerHTML=rcCards();if(b)b.innerHTML=rcPool();if(h)h.innerHTML=rcHotels();if(c)c.textContent=rcLeftN();if(n)n.textContent=RC().length;pfRun($('acc'));tot()}
+const rcLeftN=()=>{const used=new Set();RC().forEach(c=>c.m.forEach(p=>used.add(pkey(p.id,p.k))));return PL().filter(({r,k})=>roomOfP(r,k)>=0&&!used.has(pkey(rid(r),k))).length};
+function rcHotels(){if(!S.hotels.length)return '<p class="note">Tambahkan hotel dulu di bagian atas.</p>';
+return '<div class="hlw"><table class="hl"><thead><tr><th>Hotel</th><th class="bed">Jenis bed</th><th class="tr">Harga / malam</th><th class="tc cap">Kapasitas</th><th class="tc cap">Kamar dibuat</th><th class="tc">Tambah</th></tr></thead><tbody>'
++S.hotels.map((h,i)=>{const n=RC().filter(c=>c.h===h.n&&(c.bd||'')===(h.bd||'')).length;
+return '<tr><td><i class="dot" style="background:'+hotelCol(h.n)+'"></i><b>'+esc(h.n)+'</b><small class="hb">'+esc(h.bd||'-')+'</small></td><td class="bed">'+esc(h.bd||'-')+'</td><td class="tr">'+fmt(h.k)+'</td><td class="tc cap">'+(CAP[h.bd]||2)+' orang</td><td class="tc cap">'+n+'</td><td class="tc"><button class="ghost" data-rcadd="'+i+'" title="Tambah kamar">+<span class="bt"> Kamar</span></button></td></tr>'}).join('')+'</tbody></table></div>'}
+function roomBuilder(){rcClean();return '<div class="rcsec"><b>Pilihan kamar per hotel</b><p class="note" style="margin:2px 0 0">Klik + Kamar pada hotel (jenis bed) yang diinginkan. Kapasitas: Twin 2, King Bed 2, Single 1.</p><div id="rc_hot">'+rcHotels()+'</div>'
++'<div class="rch"><b>Personil belum dapat kamar</b><span class="cnt" id="rc_cnt">'+rcLeftN()+'</span><span class="hint">Tahan &amp; tarik ke kamar. Layar scroll otomatis saat kursor dekat tepi atas/bawah.</span></div><div id="rc_pool" class="rcpool" data-rcpool="1">'+rcPool()+'</div>'
++'<div class="rch" style="margin-top:6px"><b>Kamar hotel</b><span class="cnt" id="rc_rn">'+RC().length+'</span></div><div id="rc_cards" class="rcgrid">'+rcCards()+'</div></div>'}
+function accUI(){migrate();autoPlace();const A=ACC(),ppk=Math.max(1,S.set.pk),ops={};$('acc').querySelectorAll('details[data-dk]').forEach(d=>ops[d.dataset.dk]=d.open);
+const dt=(k,t,def,body)=>'<details data-dk="'+k+'"'+((ops[k]!==undefined?ops[k]:def)?' open':'')+'><summary>'+t+'</summary>'+body+'</details>';
+const occ=x=>{const o=x.o||[x.n||''];return Array.from({length:Math.max(ppk,o.length,1)},(_,k)=>o[k]||'')};
+const inp=(i,f,v,t)=>'<input type="'+(t||'text')+'" value="'+esc(v==null?'':v)+'" data-ai="'+i+'" data-af="'+f+'">';
+const rows=GR.map(g=>{const ix=A.map((x,i)=>i).filter(i=>A[i].g===g);if(!ix.length)return '';
+return '<tr class="gh"><td colspan="10">'+g+'</td></tr>'+ix.map((i,n)=>{const x=A[i],PR=(x.pr||[]).map(p=>{const r0=rl(p.id);return r0?{r:r0,ri:rs().indexOf(r0),k:p.k}:null}).filter(Boolean),r=rs().find(q=>q.n===x.p),d=r?rst(r,0,0):['',''],ch=r&&(x.ci!==d[0]||x.co!==d[1])?' data-fl':'';
+return '<tr><td class="c">'+(n+1)+'</td>'
++(PR.length?'<td style="white-space:nowrap;min-width:210px">'+PR.map(p=>'<div style="padding:5px 0;min-height:30px;display:flex;align-items:center">'+pline(p.r,p.k)+'</div>').join('')+'</td><td>'+PR.map(p=>'<div style="padding:2px 0;min-height:30px;display:flex;align-items:center">'+gsel(p.ri,p.k)+'</div>').join('')+'</td>':'<td class="occ2">'+occ(x).map((v,k)=>'<input type="text" placeholder="Penghuni '+(k+1)+'" value="'+esc(v)+'" data-ai="'+i+'" data-ao="'+k+'">').join('')+'</td><td class="sub">–</td>')
++'<td class="dt"><input type="date" value="'+esc(x.ci||'')+'" data-ai="'+i+'" data-af="ci"'+ch+'></td>'
++'<td class="dt"><input type="date" value="'+esc(x.co||'')+'" data-ai="'+i+'" data-af="co"'+ch+'></td>'
++'<td><select data-ai="'+i+'" data-af="h">'+hopts(x.h)+'</select></td>'
++'<td><select data-ai="'+i+'" data-af="bd">'+['','Twin','King Bed','Single'].map(o=>'<option'+(o===x.bd?' selected':'')+'>'+o+'</option>').join('')+'</select></td>'
++'<td style="text-align:right;white-space:nowrap;padding:4px 10px"><b id="an'+i+'">'+nights(x)+'</b></td>'
++'<td style="min-width:110px">'+inp(i,'nt',x.nt)+'</td>'
++'<td><button class="x" data-ardt="'+i+'" title="Kembalikan tanggal ke jadwal peran">↺</button><button class="x" data-adel="'+i+'" title="Hapus kamar">×</button></td></tr>'}).join('')}).join('');
+$('acc').innerHTML='<div style="margin-bottom:18px">'+hotelBox()+'</div>'+dt('role','Personil &amp; pembagian kamar',1,roleList())+roomBuilder();pfRun($('acc'))
 }
-function rowCells(i){const c=cost(data[cur][i]);
-$('t'+i).textContent=fmt(c.t);$('a'+i).textContent=fmt(c.a);$('k'+i).textContent=fmt(c.k);$('s'+i).innerHTML='<b>'+fmt(c.s)+'</b>'}
-function tot(){const rs=data[cur];let p=0,t=0,a=0,k=0;
-rs.forEach(r=>{const c=cost(r);p+=r.q;t+=c.t;a+=c.a;k+=c.k});
-$('tp').textContent=p;$('tt').textContent=fmt(t);$('ta').textContent=fmt(a);$('tk').textContent=fmt(k);$('tc').textContent=fmt(t+a+k)}
-function table(){
-tb.innerHTML=data[cur].map((r,i)=>'<tr><td><i class="dot" style="background:'+P[i%P.length]+'"></i>'+esc(r.n)+'</td><td class="sm"><input type="number" min="0" max="500" value="'+r.q+'" data-i="'+i+'" data-k="q"></td><td class="sm"><input type="number" min="1" max="60" value="'+r.h+'" data-i="'+i+'" data-k="h"></td><td><input type="number" min="0" step="10000" value="'+r.r+'" data-i="'+i+'" data-k="r"></td><td id="t'+i+'"></td><td id="a'+i+'"></td><td id="k'+i+'"></td><td id="s'+i+'"></td><td><button class="x" data-del="'+i+'" aria-label="Hapus">×</button></td></tr>').join('')||'<tr><td colspan="9" style="color:var(--mut);white-space:normal">Belum ada peran. Tambahkan di bawah.</td></tr>';
-data[cur].forEach((_,i)=>rowCells(i));tot()}
-function refresh(){table();layout()}
-tb.addEventListener('input',e=>{const t=e.target,i=+t.dataset.i;if(isNaN(i))return;
-const r=data[cur][i],k=t.dataset.k;
-r[k]=k==='q'?Math.min(500,Math.max(0,+t.value||0)):k==='h'?Math.min(60,Math.max(1,+t.value||1)):Math.max(0,+t.value||0);
-rowCells(i);tot();layout()});
-tb.addEventListener('click',e=>{const d=e.target.dataset.del;if(d===undefined)return;data[cur].splice(+d,1);refresh()});
-$('acc').addEventListener('input',e=>{acc=Math.max(0,+e.target.value||0);data[cur].forEach((_,i)=>rowCells(i));tot();layout()});
-$('kon').addEventListener('input',e=>{kon=Math.max(0,+e.target.value||0);data[cur].forEach((_,i)=>rowCells(i));tot();layout()});
-$('ab').addEventListener('click',()=>{const n=$('an').value.trim(),q=Math.min(500,+$('aq').value||0),h=Math.min(60,Math.max(1,+$('ah').value||1)),r=+$('ar').value||0;
-if(!n||q<1)return;data[cur].push({n,q,h,r});$('an').value=$('aq').value=$('ah').value=$('ar').value='';refresh()});
-const tabs=$('tabs');
-Object.keys(data).forEach(k=>{const b=document.createElement('button');b.textContent=k==='Custom'?'Event lain (kosong)':k;b.dataset.k=k;
-b.onclick=()=>{cur=k;[...tabs.children].forEach(x=>x.classList.toggle('on',x===b));refresh()};tabs.appendChild(b)});
-tabs.children[0].classList.add('on');
+$('acc').addEventListener('click',e=>{const t=e.target.closest('[data-rcadd],[data-rcdel]');if(!t)return;
+if(t.dataset.rcadd!==undefined){const i=+t.dataset.rcadd,h=S.hotels[i];if(!h)return;RC().push({h:h.n,bd:h.bd||'',k:h.k,m:[]})}
+else RC().splice(+t.dataset.rcdel,1);
+rcRefresh();save()});
+let DRG=null;
+$('acc').addEventListener('dragstart',e=>{const t=e.target.closest&&e.target.closest('[data-rcp]');if(!t)return;DRG=t.dataset.rcp;try{e.dataTransfer.setData('text/plain',DRG);e.dataTransfer.effectAllowed='move'}catch(_){}t.style.opacity='.45';t.classList.add('run')});
+$('acc').addEventListener('mouseover',e=>{const t=e.target.closest&&e.target.closest('.pf');if(t&&!t.classList.contains('run')){t.classList.add('run');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('run'),1500)}});
+$('acc').addEventListener('dragend',e=>{DRG=null;$('acc').querySelectorAll('[data-rcp]').forEach(x=>x.style.opacity='');$('acc').querySelectorAll('.rc-over').forEach(x=>x.classList.remove('rc-over'))});
+$('acc').addEventListener('dragover',e=>{const t=e.target.closest&&e.target.closest('[data-rcroom],[data-rcpool]');if(!t||!DRG)return;e.preventDefault();$('acc').querySelectorAll('.rc-over').forEach(x=>{if(x!==t)x.classList.remove('rc-over')});t.classList.add('rc-over')});
+$('acc').addEventListener('drop',e=>{const t=e.target.closest&&e.target.closest('[data-rcroom],[data-rcpool]');if(!t||!DRG)return;e.preventDefault();
+const [id,ks]=DRG.split('|'),k=+ks;let ok=1;
+if(t.dataset.rcroom!==undefined){const c=RC()[+t.dataset.rcroom],cap=CAP[c.bd]||2,here=c.m.some(p=>p.id===id&&p.k===k);if(!here){if(c.m.length>=cap){ok=0;msg('Kamar penuh ('+cap+' orang)')}else{RC().forEach(q=>q.m=q.m.filter(p=>!(p.id===id&&p.k===k)));c.m.push({id,k})}}}
+else RC().forEach(q=>q.m=q.m.filter(p=>!(p.id===id&&p.k===k)));
+DRG=null;rcRefresh();if(ok)save()});
+(()=>{let my=null,raf=0;
+function tick(){raf=0;if(!DRG||my==null)return;const H=innerHeight,top=53+60,bot=H-100;let v=0;
+if(my>bot)v=Math.max(3,Math.ceil(Math.min(1,(my-bot)/100)*28));else if(my<top)v=-Math.max(3,Math.ceil(Math.min(1,(top-my)/90)*28));
+if(v){scrollBy(0,v);raf=requestAnimationFrame(tick)}}
+document.addEventListener('dragover',e=>{if(!DRG)return;my=e.clientY;if(!raf)raf=requestAnimationFrame(tick)});
+['dragend','drop'].forEach(n=>document.addEventListener(n,()=>{my=null;cancelAnimationFrame(raf);raf=0}))})();
+$('acc').addEventListener('input',e=>{if(e.target.id==='a_pk'){S.set.pk=Math.max(1,+e.target.value||1);save();return}
+{const t=e.target,pr=t.dataset.pr;if(pr!==undefined){const x=ACC()[+pr],f=t.dataset.pf;x[f]=t.value;if(f==='ci'||f==='co')x.cm=1;if(f==='h'){const H=hot(t.value);if(H&&H.k)x.k=H.k}syncRoom(+pr);tot();save();return}}
+{const t=e.target,rr=t.dataset.rr;if(rr!==undefined){const r=rs()[+rr],f=t.dataset.rf,v=t.value,d=rst(r,0,0),tr=t.closest('tr');
+if(f==='ak'){r.ak=Math.max(0,+v||0)}else{r[f]=v;if(!v)delete r[f]}
+if(f==='ah'){delete r.ak;const H=hot(v),pe=tr.querySelector('[data-rf=ak]');if(pe)pe.value=(H&&H.k)||r.k}
+if(f==='aci'||f==='aco')t.toggleAttribute('data-fl',!!v&&v!==d[f==='aci'?0:1]);
+$('rn'+rr).textContent=nights({ci:r.aci||d[0],co:r.aco||d[1]});
+ACC().forEach((x,i)=>{if(x.p!==r.n)return;if(f==='aci')x.ci=v||d[0];else if(f==='aco')x.co=v||d[1];else if(f==='ah'){x.h=v;const H=hot(v);x.k=(H&&H.k)||r.k}else if(f==='ak')x.k=r.ak;else if(f==='ab')x.bd=v||'Twin';syncRoom(i)});tot();save();return}}const t=e.target,i=t.dataset.ai;if(i===undefined)return;const x=ACC()[+i];if(t.dataset.ao!==undefined){x.o=x.o||[x.n||''];x.o[+t.dataset.ao]=t.value;x.n=x.o.filter(Boolean).join(' & ');save();return}const f=t.dataset.af;x[f]=f==='k'?Math.max(0,+t.value||0):t.value;if(f==='ci'||f==='co')x.cm=1;
+if(f==='ci'||f==='co'){const r=rs().find(q=>q.n===x.p);if(r){const d=rst(r,0,0);t.toggleAttribute('data-fl',x[f]!==d[f==='ci'?0:1])}}
+if(f==='h'){const H=hot(x.h);if(H&&H.k)x.k=H.k}syncRoom(+i);tot();save()});
+$('acc').addEventListener('click',e=>{const t=e.target;
+if(t.dataset.rrst!==undefined){const r=rs()[+t.dataset.rrst],d=rst(r,0,0);delete r.aci;delete r.aco;ACC().forEach(x=>{if(x.p===r.n){x.ci=d[0];x.co=d[1];delete x.cm}});reAcc();tot();save();return}
+if(t.dataset.ardt!==undefined){const x=ACC()[+t.dataset.ardt],r=rs().find(q=>q.n===x.p);if(r){const d=rst(r,0,0);x.ci=d[0];x.co=d[1];delete x.cm;accUI();tot();save()}}
+else if(t.id==='h_add'){const n=$('h_n').value.trim();if(!n)return;S.hotels.push({n,bd:$('h_b').value,k:+$('h_k').value||0});accUI();save()}
+else if(t.dataset.hdel!==undefined){S.hotels.splice(+t.dataset.hdel,1);accUI();save()}
+else if(t.dataset.adel!==undefined){ACC().splice(+t.dataset.adel,1);accUI();tot();save()}
+else if(t.dataset.addroom!==undefined){const ri=+t.dataset.addroom,r=rs()[ri];ACC().push(roomOf(r,ACC().filter(x=>x.p===r.n).length));r.a=1;reAcc();tot();save();flash('croom'+ri,'+1');msg('Kamar '+r.n+': '+ACC().filter(x=>x.p===r.n).length,1)}
+else if(t.dataset.delroom!==undefined){const ri=+t.dataset.delroom,r=rs()[ri],A=ACC();let i=-1;A.forEach((x,j)=>{if(x.p===r.n)i=j});if(i<0)return msg('Belum ada kamar untuk '+r.n);A.splice(i,1);r.a=A.some(x=>x.p===r.n)?1:0;reAcc();tot();save();flash('croom'+ri,'−1');msg('Kamar '+r.n+': '+A.filter(x=>x.p===r.n).length,1)}
+else if(t.id==='a_add'){ACC().push({g:$('a_g')?$('a_g').value:'Crew',n:'',o:[''],pr:[],j:'',ci:S.ev.s,co:S.ev.e,h:'',bd:'Twin',k:S.set.rm,nt:''});accUI();tot();save()}
+else if(t.id==='a_gen'){genAcc();accUI();tot()}
+else if(t.id==='b_ap'){const v=id=>$(id).value;ACC().forEach(x=>{if(v('b_ci')){x.ci=v('b_ci');x.cm=1}if(v('b_co')){x.co=v('b_co');x.cm=1}if(v('b_h')){x.h=v('b_h');const H=hot(x.h);if(H&&H.k)x.k=H.k}if(v('b_bd'))x.bd=v('b_bd')});accUI();tot();save()}});
+function prev1(){const R=rs().filter(r=>r.q>0),N=Math.min(days(),60);
+const gp=GR.map(g=>{const rr=R.filter(r=>r.g===g);if(!rr.length)return '';const c=rr.reduce((o,r)=>{const x=cost(r);o.q+=r.q;o.t+=x.t;o.k+=x.k;return o},{q:0,t:0,k:0});return '<tr><td>'+g+'</td><td>'+rr.length+'</td><td>'+c.q+'</td><td>'+fmt(c.t)+'</td><td>'+fmt(c.k)+'</td></tr>'}).join('');
+let filled=0,all=0;R.forEach(r=>{all+=r.q;filled+=(r.nm||[]).slice(0,r.q).filter(Boolean).length});
+const nmr=R.map(r=>{const f=(r.nm||[]).slice(0,r.q).filter(Boolean);return '<tr><td>'+esc(r.g)+'</td><td>'+esc(r.n)+'</td><td>'+r.q+'</td><td>'+r.h+'</td><td style="white-space:normal">'+(f.length?esc(f.join(', ')):'<small style="color:var(--mut)">belum diisi</small>')+(f.length&&f.length<r.q?' <small style="color:var(--mut)">(+'+(r.q-f.length)+' belum diisi)</small>':'')+'</td></tr>'}).join('');
+let dr='';if(S.ev.s)for(let i=0;i<N;i++){const s=dayStr(i),L=LSd().includes(s),c=[0,1,2].map(j=>R.reduce((n,r)=>{let c=0;for(let k=0;k<r.q;k++)if(mealOn(r,k,i,j))c++;return n+c},0)),bi=R.reduce((a,r)=>{for(let k=0;k<r.q;k++)for(let j=0;j<3;j++)if(mealOn(r,k,i,j))a+=price(i,j,r);return a},0);dr+='<tr><td>'+s.slice(8)+'/'+s.slice(5,7)+(L?' <small>(lumpsum)</small>':'')+'</td><td>'+c[0]+'</td><td>'+c[1]+'</td><td>'+c[2]+'</td><td>'+fmt(bi)+'</td></tr>'}
+$('p2').innerHTML='<b>Preview awal: manpower &amp; konsumsi</b><p class="note" style="margin:2px 0 8px">Nama terisi: '+filled+' dari '+all+' orang (sisanya bisa diisi di Excel).</p><div class="scroll"><table><thead><tr><th>Kelompok</th><th>Peran</th><th>Orang</th><th>Tarif crew</th><th>Konsumsi</th></tr></thead><tbody>'+gp+'</tbody></table><table><thead><tr><th>Tanggal</th><th>Pagi</th><th>Siang</th><th>Malam</th><th>Biaya konsumsi</th></tr></thead><tbody>'+dr+'</tbody></table><table><thead><tr><th>Kelompok</th><th>Peran</th><th>Orang</th><th>Hari</th><th>Nama</th></tr></thead><tbody>'+nmr+'</tbody></table></div>'}
+function prev2(){tot();const A=ACCF(),miss=A.filter(x=>!x.h).length;
+const rooms=A.map(x=>'<tr><td>'+esc(x.n)+'</td><td>'+esc(x.j)+'</td><td>'+esc(x.ci)+'</td><td>'+esc(x.co)+'</td><td>'+esc(x.h)+'</td><td>'+esc(x.bd)+'</td><td>'+nights(x)+'</td><td>'+fmt(nights(x)*(+x.k||0))+'</td></tr>').join('');
+$('p4').innerHTML=chkHtml()+'<b>Preview akhir &amp; unduh</b>'+(miss?'<p class="note" style="margin:2px 0 8px">Hotel masih kosong di '+miss+' kamar. Boleh diisi manual di Excel.</p>':'')
++'<div class="scroll"><table><thead><tr><th>Nama / peran</th><th>Tipe kamar</th><th>Check-in</th><th>Check-out</th><th>Hotel</th><th>Bed</th><th>Malam</th><th>Total</th></tr></thead><tbody>'+(rooms||'<tr><td colspan="8" style="color:var(--mut)">Tidak ada akomodasi.</td></tr>')+'</tbody></table>'
++'<table><tbody>'+[['Tarif crew','tt'],['Konsumsi','tk'],['Akomodasi','ta'],['Total biaya','tc']].map(([n,id])=>'<tr><td>'+n+'</td><td><b>'+$(id).textContent+'</b></td></tr>').join('')+'</tbody></table></div>'}
+let step=1;const STEPS=['Kebutuhan crew','Nama & kontak','Jadwal makan','Hotel','Cek & unduh'],NXT=['Lanjut: Nama & kontak →','Lanjut: Jadwal makan →','Lanjut: Hotel →','Lanjut: Cek & unduh →','⬇ Unduh Excel'],PG=['p1','p2','pm','p3','p4'],
+GUIDE=[['Kebutuhan crew','Pilih jenis event, atur harga & lumpsum, lalu isi jumlah orang dan tanggal mulai–sampai tiap peran dan centang makan (P/S/M). Pakai bar "Set tanggal cepat" untuk mengisi banyak peran sekaligus. Klik ＋ di ujung baris untuk menyisipkan peran baru tepat di bawahnya. Nama orangnya diisi di langkah berikutnya.'],
+['Nama & kontak','Isi nama, No HP, nama lengkap, dan rekening tiap orang. Tanggal kerja, jadwal makan, dan lama sewa kamar mengikuti tanggal tiap peran di Langkah 1. Paling cepat: tempel dari Excel/WhatsApp di kotak atas. Kotak kuning = belum diisi (boleh dilewati, bisa menyusul).'],
+['Jadwal makan','Biasanya tidak perlu diubah: sudah mengikuti Langkah 1 dan tanggal kerja tiap orang (Langkah 2). Ubah hanya untuk orang yang datang telat atau pulang lebih awal. Kotak beroutline oranye = beda dari standar.'],
+['Hotel','1) Isi daftar hotel (nama, jenis bed, harga/malam). 2) Di Daftar personil, centang siapa yang menginap dan atur tanggal check-in/out. 3) Di Pilihan kamar per hotel, klik + Kamar pada hotel yang diinginkan, lalu tahan dan tarik personil ke kamar tersebut (layar scroll otomatis ke bawah/atas saat kursor di tepi layar). Hotel, bed, harga, dan penghuni di kartu kamar inilah yang masuk ke sheet Akomodasi Excel.'],
+['Cek & unduh','Periksa peringatan di bawah. Yang kuning tidak wajib, tapi sebaiknya dilengkapi. Setelah yakin, klik Unduh Excel.']];
+function go(n){step=n;if(n===4&&!ACC().length)genAcc();PG.forEach((id,i)=>$(id).hidden=i+1!==n);stage.hidden=n!==1;$('tabs').hidden=n!==1;
+if(n===2)names();if(n===3)matrix();if(n===4)accUI();if(n===5)prev2();msg('');$('guide').innerHTML='<b>Langkah '+n+' dari 5 · '+GUIDE[n-1][0]+'</b><br><span style="color:var(--mut)">'+GUIDE[n-1][1]+'</span>';
+$('steps').innerHTML=STEPS.map((t,i)=>'<span class="st'+(i+1===n?' on':i+1<n?' done':'')+'" data-go="'+(i+1)+'">'+(i+1)+'. '+t+'</span>').join('');
+$('bk').style.visibility=n>1?'visible':'hidden';$('nx').textContent=NXT[n-1];window.scrollTo({top:0,behavior:'smooth'});if(n===1)layout()}
+$('steps').addEventListener('click',e=>{const g=+e.target.dataset.go;if(g)go(g)});
+$('bk').onclick=()=>go(step-1);
+$('pdfb').onclick=()=>pdfx().catch(e=>msg('Gagal membuat PDF: '+e.message));
+$('nx').onclick=()=>step===5?xl().catch(e=>msg('Gagal membuat Excel: '+e.message)):go(step+1);
 let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,200)});
-refresh();
+const MON=['JANUARI','FEBRUARI','MARET','APRIL','MEI','JUNI','JULI','AGUSTUS','SEPTEMBER','OKTOBER','NOVEMBER','DESEMBER'];
+const U=s=>new Date(s+'T00:00:00Z'),addD=(d,n)=>new Date(+d+n*864e5);
+function rangeTxt(a,b){const A=U(a),B=U(b),y=B.getUTCFullYear();return A.getUTCMonth()===B.getUTCMonth()?A.getUTCDate()+' - '+B.getUTCDate()+' '+MON[B.getUTCMonth()]+' '+y:A.getUTCDate()+' '+MON[A.getUTCMonth()].slice(0,3)+' - '+B.getUTCDate()+' '+MON[B.getUTCMonth()].slice(0,3)+' '+y}
+const msg=(t,ok)=>{$('msg').textContent=t;$('msg').style.color=ok?'var(--ok)':'var(--red)'};
+async function xl(){
+const E=S.ev;if(!E.s||!E.e||E.e<E.s)return msg('Isi tanggal mulai dan selesai event dulu.');
+if(!rs().some(r=>r.q>0))return msg('Belum ada peran.');if(!ACC().length)genAcc();
+msg('Menyiapkan…',1);
+const wb=new ExcelJS.Workbook();wb.calcProperties={fullCalcOnLoad:true};
+const F=(o={})=>({name:'Calibri',size:12,...o}),fl=c=>({type:'pattern',pattern:'solid',fgColor:{argb:'FF'+c}}),BD={top:{style:'thin'},left:{style:'thin'},bottom:{style:'thin'},right:{style:'thin'}};
+const NUM='_-* #,##0_-;\\-* #,##0_-;_-* "-"_-;_-@',CTR={horizontal:'center',vertical:'middle'};
+const set=(ws,r,c,v,o={})=>{const x=ws.getCell(r,c);if(v!==undefined)x.value=v;x.font=F(o.f);if(o.fill)x.fill=fl(o.fill);if(o.fmt)x.numFmt=o.fmt;if(o.al)x.alignment=o.al;if(o.b)x.border=BD;return x};
+const head=(ws,t)=>{[[t,18],[E.n,12],[rangeTxt(E.s,E.e),12],[E.v,12]].forEach(([v,s],i)=>set(ws,i+1,1,v,{f:{bold:true,size:s}}))};
+const col=n=>wbCol(n);const wbCol=n=>{let s='';while(n>0){const m=(n-1)%26;s=String.fromCharCode(65+m)+s;n=Math.floor((n-1)/26)}return s};
+const D0=U(E.s),N=days(),dl=Array.from({length:N},(_,i)=>addD(D0,i)),LAST=7+N*3;
+const R=rs().filter(r=>r.q>0),ppk=Math.max(1,S.set.pk);
+const ws=wb.addWorksheet('Konsumsi');head(ws,'TABEL KONSUMSI');
+['No.','Company','Posisi','Nama','No HP','Nama Lengkap','No Rekening'].forEach((t,i)=>{ws.mergeCells(6,i+1,7,i+1);set(ws,6,i+1,t,{f:{bold:true,color:{argb:'FFFFFFFF'}},fill:'44546A',al:CTR,b:1})});
+dl.forEach((d,i)=>{const c0=8+i*3;ws.mergeCells(6,c0,6,c0+2);set(ws,6,c0,d,{f:{bold:true,color:{argb:'FFFFFFFF'}},fill:'44546A',fmt:'d-mmm',al:CTR,b:1});['Pagi','Siang','Malam'].forEach((t,j)=>set(ws,7,c0+j,t,{f:{bold:true,color:{argb:'FFFFFFFF'}},fill:'44546A',al:CTR,b:1}))});
+let row=8,first=null,last=0;const GRng={};
+const Z='0;-0;"-"',RF='F2F2F2';
+GR.forEach(g=>{const rr=R.filter(r=>r.g===g);if(!rr.length)return;
+for(let c=1;c<=7;c++)set(ws,row,c,c===1?g.toUpperCase():undefined,{f:{bold:true},fill:'FCE5CD'});row++;let no=0;GRng[g]=[row,row];
+rr.forEach(r=>{const hr=row;if(first===null)first=row;
+set(ws,hr,1,undefined,{b:1,fill:RF});set(ws,hr,2,r.c||(g==='Crew'?'Crew':g==='Maximum Team'?'Maximum':''),{f:{bold:true},b:1,fill:RF});set(ws,hr,3,r.n,{f:{bold:true},b:1,fill:RF});
+for(let c=4;c<=7;c++)set(ws,hr,c,undefined,{b:1,fill:RF});row++;
+for(let k=0;k<r.q;k++){no++;GRng[g][1]=row;last=row;
+set(ws,row,1,no,{b:1,al:CTR});set(ws,row,2,undefined,{b:1});set(ws,row,3,undefined,{b:1});
+set(ws,row,4,g_(r,'nm',k)||undefined,{b:1});set(ws,row,5,g_(r,'hp',k)||undefined,{b:1});set(ws,row,6,g_(r,'fn',k)||undefined,{b:1});set(ws,row,7,g_(r,'rk',k)||undefined,{b:1,fmt:'@'});
+for(let i=0;i<N;i++)for(let j=0;j<3;j++)set(ws,row,8+i*3+j,mealOn(r,k,i,j)?1:0,{b:1,al:CTR,fmt:Z});row++}
+for(let c=8;c<=LAST;c++)set(ws,hr,c,{formula:'SUBTOTAL(9,'+col(c)+(hr+1)+':'+col(c)+(row-1)+')'},{f:{bold:true},b:1,fill:RF,al:CTR,fmt:Z})});
+GRng[g][1]=Math.max(GRng[g][1],row-1)});
+const gt=row;set(ws,gt,1,'GRAND TOTAL',{f:{bold:true},fill:'92D050'});for(let c=2;c<=7;c++)set(ws,gt,c,undefined,{fill:'92D050'});
+for(let c=8;c<=LAST;c++)set(ws,gt,c,{formula:'SUBTOTAL(9,'+col(c)+first+':'+col(c)+last+')'},{f:{bold:true},fill:'92D050',al:CTR});
+row=gt+2;const tots=[];
+dl.forEach((d,i)=>{const c0=8+i*3,L=LSd().includes(dayStr(i));set(ws,row,1,{formula:col(c0)+'6'},{f:{bold:true},fill:'00B0F0',fmt:'d-mmm',al:{horizontal:'left'}});set(ws,row,2,L?'MENU LUMPSUM':'MENU',{f:{bold:true},fill:'00B0F0'});
+const cn=(gs,c)=>{const p=gs.filter(g=>GRng[g]).map(g=>col(c)+GRng[g][0]+':'+col(c)+GRng[g][1]);return p.length?'SUBTOTAL(9,'+p.join(',')+')':'0'};
+const LN=L?[['Lumpsum Maksimum',S.ls.x,['Maximum Team']],['Lumpsum Crew',S.ls.c,['Crew','Vendor']]]:[['Lumpsum Crew',null,GR]];let q2=row+1;
+[0,1,2].forEach(j=>LN.forEach(([lb,pr,gs])=>{set(ws,q2,1,['Pagi','Siang','Malam'][j]);set(ws,q2,2,lb);set(ws,q2,3,L?pr[j]:pm()[j],{fmt:'"Rp"#,##0'});set(ws,q2,4,{formula:cn(gs,c0+j)});set(ws,q2,5,{formula:'C'+q2+'*D'+q2},{f:{bold:true},fmt:NUM});q2++}));
+set(ws,q2,3,'TOTAL',{fill:'FFFF00',f:{bold:true}});set(ws,q2,4,{formula:'SUM(E'+(row+1)+':E'+(q2-1)+')'},{fill:'FFFF00',f:{bold:true},fmt:NUM});tots.push('D'+q2);row=q2+2});
+set(ws,row,3,'TOTAL KONSUMSI',{fill:'FFFF00',f:{bold:true}});set(ws,row,4,{formula:tots.join('+')},{fill:'FFFF00',f:{bold:true},fmt:NUM});const kRef="Konsumsi!D"+row;
+[7,16,40,26,20,30,18].forEach((w,i)=>ws.getColumn(i+1).width=w);for(let c=8;c<=LAST;c++)ws.getColumn(c).width=7.5;ws.views=[{state:'frozen',xSplit:3,ySplit:7,showGridLines:false}];
+const wa=wb.addWorksheet('Akomodasi');head(wa,'TABEL AKOMODASI');set(wa,6,1,'AKOMODASI',{f:{bold:true,size:16}});
+['No','Nama','Jenis Kamar','Tgl Check In','Tgl Check Out','Hotel','Tipe Bed','Jumlah\nKamar','Jumlah Malam','IDR/ Malam','Total Harga','Note'].forEach((t,i)=>set(wa,7,i+1,t,{f:{bold:true,color:{argb:'FFFFFFFF'}},fill:'44546A',al:{...CTR,wrapText:true},b:1}));
+row=9;let af=null,al=0;
+const nmz=x=>(x.o||(x.n?[x.n]:[])).map(q=>String(q||'').trim()).filter(Boolean);
+const box=(r1,r2,c)=>{for(let r=r1;r<=r2;r++){const z=wa.getCell(r,c);z.border=BD;z.font=F()}};
+const VM={vertical:'middle'};
+const AF=ACCF();GR.forEach(g=>{const rr=AF.filter(x=>x.g===g);if(!rr.length)return;for(let c=1;c<=12;c++)set(wa,row,c,c===1?g.toUpperCase():undefined,{f:{bold:true},fill:'FCE5CD'});row++;let no=0,hr=null;
+const flush=()=>{if(hr&&hr.r2>hr.r1)wa.mergeCells(hr.r1,6,hr.r2,6);hr=null};
+rr.forEach(x=>{no++;const nm=nmz(x),sp=Math.max(1,nm.length),r1=row,r2=row+sp-1;if(af===null)af=r1;al=r2;
+for(let c=1;c<=12;c++)box(r1,r2,c);
+set(wa,r1,1,no,{b:1,al:CTR});for(let k=0;k<sp;k++)set(wa,r1+k,2,nm[k],{b:1});
+set(wa,r1,3,x.j||undefined,{b:1,al:VM});set(wa,r1,4,x.ci?U(x.ci):undefined,{fmt:'d\\ mmm',b:1,al:CTR});set(wa,r1,5,x.co?U(x.co):undefined,{fmt:'d\\ mmm',b:1,al:CTR});
+set(wa,r1,7,x.bd||undefined,{b:1,al:CTR});set(wa,r1,8,1,{b:1,al:CTR});set(wa,r1,9,{formula:'E'+r1+'-D'+r1},{b:1,al:CTR});set(wa,r1,10,+x.k||0,{fmt:NUM,b:1,al:VM});set(wa,r1,11,{formula:'J'+r1+'*I'+r1+'*H'+r1},{fmt:'#,##0',b:1,al:VM});set(wa,r1,12,undefined,{b:1,al:{...VM,wrapText:true}});
+if(r2>r1)[1,3,4,5,7,8,9,10,11,12].forEach(c=>wa.mergeCells(r1,c,r2,c));
+if(x.h&&hr&&hr.h===x.h&&hr.r2+1===r1)hr.r2=r2;else{flush();if(x.h){set(wa,r1,6,x.h,{b:1,al:CTR});hr={h:x.h,r1,r2}}}
+row=r2+1});flush()});
+let aRef='0';if(af!==null){set(wa,row+1,10,'TOTAL',{fill:'FFFF00',f:{bold:true}});set(wa,row+1,11,{formula:'SUM(K'+af+':K'+al+')'},{fill:'FFFF00',f:{bold:true},fmt:'#,##0'});aRef="'Akomodasi'!K"+(row+1)}
+[8,40,16,13,13,14,16,12,12,17,16,30].forEach((w,i)=>wa.getColumn(i+1).width=w);
+const buf=await wb.xlsx.writeBuffer(),fn=('Manpower '+E.n+' '+S.cur).replace(/[\\/:*?"<>|]/g,'')+'.xlsx';
+try{const d=window.claude?await claude.use('downloads'):null;
+if(d){await d.save({filename:fn,data:buf});msg('Excel siap disimpan ✓',1)}
+else{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([buf]));a.download=fn;a.click();msg('Excel diunduh ✓',1)}}
+catch(e){msg(e&&e.code==='declined'?'Dibatalkan.':'Gagal menyimpan: '+((e&&e.message)||e))}}
+S.hotels=S.hotels||[];
+const stp=(k,ri,n)=>{const a=k==='room'?'room':'tr';return '<span style="display:inline-flex;align-items:center;gap:6px"><button class="ghost" style="padding:3px 12px" data-del'+a+'="'+ri+'" title="Kurangi">−</button><b id="c'+a+ri+'" style="min-width:22px;text-align:center">'+n+'</b><button class="ghost" style="padding:3px 12px" data-add'+a+'="'+ri+'" title="Tambah">+</button></span>'};
+function reAcc(){const s=$('acc').querySelector('.scroll'),y=s?s.scrollTop:0;accUI();const n=$('acc').querySelector('.scroll');if(n)n.scrollTop=y}
+function flash(id,t){const e=$(id);if(!e)return;const f=document.createElement('small');f.textContent=t;f.style.cssText='color:var(--ok);font-weight:700;margin-left:2px;transition:opacity 1.2s;opacity:1';e.after(f);setTimeout(()=>f.style.opacity=0,60);setTimeout(()=>f.remove(),1400)}
+$('acc').addEventListener('change',e=>{const t=e.target;if(t.dataset.pci!==undefined){const r=rs()[+t.dataset.pci],k=+t.dataset.pck;if(t.checked){if(!r.a)r.a=1;joinP(r,k)}else placeP(r,k,'');reAcc();tot();save();return}if(t.dataset.gri!==undefined){setp(rs()[+t.dataset.gri],'gd',+t.dataset.gk,t.value);save();reAcc();return}if(t.dataset.pk!==undefined){const v=t.value;placeP(rs()[+t.dataset.pri],+t.dataset.pk,v===''||v==='new'||v==='u'?v:+v);reAcc();tot();save();return}if(t.dataset.inap===undefined)return;const r=rs()[+t.dataset.inap],A=ACC();if(t.checked){r.a=1;if(!A.some(x=>x.p===r.n))for(let k=0;k<Math.ceil(r.q/Math.max(1,S.set.pk));k++)A.push(roomOf(r,k))}else{r.a=0;for(let i=A.length-1;i>=0;i--)if(A[i].p===r.n)A.splice(i,1)}reAcc();tot();save();msg('Inap '+r.n+(t.checked?': kamar dibuat otomatis':': kamar dihapus'),1)});
+const hot=n=>S.hotels.find(h=>h.n===n),hopts=c=>'<option value="">-</option>'+S.hotels.map(h=>'<option'+(h.n===c?' selected':'')+'>'+esc(h.n)+'</option>').join('')+(c&&!hot(c)?'<option selected>'+esc(c)+'</option>':'');
+const hlab=h=>h.n+(h.bd?' ('+h.bd+')':'');
+const hotelBox=()=>'<b>Daftar hotel (isi sekali)</b><p class="note" style="margin:2px 0 8px">Tambahkan hotel, jenis bed, dan harga kamar/malam. Harga tiap jenis bed bisa berbeda: tambahkan satu kali per jenis bed.</p><div class="row" style="margin-bottom:8px"><input id="h_n" type="text" placeholder="Nama hotel" style="width:170px"><select id="h_b" style="width:110px">'+BEDS.map(b=>'<option>'+b+'</option>').join('')+'</select><input id="h_k" type="number" min="0" placeholder="Harga/malam" style="width:130px"><button class="ghost" id="h_add">+ Tambah hotel</button></div><div style="margin-bottom:16px">'+S.hotels.map((h,i)=>'<span class="chip">'+esc(hlab(h))+' · '+fmt(h.k)+'<button class="x" data-hdel="'+i+'">×</button></span>').join('')+'</div>';
+const PL=()=>{const a=[];rs().forEach((r,ri)=>{for(let k=0;k<r.q;k++)a.push({r,ri,k})});return a};
+const g_=(r,f,k)=>((r[f]||[])[k]||''),setp=(r,f,k,v)=>{r[f]=r[f]||[];r[f][k]=v};
+const mealOn=(r,k,i,j)=>{const b=bs(r,k,i,j),f=!!(r.mo&&r.mo[k]&&r.mo[k][i+'-'+j]);return f?!b:!!b};
+const dflt=(r,d)=>S.ev.s?(d==='ps'?rS(r):rE(r)):'';
+const FLD=['nm','hp','fn','rk'],REQ={nm:1,hp:1,rk:1};
+function cnt(){const P=PL(),f=k=>P.filter(p=>g_(p.r,k,p.k).trim()).length;return{n:P.length,nm:f('nm'),hp:f('hp'),rk:f('rk')}}
+function upd(){const c=cnt();$('pgt').textContent='Nama '+c.nm+'/'+c.n+' · No HP '+c.hp+'/'+c.n+' · Rekening '+c.rk+'/'+c.n;$('pgb').style.width=(c.n?(c.nm+c.hp+c.rk)/(3*c.n)*100:0)+'%'}
+function nf(){const on=$('pf').checked;[...$('p2').querySelectorAll('tbody tr')].forEach(tr=>tr.hidden=on&&!tr.querySelector('td.mt'))}
+function names(){const P=PL();
+$('p2').innerHTML='<b>Nama &amp; kontak crew</b><p class="note" style="margin:2px 0 10px">Cara cepat: tempel daftar dari Excel/WhatsApp, atau ketik langsung di tabel (gunakan panah keyboard).</p>'
++'<textarea id="pt" rows="4" placeholder="Satu baris = satu orang. Contoh:&#10;Budi	08123456789	Budi Santoso	1234567890"></textarea>'
++'<div class="row" style="margin-bottom:6px"><label>Isi ke<select id="pto"><option value="-1">Semua peran, urut dari atas</option>'+rs().map((r,i)=>r.q>0?'<option value="'+i+'">'+esc(r.n)+'</option>':'').join('')+'</select></label><label style="flex-direction:row;align-items:center;gap:5px;color:var(--tx)"><input type="checkbox" id="pte" checked>Lewati yang sudah terisi</label><button class="primary" id="ptb">Isi otomatis</button></div>'
++'<p class="note" style="margin:0 0 14px">Urutan kolom: Nama · No HP · Nama Lengkap · No Rekening (dipisah Tab atau koma). Boleh hanya nama saja.</p>'
++'<p class="note" style="margin:0 0 14px">'+(S.ev.s?'Tanggal kerja, jadwal makan, dan lama sewa kamar otomatis mengikuti kolom Mulai–Sampai per peran di Langkah 1.':'⚠ Isi tanggal event di Langkah 1 dulu agar jadwal makan dan hotel bisa terisi otomatis.')+'</p>'
++'<div class="row" style="align-items:center;margin-bottom:10px"><div class="pbar"><i id="pgb"></i></div><span id="pgt" class="note" style="margin:0"></span><label style="flex-direction:row;align-items:center;gap:5px;color:var(--tx)"><input type="checkbox" id="pf">Hanya yang belum lengkap</label><button class="ghost" id="pj">Lompat ke yang kosong</button></div>'
++'<div class="scroll"><table style="min-width:900px"><thead><tr><th>#</th><th>Peran</th><th>Nama</th><th>L/P</th><th>No HP</th><th>Nama Lengkap (sesuai rekening)</th><th>No Rekening</th></tr></thead><tbody>'
++P.map(({r,ri,k})=>'<tr><td style="text-align:center;color:var(--mut)">'+(k+1)+'</td><td style="font-size:13px;'+(k?'color:var(--mut)':'font-weight:600')+'">'+esc(r.n)+'</td>'+FLD.map(f=>'<td class="'+(REQ[f]&&!g_(r,f,k).trim()?'mt':'')+'"><input type="text" data-nr="'+ri+'" data-nk="'+k+'" data-nf="'+f+'" value="'+esc(g_(r,f,k))+'"'+(f==='hp'?' inputmode="tel"':'')+'></td>'+(f==='nm'?'<td>'+gsel(ri,k)+'</td>':'')).join('')+'</tr>').join('')+'</tbody></table></div>';upd();nf()}
+$('p2').addEventListener('input',e=>{const t=e.target,ri=t.dataset.nr;if(ri===undefined)return;let v=t.value.trim()?t.value:'';if(t.type==='date'){if(v===dflt(rs()[+ri],t.dataset.nf))v='';t.classList.toggle('dd',!v)}setp(rs()[+ri],t.dataset.nf,+t.dataset.nk,v);if(t.dataset.nf==='nm')ACC().forEach(x=>x.pr&&rmFix(x));if(REQ[t.dataset.nf])t.parentNode.classList.toggle('mt',!t.value.trim());upd();if(t.type==='date'){rs().forEach((_,i)=>cells(i));tot()}save()});
+$('p2').addEventListener('change',e=>{const t=e.target;if(t.dataset.gri!==undefined){setp(rs()[+t.dataset.gri],'gd',+t.dataset.gk,t.value);save();return}if(t.id==='pf')nf()});
+$('p2').addEventListener('click',e=>{const id=e.target.id;
+if(id==='ptb'){const L=$('pt').value.split(/\r?\n/).map(l=>l.trim()).filter(Boolean),to=+$('pto').value;let P=PL().filter(p=>to<0||p.ri===to);if($('pte').checked)P=P.filter(p=>!g_(p.r,'nm',p.k));const n=Math.min(L.length,P.length);
+for(let i=0;i<n;i++)L[i].split(L[i].includes('\t')?'\t':',').map(x=>x.trim()).slice(0,4).forEach((v,j)=>{if(v)setp(P[i].r,FLD[j],P[i].k,v)});save();names();msg(n+' orang terisi'+(L.length>n?' ('+(L.length-n)+' baris tidak muat)':''),1)}
+
+else if(id==='pj'){const el=[...$('p2').querySelectorAll('td.mt input')].find(x=>x.offsetParent);if(el){el.focus();el.scrollIntoView({block:'center'})}else msg('Semua sudah terisi ✓',1)}});
+const isFl=(r,k,i,j)=>!!(r.mo&&r.mo[k]&&r.mo[k][i+'-'+j]);
+function pms(){$('pms').textContent='Total porsi: '+$('pm').querySelectorAll('input:checked').length+' · Biaya konsumsi: '+$('tk').textContent+(LSd().length?' · ★ = tanggal lumpsum':'')}
+function matrix(){const N=Math.min(days(),31),P=PL(),L=i=>S.ev.s?dayStr(i).slice(8)+'/'+dayStr(i).slice(5,7):'H'+(i+1),D=Array.from({length:N},(_,i)=>i);
+$('pm').innerHTML='<b>Jadwal makan per orang</b><p class="note" style="margin:2px 0 4px">Centang = orang itu makan di sesi tersebut. Klik tanggal atau huruf P/S/M di header untuk centang/kosongkan sekaligus.</p><p id="pms" class="note" style="margin:0 0 10px"></p><div class="row" style="margin-bottom:12px"><button class="primary" id="pma">✓ Centang semua</button><button class="ghost" id="pmn">☐ Kosongkan semua</button><button class="ghost" id="pmr">↺ Kembalikan ke standar Langkah 1</button></div>'
++'<div class="scroll"><table style="min-width:0"><thead><tr><th rowspan="2">Nama / peran</th>'+D.map(i=>'<th colspan="3" data-md="'+i+'" style="text-align:center;cursor:pointer">'+L(i)+(LSd().includes(dayStr(i))?' ★':'')+'</th>').join('')+'</tr><tr>'+D.map(i=>[0,1,2].map(j=>'<th data-hd="'+i+'-'+j+'" style="text-align:center;cursor:pointer;padding:6px 4px">'+'PSM'[j]+'</th>').join('')).join('')+'</tr></thead><tbody>'
++P.map(({r,ri,k})=>'<tr><td style="white-space:nowrap;min-width:210px"><b>'+esc(g_(r,'nm',k)||r.n+' #'+(k+1))+'</b>'+(g_(r,'nm',k)?' <small style="color:var(--mut)">'+esc(r.n)+'</small>':'')+'</td>'+D.map(i=>[0,1,2].map(j=>'<td style="padding:0 3px"><input type="checkbox" data-ri="'+ri+'" data-k="'+k+'" data-d="'+i+'" data-j="'+j+'"'+(mealOn(r,k,i,j)?' checked':'')+(isFl(r,k,i,j)?' data-fl':'')+'></td>').join('')).join('')+'</tr>').join('')+'</tbody></table></div>';pms()}
+function setCell(x,v){const r=rs()[+x.dataset.ri],k=+x.dataset.k,i=+x.dataset.d,j=+x.dataset.j,key=i+'-'+j,b=bs(r,k,i,j);r.mo=r.mo||{};r.mo[k]=r.mo[k]||{};if(!!v!==!!b)r.mo[k][key]=1;else delete r.mo[k][key];x.checked=!!v;x.toggleAttribute('data-fl',!!r.mo[k][key])}
+const aft=()=>{rs().forEach((_,i)=>cells(i));tot();pms();save()};
+$('pm').addEventListener('change',e=>{const t=e.target;if(t.dataset.ri===undefined)return;setCell(t,t.checked);aft()});
+$('pm').addEventListener('click',e=>{const id=e.target.id;if(id==='pma'||id==='pmn'){const v=id==='pma';$('pm').querySelectorAll('input[data-ri]').forEach(x=>setCell(x,v));return aft()}if(id==='pmr'){rs().forEach(r=>delete r.mo);matrix();return aft()}const h=e.target.closest('th');if(!h)return;let q;if(h.dataset.md!==undefined)q='input[data-d="'+h.dataset.md+'"]';else if(h.dataset.hd){const[a,b]=h.dataset.hd.split('-');q='input[data-d="'+a+'"][data-j="'+b+'"]'}else return;const L=[...$('pm').querySelectorAll(q)],v=!L.every(x=>x.checked);L.forEach(x=>setCell(x,v));aft()});
+function chkHtml(){const P=PL(),m=f=>P.filter(p=>!g_(p.r,f,p.k).trim()).length,nm=P.map(p=>g_(p.r,'nm',p.k).trim().toLowerCase()).filter(Boolean),dup=[...new Set(nm.filter((x,i)=>nm.indexOf(x)!==i))],A=ACCF(),it=[],ppk=Math.max(1,S.set.pk),need=rs().filter(r=>r.a).reduce((n,r)=>n+r.q,0);
+const add=(n,ok,w)=>it.push([n,n?w:ok]);
+add(m('nm'),'Semua nama terisi',m('nm')+' orang belum ada namanya (Langkah 2)');add(m('hp'),'Semua No HP terisi',m('hp')+' orang belum ada No HP');add(m('rk'),'Semua rekening terisi',m('rk')+' orang belum ada No Rekening');
+
+add(dup.length,'Tidak ada nama ganda','Nama ganda: '+dup.join(', '));
+add(A.filter(x=>!x.h).length,'Semua kamar sudah ada hotel',A.filter(x=>!x.h).length+' kamar belum ada hotel (Langkah 4)');
+add(A.filter(x=>nights(x)<=0).length,'Tanggal check-in/out semua kamar benar',A.filter(x=>nights(x)<=0).length+' kamar: check-out harus setelah check-in');
+migrate();const un=rs().reduce((n,r)=>{if(!(r.a))return n;for(let k=0;k<r.q;k++)if(!(r.ni&&r.ni[k])&&roomOfP(r,k)<0)n++;return n},0);add(un,'Semua personil yang menginap sudah punya kamar',un+' orang belum punya kamar (Langkah 4)');
+if(RC().length){const nr=rcLeftN();add(nr,'Semua personil sudah ditempatkan di kamar hotel',nr+' orang belum ditarik ke kartu kamar hotel (Langkah 4), hotelnya akan kosong di Excel')}
+return '<b>Cek sebelum unduh</b><ul style="list-style:none;padding:0;margin:8px 0 18px">'+it.map(([n,t])=>'<li class="'+(n?'wr':'ok')+'">'+(n?'⚠ ':'✓ ')+esc(t)+'</li>').join('')+'</ul>'}
+function fillIn(){for(const id in setMap)$(id).value=S.set[setMap[id]];for(const id in evMap)$(id).value=S.ev[evMap[id]];['lx','lc'].forEach(p=>[0,1,2].forEach(j=>$(p+j).value=(p==='lx'?S.ls.x:S.ls.c)[j]));[...tabs.children].forEach(b=>b.classList.toggle('on',(b.textContent==='Event lain (kosong)'?'Custom':b.textContent)===S.cur))}
+function loadS(o){Object.keys(S).forEach(k=>delete S[k]);Object.assign(S,o);S.ls=S.ls||{d:[],p:50000};if(S.ls.pm==null)S.ls.pm=S.ls.p;lsM();S.acc=S.acc||{};S.hotels=S.hotels||[];fillIn();refresh();go(step)}
+async function pdfx(){
+const E=S.ev;if(!(window.jspdf&&window.jspdf.jsPDF))return msg('Library PDF belum termuat (perlu internet). Muat ulang halaman lalu coba lagi.');
+if(!rs().some(r=>r.q>0))return msg('Belum ada peran.');
+msg('Menyiapkan PDF…',1);tot();
+const{jsPDF}=window.jspdf,doc=new jsPDF({orientation:'landscape',unit:'pt',format:'a4'});
+const W=doc.internal.pageSize.getWidth(),H=doc.internal.pageSize.getHeight(),M=36,INK=[31,41,55],MUT=[100,116,139],AC=[29,95,214],HEAD=[68,84,106],ALT=[247,249,251],GRP=[252,229,205],SUB=[232,238,246],LN=[219,225,231],DIM=[160,170,180];
+const MS=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'],DN=['Min','Sen','Sel','Rab','Kam','Jum','Sab'];
+const fd=x=>{if(!x)return '-';const[y,m,d]=x.split('-');return +d+' '+MS[+m-1]+' '+y};
+const fdd=x=>x?DN[new Date(x+'T00:00:00Z').getUTCDay()]+', '+fd(x):'-';
+const rp=n=>fmt(n),dash=v=>v&&String(v).trim()?String(v).trim():{content:'-',styles:{textColor:DIM}};
+const R=rs().filter(r=>r.q>0),P=PL(),N=Math.min(days(),60),AF=ACCF();
+let y=0;
+const need=h=>{if(y+h>H-46){doc.addPage();y=56}};
+const sec=(n,t,note)=>{need(90);doc.setFont('helvetica','bold');doc.setFontSize(14);doc.setTextColor(...AC);doc.text(n+'. '+t,M,y);doc.setDrawColor(...AC);doc.setLineWidth(1);doc.line(M,y+6,W-M,y+6);y+=24;
+if(note){doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(...MUT);const L=doc.splitTextToSize(note,W-2*M);doc.text(L,M,y);y+=L.length*11+6}};
+const subh=t=>{need(60);doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(...INK);doc.text(t,M,y);y+=8};
+const tbl=o=>{doc.autoTable({startY:y,theme:'grid',margin:{left:M,right:M,top:50,bottom:40},styles:{font:'helvetica',fontSize:8,cellPadding:{top:3.5,bottom:3.5,left:5,right:5},textColor:INK,lineColor:LN,lineWidth:.5,overflow:'linebreak',valign:'middle'},headStyles:{fillColor:HEAD,textColor:255,fontStyle:'bold'},alternateRowStyles:{fillColor:ALT},...o});y=doc.lastAutoTable.finalY+16};
+const gRow=(t,n)=>[{content:t,colSpan:n,styles:{fillColor:GRP,fontStyle:'bold',textColor:INK,halign:'left'}}];
+const bd=(c,o={})=>({content:c,styles:{fontStyle:'bold',fillColor:SUB,textColor:INK,...o}});
+const tt=(c,o={})=>({content:c,styles:{fontStyle:'bold',fillColor:AC,textColor:255,...o}});
+const RT={halign:'right'};
+
+/* ---- Sampul ---- */
+doc.setFillColor(...AC);doc.rect(0,0,W,88,'F');doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(21);doc.text('Ringkasan Kebutuhan Manpower',M,40);
+doc.setFont('helvetica','normal');doc.setFontSize(12);doc.text(E.n||'-',M,64);doc.setFontSize(9);doc.text('Dicetak '+fd(new Date().toISOString().slice(0,10)),W-M,64,{align:'right'});
+const kv=(x,yy,l,v)=>{doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(...MUT);doc.text(l,x,yy);doc.setFont('helvetica','bold');doc.setFontSize(10.5);doc.setTextColor(...INK);doc.text(String(v||'-'),x,yy+13)};
+const cw=(W-2*M)/3;kv(M,114,'Event',E.n);kv(M+cw,114,'Venue',E.v);kv(M+2*cw,114,'PIC',E.p);
+kv(M,152,'Periode event',E.s&&E.e?fd(E.s)+' - '+fd(E.e):'-');kv(M+cw,152,'Durasi',E.s&&E.e?days()+' hari':'-');kv(M+2*cw,152,'Jenis event',S.cur==='Custom'?'Event lain':S.cur);
+const cards=[['Total orang',$('tp').textContent],['Tarif crew',$('tt').textContent],[$('ta').previousElementSibling.textContent,$('ta').textContent],['Konsumsi',$('tk').textContent],[$('tc').previousElementSibling.textContent,$('tc').textContent]],gap=10,bw=(W-2*M-4*gap)/5;
+cards.forEach(([l,v],i)=>{const x=M+i*(bw+gap),last=i===4;doc.setDrawColor(...(last?AC:LN));doc.setFillColor(...(last?AC:[255,255,255]));doc.roundedRect(x,190,bw,52,5,5,last?'FD':'S');
+doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(...(last?[255,255,255]:MUT));doc.text(l,x+10,206);doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(...(last?[255,255,255]:INK));doc.text(v,x+10,228)});
+y=274;
+
+/* ---- 1. Kebutuhan crew ---- */
+sec(1,'Kebutuhan crew','Daftar peran, jumlah orang, periode kerja, tarif crew, dan biaya konsumsi per peran.');
+subh('Pengaturan harga');
+doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(...MUT);doc.text('Tarif crew per hari: '+rp(S.set.rate)+'   |   Tanggal lumpsum: '+(LSd().length?LSd().map(fd).join(', '):'tidak ada'),M,y+12);y+=18;
+tbl({head:[['Harga makan','Pagi','Siang','Malam']],body:[['Standar',rp(S.set.kp),rp(S.set.ks),rp(S.set.km)],['Lumpsum Maksimum (Maximum Team)',...S.ls.x.map(rp)],['Lumpsum Crew + Vendor',...S.ls.c.map(rp)]],tableWidth:430,columnStyles:{1:RT,2:RT,3:RT}});
+subh('Daftar peran');
+{const body=[];let T={q:0,t:0,k:0};
+GR.forEach(g=>{const rr=R.filter(r=>r.g===g);if(!rr.length)return;body.push(gRow(g.toUpperCase()+'  ('+rr.length+' peran)',11));const a={q:0,t:0,k:0};
+rr.forEach(r=>{const c=cost(r);a.q+=r.q;a.t+=c.t;a.k+=c.k;body.push([r.n,r.c||'-',r.q,fd(rS(r)),fd(rE(r)),r.h,rp(r.r),['P','S','M'].filter((_,j)=>r.m[j]).join(' ')||'-',rp(c.t),rp(c.k),rp(c.t+c.k)])});
+T.q+=a.q;T.t+=a.t;T.k+=a.k;body.push([bd('Subtotal '+g,{}),bd(''),bd(a.q,{halign:'center'}),bd('',{}),bd(''),bd(''),bd(''),bd(''),bd(rp(a.t),RT),bd(rp(a.k),RT),bd(rp(a.t+a.k),RT)])});
+body.push([tt('TOTAL'),tt(''),tt(T.q,{halign:'center'}),tt(''),tt(''),tt(''),tt(''),tt(''),tt(rp(T.t),RT),tt(rp(T.k),RT),tt(rp(T.t+T.k),RT)]);
+tbl({head:[['Peran','Company','Orang','Mulai','Sampai','Hari','Tarif / hari','Makan','Tarif crew','Konsumsi','Subtotal']],body,columnStyles:{2:{halign:'center'},5:{halign:'center'},6:RT,7:{halign:'center'},8:RT,9:RT,10:RT}})}
+
+/* ---- 2. Nama & kontak ---- */
+{const c=cnt();sec(2,'Nama & kontak crew','Kelengkapan data: Nama '+c.nm+' dari '+c.n+' orang  |  No HP '+c.hp+' dari '+c.n+'  |  No Rekening '+c.rk+' dari '+c.n+'. Tanda "-" berarti belum diisi.');
+const body=[];let no=0;
+GR.forEach(g=>{const pp=P.filter(p=>p.r.g===g);if(!pp.length)return;body.push(gRow(g.toUpperCase()+'  ('+pp.length+' orang)',8));
+pp.forEach(({r,k})=>{no++;body.push([no,r.n,r.c||'-',dash(g_(r,'nm',k)),dash(g_(r,'gd',k)),dash(g_(r,'hp',k)),dash(g_(r,'fn',k)),dash(g_(r,'rk',k))])})});
+tbl({head:[['No','Peran','Company','Nama','L/P','No HP','Nama lengkap','No rekening']],body,columnStyles:{0:{halign:'center',cellWidth:30},4:{halign:'center',cellWidth:32}}})}
+
+/* ---- 3. Jadwal makan ---- */
+sec(3,'Jadwal makan & konsumsi','Jumlah porsi per sesi mengikuti centang di jadwal makan per orang. Pada tanggal lumpsum, harga lumpsum dipakai.');
+if(E.s){subh('Rekap per tanggal');const body=[];let t=[0,0,0],bt=0;
+for(let i=0;i<N;i++){const s=dayStr(i),L=LSd().includes(s),c=[0,1,2].map(j=>R.reduce((n,r)=>{let q=0;for(let k=0;k<r.q;k++)if(mealOn(r,k,i,j))q++;return n+q},0)),b=R.reduce((a,r)=>{for(let k=0;k<r.q;k++)for(let j=0;j<3;j++)if(mealOn(r,k,i,j))a+=price(i,j,r);return a},0);
+c.forEach((v,j)=>t[j]+=v);bt+=b;body.push([fdd(s),c[0],c[1],c[2],c[0]+c[1]+c[2],rp(b),L?'Harga lumpsum':'Harga standar'])}
+body.push([tt('TOTAL'),tt(t[0],{halign:'center'}),tt(t[1],{halign:'center'}),tt(t[2],{halign:'center'}),tt(t[0]+t[1]+t[2],{halign:'center'}),tt(rp(bt),RT),tt('')]);
+tbl({head:[['Tanggal','Pagi','Siang','Malam','Total porsi','Biaya konsumsi','Keterangan']],body,columnStyles:{1:{halign:'center'},2:{halign:'center'},3:{halign:'center'},4:{halign:'center'},5:RT}})}
+else{doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(...MUT);doc.text('Tanggal event belum diisi, sehingga rekap per tanggal tidak dapat ditampilkan.',M,y);y+=18}
+subh('Rekap per peran');
+{const body=[];let T=[0,0,0],TB=0;
+GR.forEach(g=>{const rr=R.filter(r=>r.g===g);if(!rr.length)return;body.push(gRow(g.toUpperCase(),8));const a=[0,0,0];let ab=0;
+rr.forEach(r=>{const c=[0,0,0],M2=Math.max(r.h,days());for(let k=0;k<r.q;k++)for(let i=0;i<M2;i++)for(let j=0;j<3;j++)if(mealOn(r,k,i,j))c[j]++;const b=cost(r).k;c.forEach((v,j)=>a[j]+=v);ab+=b;body.push([r.n,r.q,c[0],c[1],c[2],c[0]+c[1]+c[2],rp(b)])});
+a.forEach((v,j)=>T[j]+=v);TB+=ab;body.push([bd('Subtotal '+g),bd(''),bd(a[0],{halign:'center'}),bd(a[1],{halign:'center'}),bd(a[2],{halign:'center'}),bd(a[0]+a[1]+a[2],{halign:'center'}),bd(rp(ab),RT)])});
+body.push([tt('TOTAL'),tt(''),tt(T[0],{halign:'center'}),tt(T[1],{halign:'center'}),tt(T[2],{halign:'center'}),tt(T[0]+T[1]+T[2],{halign:'center'}),tt(rp(TB),RT)]);
+tbl({head:[['Peran','Orang','Pagi','Siang','Malam','Total porsi','Biaya konsumsi']],body,columnStyles:{1:{halign:'center'},2:{halign:'center'},3:{halign:'center'},4:{halign:'center'},5:{halign:'center'},6:RT}})}
+
+/* ---- 4. Hotel & akomodasi ---- */
+{const noH=AF.filter(x=>!x.h).length;sec(4,'Hotel & akomodasi','Kamar disusun dari kartu kamar hotel di Langkah 4'+(noH?'. '+noH+' kamar belum ada hotel.':'.'));
+subh('Daftar hotel');
+if(S.hotels.length)tbl({head:[['Hotel','Jenis bed','Harga / malam','Kapasitas','Kamar dibuat']],body:S.hotels.map(h=>[h.n,h.bd||'-',rp(h.k),(CAP[h.bd]||2)+' orang',RC().filter(c=>c.h===h.n&&(c.bd||'')===(h.bd||'')).length]),tableWidth:520,columnStyles:{2:RT,3:{halign:'center'},4:{halign:'center'}}});
+else{doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(...MUT);doc.text('Belum ada hotel yang didaftarkan.',M,y+8);y+=26}
+subh('Daftar kamar & penghuni');
+if(AF.length){const body=[];let no=0,tot2=0;
+GR.forEach(g=>{const rr=AF.filter(x=>x.g===g);if(!rr.length)return;body.push(gRow(g.toUpperCase()+'  ('+rr.length+' kamar)',10));
+rr.forEach(x=>{no++;const n=nights(x),tl=n*(+x.k||0);tot2+=tl;const nm=(x.o||(x.n?[x.n]:[])).map(q=>String(q||'').trim()).filter(Boolean).join('\n')||'-',rl2=[...new Set((x.pr||[]).map(p=>rl(p.id)&&rl(p.id).n).filter(Boolean))].join(', ')||x.p||'-';
+body.push([no,nm,rl2,fd(x.ci),fd(x.co),n,x.h?x.h:{content:'belum dipilih',styles:{textColor:[199,53,43]}},x.bd||'-',rp(+x.k||0),rp(tl)])})});
+body.push([{content:'TOTAL',colSpan:9,styles:{fontStyle:'bold',fillColor:AC,textColor:255,halign:'left'}},tt(rp(tot2),RT)]);
+tbl({head:[['No','Penghuni','Peran','Check-in','Check-out','Malam','Hotel','Bed','Harga / malam','Total']],body,columnStyles:{0:{halign:'center',cellWidth:28},5:{halign:'center'},8:RT,9:RT}});
+subh('Ringkasan per hotel');
+const m=new Map();AF.forEach(x=>{const key=(x.h||'(belum dipilih)')+'|'+(x.bd||'-'),o=m.get(key)||{h:x.h||'(belum dipilih)',bd:x.bd||'-',r:0,n:0,t:0};o.r++;o.n+=nights(x);o.t+=nights(x)*(+x.k||0);m.set(key,o)});
+const hb=[...m.values()].map(o=>[o.h,o.bd,o.r,o.n,rp(o.t)]);hb.push([tt('TOTAL'),tt(''),tt(AF.length,{halign:'center'}),tt([...m.values()].reduce((a,o)=>a+o.n,0),{halign:'center'}),tt(rp(tot2),RT)]);
+tbl({head:[['Hotel','Jenis bed','Jumlah kamar','Total malam-kamar','Total biaya']],body:hb,tableWidth:560,columnStyles:{2:{halign:'center'},3:{halign:'center'},4:RT}})}
+else{doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(...MUT);doc.text('Tidak ada akomodasi.',M,y+8);y+=26}}
+
+/* ---- Header & footer tiap halaman ---- */
+const pc=doc.getNumberOfPages();
+for(let i=1;i<=pc;i++){doc.setPage(i);doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(...MUT);doc.setDrawColor(...LN);doc.setLineWidth(.5);
+doc.line(M,H-30,W-M,H-30);doc.text('Kebutuhan Manpower - '+(E.n||''),M,H-18);doc.text('Halaman '+i+' dari '+pc,W-M,H-18,{align:'right'});
+if(i>1){doc.text('Ringkasan Kebutuhan Manpower',M,26);doc.text(E.n||'',W-M,26,{align:'right'});doc.line(M,32,W-M,32)}}
+const buf=doc.output('arraybuffer'),fn=('Ringkasan Manpower '+(E.n||S.cur)).replace(/[\\/:*?"<>|]/g,'')+'.pdf';
+try{const d=window.claude?await claude.use('downloads'):null;
+if(d){await d.save({filename:fn,data:buf});msg('PDF siap disimpan ✓',1)}
+else{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([buf],{type:'application/pdf'}));a.download=fn;a.click();msg('PDF diunduh ✓',1)}}
+catch(e){msg(e&&e.code==='declined'?'Dibatalkan.':'Gagal: '+((e&&e.message)||e))}}
+async function dl(fn,text){const buf=new TextEncoder().encode(text);try{const d=window.claude?await claude.use('downloads'):null;if(d){await d.save({filename:fn,data:buf});msg('Tersimpan ✓',1)}else{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([buf]));a.download=fn;a.click()}}catch(e){msg(e&&e.code==='declined'?'Dibatalkan.':'Gagal: '+((e&&e.message)||e))}}
+hist=[JSON.stringify(S)];
+(()=>{const FOC='input:not([type=hidden]),select',vis=e=>e.offsetParent!==null,fl=r=>[...r.querySelectorAll(FOC)].filter(vis);
+const goto=el=>{if(!el)return false;el.focus();if(/^(text|number|search|tel)$/.test(el.type))try{el.select()}catch(_){}return true};
+function vert(el,d){const tr=el.closest('tr'),td=el.closest('td');if(!tr||!td)return;const ci=td.cellIndex,ix=Math.max(0,fl(td).indexOf(el));let r=tr;
+while((r=d>0?r.nextElementSibling:r.previousElementSibling)){const c=r.cells[ci];if(!c)continue;const f=fl(c);if(f.length)return goto(f[Math.min(ix,f.length-1)])}}
+function horiz(el,d){const tr=el.closest('tr');if(!tr)return;const f=fl(tr);goto(f[f.indexOf(el)+d])}
+document.addEventListener('keydown',e=>{const el=e.target;if(!el.matches||!el.matches(FOC)||!el.closest('.scroll table')||el.closest('.pv')||e.ctrlKey||e.metaKey||e.altKey)return;
+const k=e.key,t=el.type;
+if(el.tagName==='SELECT'&&(k==='Enter'||k===' ')){e.preventDefault();try{el.showPicker()}catch(_){}return}
+let d=0,h=0;if(k==='ArrowDown'||(k==='Enter'&&!e.shiftKey))d=1;else if(k==='ArrowUp'||(k==='Enter'&&e.shiftKey))d=-1;else if(k==='ArrowRight')h=1;else if(k==='ArrowLeft')h=-1;else return;
+if(h){if(t==='date')return;if(t==='text'){const a=el.selectionStart,b=el.selectionEnd,L=el.value.length;if(!((a===0&&b===L)||(h<0?a===0&&b===0:a===L&&b===L)))return}}
+e.preventDefault();d?vert(el,d):horiz(el,h)});
+})();
+refresh();go(1);
 </script></body></html>
