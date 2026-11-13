@@ -158,7 +158,19 @@ background-image:radial-gradient(color-mix(in srgb,var(--tx) 14%,transparent) 1p
 .rcroom{border-color:var(--hc,var(--ln));border-width:2px;display:flex;gap:6px;padding:34px 8px 12px;min-height:150px}
 .rcroom::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:color-mix(in srgb,var(--hc,var(--stage)) 40%,var(--stage))}
 .rcroom .rtag{position:absolute;top:8px;left:10px;z-index:2;font-size:13px;font-weight:600;background:var(--hc,var(--ac));color:#fff;border-radius:6px;padding:3px 12px}
-.rcpool{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0 16px;padding:8px;min-height:96px}
+.rcpool{display:block;margin:6px 0 16px;padding:8px;min-height:96px}
+.pgrp{margin:0 0 10px}.pgrp:last-child{margin-bottom:0}
+.pgh{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;margin:2px 0 4px}
+.pgh .cnt{background:var(--stage);border-radius:999px;padding:1px 9px;font-size:11.5px}
+.pco{font-size:11.5px;color:var(--mut);font-weight:600;margin:4px 0 0 2px}
+.prow{display:flex;flex-wrap:wrap;gap:4px}
+.apbox{border:1px solid var(--ln);border-radius:10px;padding:12px 14px;margin:0 0 16px;background:var(--card)}
+.apr{display:flex;align-items:center;gap:8px;margin:5px 0;padding:5px 8px;max-width:420px;font-size:13.5px;border:1px solid var(--ln2);border-radius:8px;background:var(--card);cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+.apr.drag{background:var(--hl);border-color:var(--mut);box-shadow:0 4px 14px rgba(0,0,0,.18);cursor:grabbing;position:relative;z-index:2}
+.apr .grip{color:var(--mut);font-size:15px;line-height:1;letter-spacing:-2px}
+.apr label{flex:0 1 330px;display:flex;align-items:center;gap:6px;flex-direction:row}
+.apr .apn{width:22px;height:22px;border-radius:50%;background:var(--stage);font-weight:700;font-size:12px;display:inline-flex;align-items:center;justify-content:center}
+.apr .ghost{padding:2px 9px;font-size:12px}
 .rcslot{width:92px;height:118px;border:1.5px dashed var(--ln);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:11px;color:var(--mut)}
 .rcslot svg{opacity:.18}
 /* --- Harga & pengaturan --- */
@@ -242,7 +254,7 @@ background-image:radial-gradient(color-mix(in srgb,var(--tx) 14%,transparent) 1p
 </div>
 
 </div>
-<div class="row bulk"><b>⚡ Set tanggal cepat</b><label>Mulai<input id="bds" type="date"></label><label>Sampai<input id="bde" type="date"></label><label>Untuk<select id="bdt"><option value="all">Semua peran</option><option value="vis">Hasil pencarian saja</option><option>Maximum Team</option><option>Vendor</option><option>Crew</option></select></label><button class="primary" id="bda">Terapkan</button><button class="ghost" id="allh" title="Semua peran mengikuti tanggal mulai-selesai event">Tanggal = durasi event</button></div>
+<div class="row bulk"><b>Set tanggal cepat</b><label>Mulai<input id="bds" type="date"></label><label>Sampai<input id="bde" type="date"></label><label>Untuk<select id="bdt"><option value="all">Semua peran</option><option value="vis">Hasil pencarian saja</option><option>Maximum Team</option><option>Vendor</option><option>Crew</option></select></label><button class="primary" id="bda">Terapkan</button><button class="ghost" id="allh" title="Semua peran mengikuti tanggal mulai-selesai event">Tanggal = durasi event</button></div>
 <div class="scroll"><table><thead><tr><th>Peran</th><th>Company</th><th>Kelompok</th><th>Orang</th><th>Mulai</th><th>Sampai</th><th>Tarif/hari</th><th>Makan</th><th>Total</th><th></th></tr></thead><tbody id="tb"></tbody></table></div>
 <div class="row" style="margin-top:12px">
 <input id="an" type="text" placeholder="Nama peran baru" style="flex:2;min-width:150px">
@@ -260,7 +272,7 @@ background-image:radial-gradient(color-mix(in srgb,var(--tx) 14%,transparent) 1p
 <div class="card" id="acc"></div>
 </div>
 <div id="p4" class="card pv" hidden></div>
-<div class="row" id="bar" style="justify-content:space-between;align-items:center"><div style="display:flex;gap:8px"><button class="ghost" id="bk">← Kembali</button><button class="ghost" id="pdfb" title="Unduh ringkasan Langkah 1-4 sebagai PDF">⬇ PDF</button></div><span id="msg"></span><button class="primary" id="nx">Next</button></div>
+<div class="row" id="bar" style="justify-content:space-between;align-items:center"><div style="display:flex;gap:8px"><button class="ghost" id="bk">← Kembali</button><button class="ghost" id="pdfb" title="Unduh ringkasan Langkah 1-5 sebagai PDF">⬇ PDF</button></div><span id="msg"></span><button class="primary" id="nx">Next</button></div>
 
 <div id="stage"><div id="stot"></div><div id="labels"></div></div>
 </main>
@@ -293,7 +305,7 @@ const mk0=(n,q)=>({n,q,h:1,r:S.set.rate,g:'Crew',c:'',a:1,k:S.set.rm,m:[1,1,1]})
 let saved=null;try{saved=JSON.parse(localStorage.getItem('mp2'))}catch(e){}
 if(saved&&saved.data){Object.assign(S,saved)}else{for(const k in PRE){S.data[k]=PRE[k].map(([n,q])=>mk0(n,q));S.TR[k]={rows:[],um:0}}}
 let hist=[],ht;function snapSoon(){clearTimeout(ht);ht=setTimeout(()=>{const j=JSON.stringify(S);if(hist[hist.length-1]!==j){hist.push(j);if(hist.length>40)hist.shift()}},500)}
-const save=()=>{snapSoon();try{localStorage.setItem('mp2',JSON.stringify(S))}catch(e){}};
+const save=()=>{ASH=null;snapSoon();try{localStorage.setItem('mp2',JSON.stringify(S))}catch(e){}};
 const fmt=n=>'Rp '+Math.round(n).toLocaleString('id-ID');
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const days=()=>S.ev.s&&S.ev.e?Math.max(1,Math.round((new Date(S.ev.e)-new Date(S.ev.s))/864e5)+1):1;
@@ -307,8 +319,10 @@ const mealDay=(r,i)=>{const p=LSd().includes(dayStr(i))?[lsP(r),lsP(r),lsP(r)]:p
 const pday=(r,k,i)=>{if(!S.ev.s)return i<r.h;const d=dayStr(i);return d>=rS(r)&&d<=rE(r)};
 const bs=(r,k,i,j)=>pday(r,k,i)&&r.m[j]?1:0,price=(i,j,r)=>LSd().includes(dayStr(i))?lsP(r,j):pm()[j],
 pdn=(r,k)=>r.h,
-rst=(r,a,b)=>{if(!S.ev.s)return['',''];return[rS(r),rE(r,1)]};
-const cost=r=>{const nt=Math.max(r.h-1,0),t=(()=>{let n=0;for(let q=0;q<r.q;q++)n+=pdn(r,q);return n*r.r})(),a=r.a?Math.ceil(r.q/Math.max(1,S.set.pk))*nt*r.k:0;let k=0;for(let q=0;q<r.q;q++)for(let i=0;i<Math.max(r.h,days());i++)for(let j=0;j<3;j++)if(bs(r,q,i,j))k+=price(i,j,r);for(const kk in r.mo||{})if(+kk<r.q)for(const key in r.mo[kk]){const[i,j]=key.split('-').map(Number);k+=(bs(r,+kk,i,j)?-1:1)*price(i,j,r)}return{t,a,k,s:t+a+k}};
+rst=(r,a,b)=>{if(!S.ev.s)return['',''];const s0=rS(r),e0=rE(r,0);return[s0,e0>s0?e0:new Date(new Date(s0+'T00:00:00Z').getTime()+864e5).toISOString().slice(0,10)]};
+let ASH=null;
+function accShare(){if(ASH)return ASH;const m={};let n=0;ACCF().forEach(x=>{n++;const c=nights(x)*(+x.k||0),pr=x.pr||[];if(pr.length)pr.forEach(p=>{m[p.id]=(m[p.id]||0)+c/pr.length});else{const r=rs().find(q=>q.n===x.p);if(r)m[rid(r)]=(m[rid(r)]||0)+c}});return ASH={m,n}}
+const cost=r=>{const nt=Math.max(r.h-1,1),t=(()=>{let n=0;for(let q=0;q<r.q;q++)n+=pdn(r,q);return n*r.r})(),a=(()=>{const z=accShare();return z.n?(z.m[rid(r)]||0):(r.a?Math.ceil(r.q/Math.max(1,S.set.pk))*nt*r.k:0)})();let k=0;for(let q=0;q<r.q;q++)for(let i=0;i<Math.max(r.h,days());i++)for(let j=0;j<3;j++)if(mealOn(r,q,i,j))k+=price(i,j,r);return{t,a,k,s:t+a+k}};
 let figs=[];const CW=24;
 function mkFig(){const f=document.createElement('div');f.className='fig';f.innerHTML='<svg viewBox="0 0 18 34" width="18" height="34" fill="currentColor"><circle cx="9" cy="5" r="4"/><rect x="4" y="10" width="10" height="13" rx="4"/><rect class="a" x="4.5" y="22" width="4" height="12" rx="2"/><rect class="b" x="9.5" y="22" width="4" height="12" rx="2"/></svg>';stage.appendChild(f);return f}
 function run(f){f.classList.add('run');clearTimeout(f._t);f._t=setTimeout(()=>f.classList.remove('run'),1500)}
@@ -322,8 +336,8 @@ slots.forEach((s,i)=>{let f=figs[i];if(!f){f=mkFig();f.style.color=s.c;f.style.o
 run(f);f.style.transitionDelay=Math.random()*.3+'s';f.style.color=s.c;f.style.opacity=1;f.style.transform='translate('+s.x+'px,'+s.y+'px)';f._y=s.y;f.style.zIndex=Math.round(s.y)});
 while(figs.length>slots.length){const f=figs.pop();run(f);f.style.opacity=0;f.style.transform='translate('+(w+40)+'px,'+(f._y||0)+'px)';setTimeout(()=>f.remove(),1500)}}
 function cells(i){const c=cost(rs()[i]);$('s'+i).innerHTML='<b>'+fmt(c.s)+'</b>'}
-function tot(){let p=0,t=0,a=0,k=0;rs().forEach(r=>{const c=cost(r);p+=r.q;t+=c.t;a+=c.a;k+=c.k});if(ACCF().length)a=accTotal();const x=T().rows.reduce((s,y)=>s+y.p,0)*0;
-$('tp').textContent=p+' orang';$('tt').textContent=fmt(t);$('ta').textContent=fmt(a);$('tk').textContent=fmt(k);$('tc').textContent=fmt(t+a+k);$('ta').previousElementSibling.textContent='Akomodasi'+(ACCF().length?'':' (estimasi)');$('tc').previousElementSibling.textContent='Total biaya'+(ACCF().length?'':' (sementara)')}
+function tot(){ASH=null;let p=0,t=0,a=0,k=0;rs().forEach(r=>{const c=cost(r);p+=r.q;t+=c.t;a+=c.a;k+=c.k});if(ACCF().length)a=accTotal();const x=T().rows.reduce((s,y)=>s+y.p,0)*0;
+$('tp').textContent=p+' orang';$('tt').textContent=fmt(t);$('ta').textContent=fmt(a);$('tk').textContent=fmt(k);$('tc').textContent=fmt(t+a+k);$('ta').previousElementSibling.textContent='Akomodasi'+(ACCF().length?'':' (estimasi)');$('tc').previousElementSibling.textContent='Total biaya'+(ACCF().length?'':' (sementara)');rs().forEach((_,i)=>{if($('s'+i))cells(i)})}
 function table(){tb.innerHTML=rs().map((r,i)=>'<tr data-nm="'+esc(r.n.toLowerCase())+'"><td><i class="dot" style="background:'+P[i%P.length]+'"></i><input type="text" style="width:calc(100% - 20px)" value="'+esc(r.n)+'" data-i="'+i+'" data-k="n"></td>'
 +'<td><input type="text" style="width:110px" value="'+esc(r.c)+'" data-i="'+i+'" data-k="c" placeholder="Company"></td>'
 +'<td><select data-i="'+i+'" data-k="g">'+GR.map(o=>'<option'+(o===r.g?' selected':'')+'>'+o+'</option>').join('')+'</select></td>'
@@ -342,8 +356,9 @@ $('lsd').addEventListener('input',e=>{const s=e.target.dataset.ls;if(!s)return;S
 $('lsa').onclick=()=>{S.ls.d=Array.from({length:Math.min(days(),60)},(_,i)=>dayStr(i));renderLS();lsChanged()};
 $('lsn').onclick=()=>{S.ls.d=[];renderLS();lsChanged()};
 ['lx','lc'].forEach(p=>[0,1,2].forEach(j=>{const f=()=>p==='lx'?S.ls.x:S.ls.c;$(p+j).value=f()[j];$(p+j).addEventListener('input',()=>{f()[j]=Math.max(0,+$(p+j).value||0);lsChanged()})}));
-['es','ee'].forEach(id=>['input','change'].forEach(ev=>$(id).addEventListener(ev,()=>{S.ev.s=$('es').value;S.ev.e=$('ee').value;renderLS();lsChanged();layout()})));
+['es','ee'].forEach(id=>['input','change'].forEach(ev=>$(id).addEventListener(ev,()=>{S.ev.s=$('es').value;S.ev.e=$('ee').value;fixDates();renderLS();table();lsChanged();layout()})));
 function setRange(r,a,b,k){if(S.ev.s){if(a<S.ev.s)a=S.ev.s;if(S.ev.e&&b>S.ev.e)b=S.ev.e}if(b<a){if(k==='de')a=b;else b=a}r.ds=a;r.de=b;r.h=Math.min(60,Math.max(1,Math.round((new Date(b)-new Date(a))/864e5)+1))}
+function fixDates(){const a=S.ev.s,b=S.ev.e;if(!a||!b||b<a)return;const n=days();for(const k in S.data)S.data[k].forEach(r=>{if(r.ds||r.de){let s=r.ds||a,e=r.de||b;if(s<a)s=a;if(s>b)s=b;if(e>b)e=b;if(e<a)e=a;if(e<s)e=s;setRange(r,s,e,'de')}else r.h=Math.min(r.h,n)})}
 function refresh(){renderLS();table();layout();trr();save()}
 tb.addEventListener('input',e=>{const t=e.target,i=+t.dataset.i;if(isNaN(i))return;if(t.dataset.nmk!==undefined){const q=rs()[i];q.nm=q.nm||[];q.nm[+t.dataset.nmk]=t.value;save();return}const r=rs()[i],k=t.dataset.k;
 if(k==='n'||k==='c'||k==='g'){r[k]=t.value;save();return}
@@ -386,7 +401,7 @@ if(cur>=0){const x=A[cur];x.pr=x.pr.filter(p=>!(p.id===id&&p.k===k));if(!x.pr.le
 if(tg===''||tg==='u'){if(tg==='')r.ni[k]=1;return}
 if(!r.a){r.a=1;for(let j=0;j<r.q;j++)if(j!==k&&roomOfP(r,j)<0)r.ni[j]=1}
 r.ni[k]=0;if(tg==='new')A.push(newRoom(r,k));else{const x=A[tg];if(x){x.pr.push({id,k});rmFix(x)}}}
-function joinP(r,k){const A=ACC(),ppk=Math.max(1,S.set.pk);let ti=-1;for(let i=A.length-1;i>=0;i--)if(A[i].p===r.n&&(A[i].pr||[]).length&&A[i].pr.length<ppk){ti=i;break}placeP(r,k,ti>=0?ti:'new')}
+function joinP(r,k){const A=ACC(),ppk=Math.max(1,S.set.pk),g0=g_(r,'gd',k);let ti=-1;for(let i=A.length-1;i>=0;i--)if(A[i].p===r.n&&(A[i].pr||[]).length&&A[i].pr.length<ppk&&A[i].pr.every(p=>gdp(p)===g0)){ti=i;break}placeP(r,k,ti>=0?ti:'new')}
 function autoPlace(){rs().forEach(r=>{if(!(r.q>0&&r.a))return;for(let k=0;k<r.q;k++){if(r.ni&&r.ni[k])continue;if(roomOfP(r,k)>=0)continue;joinP(r,k)}});
 ACC().forEach(x=>{if(x.pr&&x.pr.length)rmFix(x)})}
 function roleList(){const A=ACC(),ppk=Math.max(1,S.set.pk),RR=rs().filter(r=>r.q>0);
@@ -404,7 +419,10 @@ const nn=nights(x);['an','pn'].forEach(q=>{const e=$(q+i);if(e)e.textContent=nn}
 const BEDS=['Twin','King Bed','Single'],CAP={'Twin':2,'King Bed':2,'Single':1},RCB={};
 const RC=()=>{S.rc=S.rc||{};return S.rc[S.cur]=S.rc[S.cur]||[]};
 const pkey=(id,k)=>id+'|'+k;
-function accFinal(){rcClean();const A=ACC(),R=RC().filter(c=>(c.m||[]).length);if(!R.length)return A;
+const gdp=p=>{const q=rl(p.id);return q?g_(q,'gd',p.k):''};
+function acPrune(){const A=ACC();for(let i=A.length-1;i>=0;i--){const x=A[i];if(!x.pr)continue;const n0=x.pr.length;x.pr=x.pr.filter(p=>{const r=rl(p.id);return r&&p.k<r.q&&r.a});if(n0&&!x.pr.length)A.splice(i,1);else if(x.pr.length)rmFix(x)}}
+function unmix(){const A=ACC();for(let i=0;i<A.length;i++){const pr=(A[i].pr||[]).slice();if(pr.length<2)continue;const g0=gdp(pr[0]);pr.slice(1).forEach(p=>{if(gdp(p)!==g0){const r=rl(p.id);if(r)placeP(r,p.k,'u')}})}}
+function accFinal(){acPrune();rcClean();const A=ACC(),R=RC().filter(c=>(c.m||[]).length);if(!R.length)return A;
 const inR=new Set();R.forEach(c=>c.m.forEach(p=>inR.add(pkey(p.id,p.k))));const out=[];
 A.forEach(x=>{if(!x.pr||!x.pr.length){out.push(x);return}const keep=x.pr.filter(p=>!inR.has(pkey(p.id,p.k)));if(keep.length===x.pr.length){out.push(x);return}if(!keep.length)return;const y={...x,pr:keep};rmFix(y);out.push(y)});
 R.forEach(c=>{const mem=c.m.map(p=>({r:rl(p.id),k:p.k})).filter(q=>q.r);if(!mem.length)return;
@@ -428,19 +446,71 @@ return '<div class="pf" draggable="true" data-rcp="'+pkey(rid(r),k)+'" title="Ta
 function pfRun(root){(root||document).querySelectorAll('.pf').forEach(f=>{f.classList.add('run');clearTimeout(f._t);f._t=setTimeout(()=>f.classList.remove('run'),1500)})}
 function rcPool(){const used=new Set();RC().forEach(c=>c.m.forEach(p=>used.add(pkey(p.id,p.k))));
 const L=PL().filter(({r,k})=>roomOfP(r,k)>=0&&!used.has(pkey(rid(r),k)));
-return L.length?L.map(({r,k})=>stick(r,k)).join(''):'<span class="note" style="margin:0">Semua personil sudah mendapat kamar.</span>'}
+if(!L.length)return '<span class="note" style="margin:0">Semua personil sudah mendapat kamar.</span>';
+const gk=g=>{const i=GR.indexOf(g);return i<0?GR.length:i};
+return GR.concat(['']).map((g,gi)=>{const m=L.filter(x=>gk(x.r.g)===gi);if(!m.length)return '';
+const cs=[];m.forEach(x=>{const c=(x.r.c||'').trim();if(!cs.includes(c))cs.push(c)});cs.sort((a,b)=>(a===''?1:0)-(b===''?1:0)||a.localeCompare(b));
+const hasC=cs.some(c=>c);
+return '<div class="pgrp"><div class="pgh">'+esc(g||'Lainnya')+'<span class="cnt">'+m.length+'</span></div>'+cs.map(c=>{const mm=m.filter(x=>(x.r.c||'').trim()===c);
+return (hasC?'<div class="pco">'+(c?esc(c):'Tanpa company')+' · '+mm.length+'</div>':'')+'<div class="prow">'+mm.map(({r,k})=>stick(r,k)).join('')+'</div>'}).join('')+'</div>'}).join('')}
 function rcCards(){rcClean();return RC().map((c,i)=>{const cap=CAP[c.bd]||2;let sl='';for(let j=0;j<cap;j++){const p=c.m[j],r=p&&rl(p.id);sl+=r?stick(r,p.k):'<div class="rcslot" style="padding-top:30px"><svg viewBox="0 0 18 34" width="27" height="51" fill="currentColor">'+FIG+'</svg>kosong</div>'}
 return '<div style="text-align:center"><div class="rcroom" data-rcroom="'+i+'" style="--hc:'+hotelCol(c.h)+'"><span class="rtag">'+c.m.length+'/'+cap+' orang</span>'+sl+'<button class="x" data-rcdel="'+i+'" title="Hapus kamar" style="position:absolute;top:4px;right:4px;z-index:3">×</button></div><div style="margin-top:6px;font-size:13px;font-weight:600;line-height:1.3"><i class="dot" style="background:'+hotelCol(c.h)+'"></i>'+esc(c.h)+(c.bd?' <span style="color:var(--mut);font-weight:400">('+esc(c.bd)+')</span>':'')+'</div></div>'}).join('')||'<span class="note" style="margin:0;grid-column:1/-1">Belum ada kamar. Klik "+ Kamar" pada hotel di atas.</span>'}
-function rcRefresh(){const a=$('rc_cards'),b=$('rc_pool'),h=$('rc_hot'),c=$('rc_cnt'),n=$('rc_rn');if(a)a.innerHTML=rcCards();if(b)b.innerHTML=rcPool();if(h)h.innerHTML=rcHotels();if(c)c.textContent=rcLeftN();if(n)n.textContent=RC().length;pfRun($('acc'));tot()}
+function rcRefresh(){const ap=$('rc_auto');if(ap)ap.innerHTML=rcAutoHtml();const a=$('rc_cards'),b=$('rc_pool'),h=$('rc_hot'),c=$('rc_cnt'),n=$('rc_rn');if(a)a.innerHTML=rcCards();if(b)b.innerHTML=rcPool();if(h)h.innerHTML=rcHotels();if(c)c.textContent=rcLeftN();if(n)n.textContent=RC().length;pfRun($('acc'));tot()}
 const rcLeftN=()=>{const used=new Set();RC().forEach(c=>c.m.forEach(p=>used.add(pkey(p.id,p.k))));return PL().filter(({r,k})=>roomOfP(r,k)>=0&&!used.has(pkey(rid(r),k))).length};
+const APL={g:'Kelompok (Maximum / Vendor / Crew)',c:'Company',r:'Peran',d:'Check-in & check-out sama'};
+function apS(){const d=['g','c','r','d'];let o=Array.isArray(S.ap)?S.ap.filter(x=>d.includes(x)):[];d.forEach(x=>{if(!o.includes(x))o.push(x)});S.ap=o;S.apOff=Array.isArray(S.apOff)?S.apOff:[];return o}
+function rcAutoHtml(){if(!RC().length)return '';const o=apS(),nog=PL().filter(({r,k})=>roomOfP(r,k)>=0&&!g_(r,'gd',k)).length;
+return '<div class="apbox"><b>Isi kamar otomatis</b><p class="note" style="margin:2px 0 8px">Personil yang belum dapat kamar dimasukkan ke kamar di bawah, dengan menyatukan yang paling mirip sesuai urutan prioritas ini (1 = paling utama). Tahan dan geser tiap kriteria untuk mengubah urutan. Hilangkan centang untuk mengabaikan satu kriteria. Satu aturan tetap: jenis kelamin harus sama, jadi L tidak pernah digabung dengan P. Penghuni yang sudah ada di kamar tidak dipindah. Kalau kamar kurang, sisanya tetap di daftar dan bisa ditarik manual.</p>'
++'<div id="apl">'+o.map((k,i)=>'<div class="apr" data-apk="'+k+'"><span class="grip" aria-hidden="true">⋮⋮</span><span class="apn">'+(i+1)+'</span><label><input type="checkbox" data-apon="'+k+'"'+(S.apOff.includes(k)?'':' checked')+'> '+APL[k]+'</label></div>').join('')+'</div>'
++(nog?'<p class="note" style="margin:6px 0 0">⚠ '+nog+' personil belum diisi L/P (Langkah 4). Mereka tidak akan dimasukkan otomatis supaya tidak tergabung dengan jenis kelamin yang beda; isi L/P-nya atau tarik manual.</p>':'')
++'<div class="row" style="margin-top:10px"><button class="primary" data-apgo="1">Isi kamar otomatis</button><button class="ghost" data-apclr="1" title="Kembalikan semua penghuni ke daftar belum dapat kamar">Kosongkan semua kamar</button></div></div>'}
+function rcAuto(){rcClean();const o=apS().filter(k=>!S.apOff.includes(k)),used=new Set();RC().forEach(c=>c.m.forEach(p=>used.add(pkey(p.id,p.k))));
+const at=(r,k)=>{const d=pdates(r,k);return{id:rid(r),k,ri:rs().indexOf(r),gd:g_(r,'gd',k),g:GR.indexOf(r.g),c:(r.c||'').trim().toLowerCase(),rn:r.n||'',d:d[0]+'|'+d[1]}};
+let pool=PL().filter(({r,k})=>roomOfP(r,k)>=0&&!used.has(pkey(rid(r),k))).map(({r,k})=>at(r,k));
+if(!pool.length)return msg('Tidak ada personil yang menunggu kamar.',1);
+if(!RC().some(c=>c.m.length<(CAP[c.bd]||2)))return msg('Semua kamar sudah penuh. Tambah kamar dulu.');
+const n0=pool.length,nog=pool.filter(p=>!p.gd).length,key={g:p=>p.g<0?9:p.g,c:p=>p.c||'~',r:p=>p.rn,d:p=>p.d};
+const cmp=(a,b)=>{for(const k of o){const x=key[k](a),y=key[k](b);if(x<y)return -1;if(x>y)return 1}return (a.ri-b.ri)||(a.k-b.k)};
+const same={g:(a,b)=>a.g===b.g,c:(a,b)=>!!a.c&&a.c===b.c,r:(a,b)=>a.rn===b.rn,d:(a,b)=>a.d===b.d};
+const score=(p,mem)=>{let s=0;o.forEach((k,i)=>{const w=Math.pow(2,o.length-1-i);mem.forEach(m=>{if(same[k](p,m))s+=w})});return s};
+const put=(c,p)=>{c.m.push({id:p.id,k:p.k});pool=pool.filter(x=>x!==p)};
+/* aturan keras: hanya L dengan L, P dengan P; yang belum diisi L/P tidak digabung otomatis */
+/* 1) kamar yang sudah ada isinya: lengkapi hanya dengan jenis kelamin yang sama */
+RC().forEach(c=>{const cap=CAP[c.bd]||2;if(!c.m.length)return;
+const mem=c.m.map(q=>{const r=rl(q.id);return r?at(r,q.k):null}).filter(Boolean),g0=mem[0]&&mem[0].gd;
+if(!g0||mem.some(m=>m.gd!==g0))return;
+while(c.m.length<cap){const cand=pool.filter(p=>p.gd===g0).sort(cmp);if(!cand.length)break;let b=null,bs=-1;cand.forEach(p=>{const sc=score(p,mem);if(sc>bs){bs=sc;b=p}});put(c,b);mem.push(b)}});
+/* 2) kamar kosong: per jenis kelamin, urut menurut prioritas, isi berurutan */
+['L','P'].forEach(g=>{const grp=pool.filter(p=>p.gd===g).sort(cmp);
+RC().forEach(c=>{const cap=CAP[c.bd]||2;if(c.m.length||!grp.length)return;while(c.m.length<cap&&grp.length)put(c,grp.shift())})});
+const left=pool.length,done=n0-left,skip=pool.filter(p=>!p.gd).length;
+rcRefresh();save();
+msg(done+' orang dimasukkan ke kamar'+(skip?'. '+skip+' orang belum diisi L/P, tidak dimasukkan otomatis':'')+(left-skip>0?'. '+(left-skip)+' orang belum dapat kamar (kamar kurang atau tidak ada pasangan sejenis)':'')+'.',!left)}
+$('acc').addEventListener('click',e=>{const t=e.target.closest('[data-apgo],[data-apclr]');if(!t)return;
+if(t.dataset.apgo!==undefined)rcAuto();
+else{RC().forEach(c=>c.m=[]);rcRefresh();save();msg('Semua kamar dikosongkan.',1)}});
+/* geser urutan prioritas: tahan lalu geser (mouse & layar sentuh) */
+(()=>{let d=null;
+$('acc').addEventListener('pointerdown',e=>{const row=e.target.closest&&e.target.closest('.apr');if(!row||(e.button||0)>0||e.target.closest('input'))return;d={row,y0:e.clientY,on:false}});
+addEventListener('pointermove',e=>{if(!d)return;const box=d.row.parentNode;
+if(!d.on){if(Math.abs(e.clientY-d.y0)<4)return;d.on=true;d.row.classList.add('drag')}
+e.preventDefault();const others=[...box.children].filter(x=>x!==d.row);let before=null;
+for(const x of others){const r=x.getBoundingClientRect();if(e.clientY<r.top+r.height/2){before=x;break}}
+if(before!==d.row.nextSibling){box.insertBefore(d.row,before);[...box.children].forEach((x,i)=>{x.querySelector('.apn').textContent=i+1})}},{passive:false});
+const end=()=>{if(!d)return;const r=d.row,on=d.on;d=null;r.classList.remove('drag');if(!on)return;
+const k=[...r.parentNode.children].map(x=>x.dataset.apk);apS();S.ap=k;save();
+addEventListener('click',ev=>{ev.stopPropagation();ev.preventDefault()},{capture:true,once:true});setTimeout(()=>{},0)};
+addEventListener('pointerup',end);addEventListener('pointercancel',end)})();
+$('acc').addEventListener('change',e=>{const t=e.target;if(t.dataset.apon===undefined)return;apS();const k=t.dataset.apon;S.apOff=S.apOff.filter(x=>x!==k);if(!t.checked)S.apOff.push(k);save()});
 function rcHotels(){if(!S.hotels.length)return '<p class="note">Tambahkan hotel dulu di bagian atas.</p>';
 return '<div class="hlw"><table class="hl"><thead><tr><th>Hotel</th><th class="bed">Jenis bed</th><th class="tr">Harga / malam</th><th class="tc cap">Kapasitas</th><th class="tc cap">Kamar dibuat</th><th class="tc">Tambah</th></tr></thead><tbody>'
 +S.hotels.map((h,i)=>{const n=RC().filter(c=>c.h===h.n&&(c.bd||'')===(h.bd||'')).length;
 return '<tr><td><i class="dot" style="background:'+hotelCol(h.n)+'"></i><b>'+esc(h.n)+'</b><small class="hb">'+esc(h.bd||'-')+'</small></td><td class="bed">'+esc(h.bd||'-')+'</td><td class="tr">'+fmt(h.k)+'</td><td class="tc cap">'+(CAP[h.bd]||2)+' orang</td><td class="tc cap">'+n+'</td><td class="tc"><button class="ghost" data-rcadd="'+i+'" title="Tambah kamar">+<span class="bt"> Kamar</span></button></td></tr>'}).join('')+'</tbody></table></div>'}
 function roomBuilder(){rcClean();return '<div class="rcsec"><b>Pilihan kamar per hotel</b><p class="note" style="margin:2px 0 0">Klik + Kamar pada hotel (jenis bed) yang diinginkan. Kapasitas: Twin 2, King Bed 2, Single 1.</p><div id="rc_hot">'+rcHotels()+'</div>'
++'<div id="rc_auto">'+rcAutoHtml()+'</div>'
 +'<div class="rch"><b>Personil belum dapat kamar</b><span class="cnt" id="rc_cnt">'+rcLeftN()+'</span><span class="hint">Tahan &amp; tarik ke kamar. Layar scroll otomatis saat kursor dekat tepi atas/bawah.</span></div><div id="rc_pool" class="rcpool" data-rcpool="1">'+rcPool()+'</div>'
 +'<div class="rch" style="margin-top:6px"><b>Kamar hotel</b><span class="cnt" id="rc_rn">'+RC().length+'</span></div><div id="rc_cards" class="rcgrid">'+rcCards()+'</div></div>'}
-function accUI(){migrate();autoPlace();const A=ACC(),ppk=Math.max(1,S.set.pk),ops={};$('acc').querySelectorAll('details[data-dk]').forEach(d=>ops[d.dataset.dk]=d.open);
+function accUI(){acPrune();migrate();unmix();autoPlace();const A=ACC(),ppk=Math.max(1,S.set.pk),ops={};$('acc').querySelectorAll('details[data-dk]').forEach(d=>ops[d.dataset.dk]=d.open);
 const dt=(k,t,def,body)=>'<details data-dk="'+k+'"'+((ops[k]!==undefined?ops[k]:def)?' open':'')+'><summary>'+t+'</summary>'+body+'</details>';
 const occ=x=>{const o=x.o||[x.n||''];return Array.from({length:Math.max(ppk,o.length,1)},(_,k)=>o[k]||'')};
 const inp=(i,f,v,t)=>'<input type="'+(t||'text')+'" value="'+esc(v==null?'':v)+'" data-ai="'+i+'" data-af="'+f+'">';
@@ -455,7 +525,7 @@ return '<tr><td class="c">'+(n+1)+'</td>'
 +'<td style="text-align:right;white-space:nowrap;padding:4px 10px"><b id="an'+i+'">'+nights(x)+'</b></td>'
 +'<td style="min-width:110px">'+inp(i,'nt',x.nt)+'</td>'
 +'<td><button class="x" data-ardt="'+i+'" title="Kembalikan tanggal ke jadwal peran">↺</button><button class="x" data-adel="'+i+'" title="Hapus kamar">×</button></td></tr>'}).join('')}).join('');
-$('acc').innerHTML='<div style="margin-bottom:18px">'+hotelBox()+'</div>'+dt('role','Personil &amp; pembagian kamar',1,roleList())+roomBuilder();pfRun($('acc'))
+$('acc').innerHTML=step===5?'<div style="margin-bottom:18px">'+hotelBox()+'</div>'+roomBuilder():gdTool()+dt('role','Personil &amp; menginap',1,roleList());pfRun($('acc'))
 }
 $('acc').addEventListener('click',e=>{const t=e.target.closest('[data-rcadd],[data-rcdel]');if(!t)return;
 if(t.dataset.rcadd!==undefined){const i=+t.dataset.rcadd,h=S.hotels[i];if(!h)return;RC().push({h:h.n,bd:h.bd||'',k:h.k,m:[]})}
@@ -468,7 +538,7 @@ $('acc').addEventListener('dragend',e=>{DRG=null;$('acc').querySelectorAll('[dat
 $('acc').addEventListener('dragover',e=>{const t=e.target.closest&&e.target.closest('[data-rcroom],[data-rcpool]');if(!t||!DRG)return;e.preventDefault();$('acc').querySelectorAll('.rc-over').forEach(x=>{if(x!==t)x.classList.remove('rc-over')});t.classList.add('rc-over')});
 $('acc').addEventListener('drop',e=>{const t=e.target.closest&&e.target.closest('[data-rcroom],[data-rcpool]');if(!t||!DRG)return;e.preventDefault();
 const [id,ks]=DRG.split('|'),k=+ks;let ok=1;
-if(t.dataset.rcroom!==undefined){const c=RC()[+t.dataset.rcroom],cap=CAP[c.bd]||2,here=c.m.some(p=>p.id===id&&p.k===k);if(!here){if(c.m.length>=cap){ok=0;msg('Kamar penuh ('+cap+' orang)')}else{RC().forEach(q=>q.m=q.m.filter(p=>!(p.id===id&&p.k===k)));c.m.push({id,k})}}}
+if(t.dataset.rcroom!==undefined){const c=RC()[+t.dataset.rcroom],cap=CAP[c.bd]||2,here=c.m.some(p=>p.id===id&&p.k===k);if(!here){if(c.m.length>=cap){ok=0;msg('Kamar penuh ('+cap+' orang)')}else if(c.m.some(p=>{const a=gdp(p),b=gdp({id,k});return a&&b&&a!==b})){ok=0;msg('Tidak bisa: kamar tidak boleh campur L dan P')}else{RC().forEach(q=>q.m=q.m.filter(p=>!(p.id===id&&p.k===k)));c.m.push({id,k})}}}
 else RC().forEach(q=>q.m=q.m.filter(p=>!(p.id===id&&p.k===k)));
 DRG=null;rcRefresh();if(ok)save()});
 (()=>{let my=null,raf=0;
@@ -491,7 +561,7 @@ if(f==='h'){const H=hot(x.h);if(H&&H.k)x.k=H.k}syncRoom(+i);tot();save()});
 $('acc').addEventListener('click',e=>{const t=e.target;
 if(t.dataset.rrst!==undefined){const r=rs()[+t.dataset.rrst],d=rst(r,0,0);delete r.aci;delete r.aco;ACC().forEach(x=>{if(x.p===r.n){x.ci=d[0];x.co=d[1];delete x.cm}});reAcc();tot();save();return}
 if(t.dataset.ardt!==undefined){const x=ACC()[+t.dataset.ardt],r=rs().find(q=>q.n===x.p);if(r){const d=rst(r,0,0);x.ci=d[0];x.co=d[1];delete x.cm;accUI();tot();save()}}
-else if(t.id==='h_add'){const n=$('h_n').value.trim();if(!n)return;S.hotels.push({n,bd:$('h_b').value,k:+$('h_k').value||0});accUI();save()}
+else if(t.id==='h_add'){const n=$('h_n').value.trim();if(!n)return;if(S.hotels.some(x=>x.n.trim().toLowerCase()===n.toLowerCase()&&x.bd===$('h_b').value))return msg('Hotel dengan nama dan jenis bed yang sama sudah ada. Hapus dulu kalau mau mengganti harga.');S.hotels.push({n,bd:$('h_b').value,k:+$('h_k').value||0});accUI();save()}
 else if(t.dataset.hdel!==undefined){S.hotels.splice(+t.dataset.hdel,1);accUI();save()}
 else if(t.dataset.adel!==undefined){ACC().splice(+t.dataset.adel,1);accUI();tot();save()}
 else if(t.dataset.addroom!==undefined){const ri=+t.dataset.addroom,r=rs()[ri];ACC().push(roomOf(r,ACC().filter(x=>x.p===r.n).length));r.a=1;reAcc();tot();save();flash('croom'+ri,'+1');msg('Kamar '+r.n+': '+ACC().filter(x=>x.p===r.n).length,1)}
@@ -510,20 +580,21 @@ const rooms=A.map(x=>'<tr><td>'+esc(x.n)+'</td><td>'+esc(x.j)+'</td><td>'+esc(x.
 $('p4').innerHTML=chkHtml()+'<b>Preview akhir &amp; unduh</b>'+(miss?'<p class="note" style="margin:2px 0 8px">Hotel masih kosong di '+miss+' kamar. Boleh diisi manual di Excel.</p>':'')
 +'<div class="scroll"><table><thead><tr><th>Nama / peran</th><th>Tipe kamar</th><th>Check-in</th><th>Check-out</th><th>Hotel</th><th>Bed</th><th>Malam</th><th>Total</th></tr></thead><tbody>'+(rooms||'<tr><td colspan="8" style="color:var(--mut)">Tidak ada akomodasi.</td></tr>')+'</tbody></table>'
 +'<table><tbody>'+[['Tarif crew','tt'],['Konsumsi','tk'],['Akomodasi','ta'],['Total biaya','tc']].map(([n,id])=>'<tr><td>'+n+'</td><td><b>'+$(id).textContent+'</b></td></tr>').join('')+'</tbody></table></div>'}
-let step=1;const STEPS=['Kebutuhan crew','Nama & kontak','Jadwal makan','Hotel','Cek & unduh'],NXT=['Lanjut: Nama & kontak →','Lanjut: Jadwal makan →','Lanjut: Hotel →','Lanjut: Cek & unduh →','⬇ Unduh Excel'],PG=['p1','p2','pm','p3','p4'],
+let step=1;const STEPS=['Kebutuhan crew','Nama & kontak','Jadwal makan','Hotel','Pembagian kamar','Cek & unduh'],NXT=['Lanjut: Nama & kontak →','Lanjut: Jadwal makan →','Lanjut: Hotel →','Lanjut: Pembagian kamar →','Lanjut: Cek & unduh →','⬇ Unduh Excel'],PG=['p1','p2','pm','p3','p3','p4'],
 GUIDE=[['Kebutuhan crew','Pilih jenis event, atur harga & lumpsum, lalu isi jumlah orang dan tanggal mulai–sampai tiap peran dan centang makan (P/S/M). Pakai bar "Set tanggal cepat" untuk mengisi banyak peran sekaligus. Klik ＋ di ujung baris untuk menyisipkan peran baru tepat di bawahnya. Nama orangnya diisi di langkah berikutnya.'],
 ['Nama & kontak','Isi nama, No HP, nama lengkap, dan rekening tiap orang. Tanggal kerja, jadwal makan, dan lama sewa kamar mengikuti tanggal tiap peran di Langkah 1. Paling cepat: tempel dari Excel/WhatsApp di kotak atas. Kotak kuning = belum diisi (boleh dilewati, bisa menyusul).'],
 ['Jadwal makan','Biasanya tidak perlu diubah: sudah mengikuti Langkah 1 dan tanggal kerja tiap orang (Langkah 2). Ubah hanya untuk orang yang datang telat atau pulang lebih awal. Kotak beroutline oranye = beda dari standar.'],
-['Hotel','1) Isi daftar hotel (nama, jenis bed, harga/malam). 2) Di Daftar personil, centang siapa yang menginap dan atur tanggal check-in/out. 3) Di Pilihan kamar per hotel, klik + Kamar pada hotel yang diinginkan, lalu tahan dan tarik personil ke kamar tersebut (layar scroll otomatis ke bawah/atas saat kursor di tepi layar). Hotel, bed, harga, dan penghuni di kartu kamar inilah yang masuk ke sheet Akomodasi Excel.'],
+['Hotel','Di Daftar personil, centang siapa yang menginap (Inap), isi L/P, dan atur tanggal check-in/out per orang. Setelah itu lanjut ke Langkah 5 untuk daftar hotel dan pembagian kamar.'],
+['Pembagian kamar','1) Isi daftar hotel (nama, jenis bed, harga/malam). 2) Di Pilihan kamar per hotel, klik + Kamar pada hotel yang diinginkan. 3) Klik Isi kamar otomatis (urutan prioritas kesamaan bisa diatur), atau tahan dan tarik personil ke kamar secara manual. Kalau kamar kurang, sisanya tetap di daftar dan bisa ditarik manual. Hotel, bed, harga, dan penghuni di kartu kamar inilah yang masuk ke sheet Akomodasi Excel.'],
 ['Cek & unduh','Periksa peringatan di bawah. Yang kuning tidak wajib, tapi sebaiknya dilengkapi. Setelah yakin, klik Unduh Excel.']];
-function go(n){step=n;if(n===4&&!ACC().length)genAcc();PG.forEach((id,i)=>$(id).hidden=i+1!==n);stage.hidden=n!==1;$('tabs').hidden=n!==1;
-if(n===2)names();if(n===3)matrix();if(n===4)accUI();if(n===5)prev2();msg('');$('guide').innerHTML='<b>Langkah '+n+' dari 5 · '+GUIDE[n-1][0]+'</b><br><span style="color:var(--mut)">'+GUIDE[n-1][1]+'</span>';
+function go(n){step=n;if((n===4||n===5)&&!ACC().length)genAcc();PG.forEach(id=>$(id).hidden=PG[n-1]!==id);stage.hidden=n!==1;$('tabs').hidden=n!==1;
+if(n===2)names();if(n===3)matrix();if(n===4||n===5)accUI();if(n===6)prev2();msg('');$('guide').innerHTML='<b>Langkah '+n+' dari '+STEPS.length+' · '+GUIDE[n-1][0]+'</b><br><span style="color:var(--mut)">'+GUIDE[n-1][1]+'</span>';
 $('steps').innerHTML=STEPS.map((t,i)=>'<span class="st'+(i+1===n?' on':i+1<n?' done':'')+'" data-go="'+(i+1)+'">'+(i+1)+'. '+t+'</span>').join('');
 $('bk').style.visibility=n>1?'visible':'hidden';$('nx').textContent=NXT[n-1];window.scrollTo({top:0,behavior:'smooth'});if(n===1)layout()}
 $('steps').addEventListener('click',e=>{const g=+e.target.dataset.go;if(g)go(g)});
 $('bk').onclick=()=>go(step-1);
 $('pdfb').onclick=()=>pdfx().catch(e=>msg('Gagal membuat PDF: '+e.message));
-$('nx').onclick=()=>step===5?xl().catch(e=>msg('Gagal membuat Excel: '+e.message)):go(step+1);
+$('nx').onclick=()=>step===6?xl().catch(e=>msg('Gagal membuat Excel: '+e.message)):go(step+1);
 let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,200)});
 const MON=['JANUARI','FEBRUARI','MARET','APRIL','MEI','JUNI','JULI','AGUSTUS','SEPTEMBER','OKTOBER','NOVEMBER','DESEMBER'];
 const U=s=>new Date(s+'T00:00:00Z'),addD=(d,n)=>new Date(+d+n*864e5);
@@ -562,7 +633,7 @@ for(let c=8;c<=LAST;c++)set(ws,gt,c,{formula:'SUBTOTAL(9,'+col(c)+first+':'+col(
 row=gt+2;const tots=[];
 dl.forEach((d,i)=>{const c0=8+i*3,L=LSd().includes(dayStr(i));set(ws,row,1,{formula:col(c0)+'6'},{f:{bold:true},fill:'00B0F0',fmt:'d-mmm',al:{horizontal:'left'}});set(ws,row,2,L?'MENU LUMPSUM':'MENU',{f:{bold:true},fill:'00B0F0'});
 const cn=(gs,c)=>{const p=gs.filter(g=>GRng[g]).map(g=>col(c)+GRng[g][0]+':'+col(c)+GRng[g][1]);return p.length?'SUBTOTAL(9,'+p.join(',')+')':'0'};
-const LN=L?[['Lumpsum Maksimum',S.ls.x,['Maximum Team']],['Lumpsum Crew',S.ls.c,['Crew','Vendor']]]:[['Lumpsum Crew',null,GR]];let q2=row+1;
+const LN=L?[['Lumpsum Maksimum',S.ls.x,['Maximum Team']],['Lumpsum Crew',S.ls.c,['Crew','Vendor']]]:[['Harga standar',null,GR]];let q2=row+1;
 [0,1,2].forEach(j=>LN.forEach(([lb,pr,gs])=>{set(ws,q2,1,['Pagi','Siang','Malam'][j]);set(ws,q2,2,lb);set(ws,q2,3,L?pr[j]:pm()[j],{fmt:'"Rp"#,##0'});set(ws,q2,4,{formula:cn(gs,c0+j)});set(ws,q2,5,{formula:'C'+q2+'*D'+q2},{f:{bold:true},fmt:NUM});q2++}));
 set(ws,q2,3,'TOTAL',{fill:'FFFF00',f:{bold:true}});set(ws,q2,4,{formula:'SUM(E'+(row+1)+':E'+(q2-1)+')'},{fill:'FFFF00',f:{bold:true},fmt:NUM});tots.push('D'+q2);row=q2+2});
 set(ws,row,3,'TOTAL KONSUMSI',{fill:'FFFF00',f:{bold:true}});set(ws,row,4,{formula:tots.join('+')},{fill:'FFFF00',f:{bold:true},fmt:NUM});const kRef="Konsumsi!D"+row;
@@ -587,6 +658,9 @@ if(x.h&&hr&&hr.h===x.h&&hr.r2+1===r1)hr.r2=r2;else{flush();if(x.h){set(wa,r1,6,x
 row=r2+1});flush()});
 let aRef='0';if(af!==null){set(wa,row+1,10,'TOTAL',{fill:'FFFF00',f:{bold:true}});set(wa,row+1,11,{formula:'SUM(K'+af+':K'+al+')'},{fill:'FFFF00',f:{bold:true},fmt:'#,##0'});aRef="'Akomodasi'!K"+(row+1)}
 [8,40,16,13,13,14,16,12,12,17,16,30].forEach((w,i)=>wa.getColumn(i+1).width=w);
+{const wsm=wb.addWorksheet('Ringkasan');head(wsm,'RINGKASAN BIAYA');const tcrew=R.reduce((s,r)=>s+cost(r).t,0);
+[['Tarif crew',tcrew],['Konsumsi',{formula:kRef}],['Akomodasi',{formula:aRef}]].forEach(([n,v],i)=>{set(wsm,6+i,1,n,{b:1});set(wsm,6+i,2,v,{b:1,fmt:NUM})});
+set(wsm,9,1,'TOTAL BIAYA',{f:{bold:true},fill:'FFFF00',b:1});set(wsm,9,2,{formula:'SUM(B6:B8)'},{f:{bold:true},fill:'FFFF00',b:1,fmt:NUM});wsm.getColumn(1).width=24;wsm.getColumn(2).width=20}
 const buf=await wb.xlsx.writeBuffer(),fn=('Manpower '+E.n+' '+S.cur).replace(/[\\/:*?"<>|]/g,'')+'.xlsx';
 try{const d=window.claude?await claude.use('downloads'):null;
 if(d){await d.save({filename:fn,data:buf});msg('Excel siap disimpan ✓',1)}
@@ -602,14 +676,20 @@ const hlab=h=>h.n+(h.bd?' ('+h.bd+')':'');
 const hotelBox=()=>'<b>Daftar hotel (isi sekali)</b><p class="note" style="margin:2px 0 8px">Tambahkan hotel, jenis bed, dan harga kamar/malam. Harga tiap jenis bed bisa berbeda: tambahkan satu kali per jenis bed.</p><div class="row" style="margin-bottom:8px"><input id="h_n" type="text" placeholder="Nama hotel" style="width:170px"><select id="h_b" style="width:110px">'+BEDS.map(b=>'<option>'+b+'</option>').join('')+'</select><input id="h_k" type="number" min="0" placeholder="Harga/malam" style="width:130px"><button class="ghost" id="h_add">+ Tambah hotel</button></div><div style="margin-bottom:16px">'+S.hotels.map((h,i)=>'<span class="chip">'+esc(hlab(h))+' · '+fmt(h.k)+'<button class="x" data-hdel="'+i+'">×</button></span>').join('')+'</div>';
 const PL=()=>{const a=[];rs().forEach((r,ri)=>{for(let k=0;k<r.q;k++)a.push({r,ri,k})});return a};
 const g_=(r,f,k)=>((r[f]||[])[k]||''),setp=(r,f,k,v)=>{r[f]=r[f]||[];r[f][k]=v};
-const mealOn=(r,k,i,j)=>{const b=bs(r,k,i,j),f=!!(r.mo&&r.mo[k]&&r.mo[k][i+'-'+j]);return f?!b:!!b};
+const mealOn=(r,k,i,j)=>{const o=r.mo&&r.mo[k]?r.mo[k][dayStr(i)+'-'+j]:undefined;return o!==undefined?!!o:!!bs(r,k,i,j)};
 const dflt=(r,d)=>S.ev.s?(d==='ps'?rS(r):rE(r)):'';
 const FLD=['nm','hp','fn','rk'],REQ={nm:1,hp:1,rk:1};
 function cnt(){const P=PL(),f=k=>P.filter(p=>g_(p.r,k,p.k).trim()).length;return{n:P.length,nm:f('nm'),hp:f('hp'),rk:f('rk')}}
 function upd(){const c=cnt();$('pgt').textContent='Nama '+c.nm+'/'+c.n+' · No HP '+c.hp+'/'+c.n+' · Rekening '+c.rk+'/'+c.n;$('pgb').style.width=(c.n?(c.nm+c.hp+c.rk)/(3*c.n)*100:0)+'%'}
 function nf(){const on=$('pf').checked;[...$('p2').querySelectorAll('tbody tr')].forEach(tr=>tr.hidden=on&&!tr.querySelector('td.mt'))}
+function gdTool(){const nog=PL().filter(({r,k})=>!g_(r,'gd',k)).length;
+return '<div class="apbox gdt"><b>Isi L/P cepat</b><span class="note" style="margin:0 0 0 8px">'+(nog?nog+' orang belum diisi':'semua sudah terisi ✓')+'</span>'
++'<div class="row" style="margin-top:8px;align-items:center"><button class="ghost" data-gdgo="L">Semua → L</button><button class="ghost" data-gdgo="P">Semua → P</button><label style="flex-direction:row;align-items:center;gap:5px;color:var(--tx)"><input type="checkbox" data-gdsk checked>Lewati yang sudah terisi</label></div></div>'}
+document.addEventListener('click',e=>{const t=e.target.closest&&e.target.closest('[data-gdgo]');if(!t)return;const sk=t.closest('.gdt').querySelector('[data-gdsk]').checked,a=t.dataset.gdgo;let n=0;
+PL().forEach(({r,k})=>{if(sk&&g_(r,'gd',k))return;setp(r,'gd',k,a);n++});
+save();if(step===2)names();else accUI();msg(n+' orang diisi '+a,1)});
 function names(){const P=PL();
-$('p2').innerHTML='<b>Nama &amp; kontak crew</b><p class="note" style="margin:2px 0 10px">Cara cepat: tempel daftar dari Excel/WhatsApp, atau ketik langsung di tabel (gunakan panah keyboard).</p>'
+$('p2').innerHTML='<b>Nama &amp; kontak crew</b><p class="note" style="margin:2px 0 10px">Cara cepat: tempel daftar dari Excel/WhatsApp, atau ketik langsung di tabel (gunakan panah keyboard).</p>'+gdTool()
 +'<textarea id="pt" rows="4" placeholder="Satu baris = satu orang. Contoh:&#10;Budi, 08123456789, Budi Santoso, 1234567890"></textarea>'
 +'<div class="row" style="margin-bottom:6px"><label>Isi ke<select id="pto"><option value="-1">Semua peran, urut dari atas</option>'+rs().map((r,i)=>r.q>0?'<option value="'+i+'">'+esc(r.n)+'</option>':'').join('')+'</select></label><label style="flex-direction:row;align-items:center;gap:5px;color:var(--tx)"><input type="checkbox" id="pte" checked>Lewati yang sudah terisi</label><button class="primary" id="ptb">Isi otomatis</button></div>'
 +'<p class="note" style="margin:0 0 14px">Urutan kolom: Nama · No HP · Nama Lengkap · No Rekening (dipisah Tab atau koma). Boleh hanya nama saja.</p>'
@@ -624,13 +704,13 @@ if(id==='ptb'){const L=$('pt').value.split(/\r?\n/).map(l=>l.trim()).filter(Bool
 for(let i=0;i<n;i++)L[i].split(L[i].includes('\t')?'\t':',').map(x=>x.trim()).slice(0,4).forEach((v,j)=>{if(v)setp(P[i].r,FLD[j],P[i].k,v)});save();names();msg(n+' orang terisi'+(L.length>n?' ('+(L.length-n)+' baris tidak muat)':''),1)}
 
 else if(id==='pj'){const el=[...$('p2').querySelectorAll('td.mt input')].find(x=>x.offsetParent);if(el){el.focus();el.scrollIntoView({block:'center'})}else msg('Semua sudah terisi ✓',1)}});
-const isFl=(r,k,i,j)=>!!(r.mo&&r.mo[k]&&r.mo[k][i+'-'+j]);
+const isFl=(r,k,i,j)=>{const o=r.mo&&r.mo[k]?r.mo[k][dayStr(i)+'-'+j]:undefined;return o!==undefined&&!!o!==!!bs(r,k,i,j)};
 function pms(){$('pms').textContent='Total porsi: '+$('pm').querySelectorAll('input:checked').length+' · Biaya konsumsi: '+$('tk').textContent+(LSd().length?' · ★ = tanggal lumpsum':'')}
 function matrix(){const N=Math.min(days(),31),P=PL(),L=i=>S.ev.s?dayStr(i).slice(8)+'/'+dayStr(i).slice(5,7):'H'+(i+1),D=Array.from({length:N},(_,i)=>i);
 $('pm').innerHTML='<b>Jadwal makan per orang</b><p class="note" style="margin:2px 0 4px">Centang = orang itu makan di sesi tersebut. Klik tanggal atau huruf P/S/M di header untuk centang/kosongkan sekaligus.</p><p id="pms" class="note" style="margin:0 0 10px"></p><div class="row" style="margin-bottom:12px"><button class="primary" id="pma">✓ Centang semua</button><button class="ghost" id="pmn">☐ Kosongkan semua</button><button class="ghost" id="pmr">↺ Kembalikan ke standar Langkah 1</button></div>'
 +'<div class="scroll"><table style="min-width:0"><thead><tr><th rowspan="2">Nama / peran</th>'+D.map(i=>'<th colspan="3" data-md="'+i+'" style="text-align:center;cursor:pointer">'+L(i)+(LSd().includes(dayStr(i))?' ★':'')+'</th>').join('')+'</tr><tr>'+D.map(i=>[0,1,2].map(j=>'<th data-hd="'+i+'-'+j+'" style="text-align:center;cursor:pointer;padding:6px 4px">'+'PSM'[j]+'</th>').join('')).join('')+'</tr></thead><tbody>'
 +P.map(({r,ri,k})=>'<tr><td style="white-space:nowrap;min-width:210px"><b>'+esc(g_(r,'nm',k)||r.n+' #'+(k+1))+'</b>'+(g_(r,'nm',k)?' <small style="color:var(--mut)">'+esc(r.n)+'</small>':'')+'</td>'+D.map(i=>[0,1,2].map(j=>'<td style="padding:0 3px"><input type="checkbox" data-ri="'+ri+'" data-k="'+k+'" data-d="'+i+'" data-j="'+j+'"'+(mealOn(r,k,i,j)?' checked':'')+(isFl(r,k,i,j)?' data-fl':'')+'></td>').join('')).join('')+'</tr>').join('')+'</tbody></table></div>';pms()}
-function setCell(x,v){const r=rs()[+x.dataset.ri],k=+x.dataset.k,i=+x.dataset.d,j=+x.dataset.j,key=i+'-'+j,b=bs(r,k,i,j);r.mo=r.mo||{};r.mo[k]=r.mo[k]||{};if(!!v!==!!b)r.mo[k][key]=1;else delete r.mo[k][key];x.checked=!!v;x.toggleAttribute('data-fl',!!r.mo[k][key])}
+function setCell(x,v){const r=rs()[+x.dataset.ri],k=+x.dataset.k,i=+x.dataset.d,j=+x.dataset.j,key=dayStr(i)+'-'+j,b=bs(r,k,i,j);r.mo=r.mo||{};r.mo[k]=r.mo[k]||{};if(!!v!==!!b)r.mo[k][key]=v?1:0;else delete r.mo[k][key];x.checked=!!v;x.toggleAttribute('data-fl',r.mo[k][key]!==undefined)}
 const aft=()=>{rs().forEach((_,i)=>cells(i));tot();pms();save()};
 $('pm').addEventListener('change',e=>{const t=e.target;if(t.dataset.ri===undefined)return;setCell(t,t.checked);aft()});
 $('pm').addEventListener('click',e=>{const id=e.target.id;if(id==='pma'||id==='pmn'){const v=id==='pma';$('pm').querySelectorAll('input[data-ri]').forEach(x=>setCell(x,v));return aft()}if(id==='pmr'){rs().forEach(r=>delete r.mo);matrix();return aft()}const h=e.target.closest('th');if(!h)return;let q;if(h.dataset.md!==undefined)q='input[data-d="'+h.dataset.md+'"]';else if(h.dataset.hd){const[a,b]=h.dataset.hd.split('-');q='input[data-d="'+a+'"][data-j="'+b+'"]'}else return;const L=[...$('pm').querySelectorAll(q)],v=!L.every(x=>x.checked);L.forEach(x=>setCell(x,v));aft()});
@@ -639,10 +719,11 @@ const add=(n,ok,w)=>it.push([n,n?w:ok]);
 add(m('nm'),'Semua nama terisi',m('nm')+' orang belum ada namanya (Langkah 2)');add(m('hp'),'Semua No HP terisi',m('hp')+' orang belum ada No HP');add(m('rk'),'Semua rekening terisi',m('rk')+' orang belum ada No Rekening');
 
 add(dup.length,'Tidak ada nama ganda','Nama ganda: '+dup.join(', '));
-add(A.filter(x=>!x.h).length,'Semua kamar sudah ada hotel',A.filter(x=>!x.h).length+' kamar belum ada hotel (Langkah 4)');
+add(A.filter(x=>!x.h).length,'Semua kamar sudah ada hotel',A.filter(x=>!x.h).length+' kamar belum ada hotel (Langkah 5)');
+{const mx=A.filter(x=>new Set((x.pr||[]).map(gdp).filter(Boolean)).size>1).length;add(mx,'Tidak ada kamar campur L dan P',mx+' kamar berisi L dan P sekaligus (Langkah 4/5)')}
 add(A.filter(x=>nights(x)<=0).length,'Tanggal check-in/out semua kamar benar',A.filter(x=>nights(x)<=0).length+' kamar: check-out harus setelah check-in');
 migrate();const un=rs().reduce((n,r)=>{if(!(r.a))return n;for(let k=0;k<r.q;k++)if(!(r.ni&&r.ni[k])&&roomOfP(r,k)<0)n++;return n},0);add(un,'Semua personil yang menginap sudah punya kamar',un+' orang belum punya kamar (Langkah 4)');
-if(RC().length){const nr=rcLeftN();add(nr,'Semua personil sudah ditempatkan di kamar hotel',nr+' orang belum ditarik ke kartu kamar hotel (Langkah 4), hotelnya akan kosong di Excel')}
+if(RC().length){const nr=rcLeftN();add(nr,'Semua personil sudah ditempatkan di kamar hotel',nr+' orang belum ditarik ke kartu kamar hotel (Langkah 5), hotelnya akan kosong di Excel')}
 return '<b>Cek sebelum unduh</b><ul style="list-style:none;padding:0;margin:8px 0 18px">'+it.map(([n,t])=>'<li class="'+(n?'wr':'ok')+'">'+(n?'⚠ ':'✓ ')+esc(t)+'</li>').join('')+'</ul>'}
 function fillIn(){for(const id in setMap)$(id).value=S.set[setMap[id]];for(const id in evMap)$(id).value=S.ev[evMap[id]];['lx','lc'].forEach(p=>[0,1,2].forEach(j=>$(p+j).value=(p==='lx'?S.ls.x:S.ls.c)[j]));[...tabs.children].forEach(b=>b.classList.toggle('on',(b.textContent==='Event lain (kosong)'?'Custom':b.textContent)===S.cur))}
 function loadS(o){Object.keys(S).forEach(k=>delete S[k]);Object.assign(S,o);S.ls=S.ls||{d:[],p:50000};if(S.ls.pm==null)S.ls.pm=S.ls.p;lsM();S.acc=S.acc||{};S.hotels=S.hotels||[];fillIn();refresh();go(step)}
@@ -670,7 +751,7 @@ const RT={halign:'right'};
 
 /* ---- Sampul ---- */
 doc.setFillColor(...AC);doc.rect(0,0,W,88,'F');doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(21);doc.text('Ringkasan Kebutuhan Manpower',M,40);
-doc.setFont('helvetica','normal');doc.setFontSize(12);doc.text(E.n||'-',M,64);doc.setFontSize(9);doc.text('Dicetak '+fd(new Date().toISOString().slice(0,10)),W-M,64,{align:'right'});
+doc.setFont('helvetica','normal');doc.setFontSize(12);doc.text(E.n||'-',M,64);doc.setFontSize(9);doc.text('Dicetak '+fd(new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10)),W-M,64,{align:'right'});
 const kv=(x,yy,l,v)=>{doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(...MUT);doc.text(l,x,yy);doc.setFont('helvetica','bold');doc.setFontSize(10.5);doc.setTextColor(...INK);doc.text(String(v||'-'),x,yy+13)};
 const cw=(W-2*M)/3;kv(M,114,'Event',E.n);kv(M+cw,114,'Venue',E.v);kv(M+2*cw,114,'PIC',E.p);
 kv(M,152,'Periode event',E.s&&E.e?fd(E.s)+' - '+fd(E.e):'-');kv(M+cw,152,'Durasi',E.s&&E.e?days()+' hari':'-');kv(M+2*cw,152,'Jenis event',S.cur==='Custom'?'Event lain':S.cur);
@@ -716,7 +797,7 @@ body.push([tt('TOTAL'),tt(''),tt(T[0],{halign:'center'}),tt(T[1],{halign:'center
 tbl({head:[['Peran','Orang','Pagi','Siang','Malam','Total porsi','Biaya konsumsi']],body,columnStyles:{1:{halign:'center'},2:{halign:'center'},3:{halign:'center'},4:{halign:'center'},5:{halign:'center'},6:RT}})}
 
 /* ---- 4. Hotel & akomodasi ---- */
-{const noH=AF.filter(x=>!x.h).length;sec(4,'Hotel & akomodasi','Kamar disusun dari kartu kamar hotel di Langkah 4'+(noH?'. '+noH+' kamar belum ada hotel.':'.'));
+{const noH=AF.filter(x=>!x.h).length;sec(4,'Hotel & akomodasi','Kamar disusun dari kartu kamar hotel di Langkah 5'+(noH?'. '+noH+' kamar belum ada hotel.':'.'));
 subh('Daftar hotel');
 if(S.hotels.length)tbl({head:[['Hotel','Jenis bed','Harga / malam','Kapasitas','Kamar dibuat']],body:S.hotels.map(h=>[h.n,h.bd||'-',rp(h.k),(CAP[h.bd]||2)+' orang',RC().filter(c=>c.h===h.n&&(c.bd||'')===(h.bd||'')).length]),tableWidth:520,columnStyles:{2:RT,3:{halign:'center'},4:{halign:'center'}}});
 else{doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(...MUT);doc.text('Belum ada hotel yang didaftarkan.',M,y+8);y+=26}
@@ -744,6 +825,8 @@ if(d){await d.save({filename:fn,data:buf});msg('PDF siap disimpan ✓',1)}
 else{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([buf],{type:'application/pdf'}));a.download=fn;a.click();msg('PDF diunduh ✓',1)}}
 catch(e){msg(e&&e.code==='declined'?'Dibatalkan.':'Gagal: '+((e&&e.message)||e))}}
 async function dl(fn,text){const buf=new TextEncoder().encode(text);try{const d=window.claude?await claude.use('downloads'):null;if(d){await d.save({filename:fn,data:buf});msg('Tersimpan ✓',1)}else{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([buf]));a.download=fn;a.click()}}catch(e){msg(e&&e.code==='declined'?'Dibatalkan.':'Gagal: '+((e&&e.message)||e))}}
+if(!S.mig3){for(const e in S.data)S.data[e].forEach(r=>{if(!r.mo)return;for(const k in r.mo){const n={};for(const key in r.mo[k]){if(/^\d+-\d$/.test(key)){const[i,j]=key.split('-').map(Number);n[dayStr(i)+'-'+j]=bs(r,+k,i,j)?0:1}else n[key]=r.mo[k][key]}r.mo[k]=n}});S.mig3=1}
+fixDates();
 hist=[JSON.stringify(S)];
 (()=>{const FOC='input:not([type=hidden]),select',vis=e=>e.offsetParent!==null,fl=r=>[...r.querySelectorAll(FOC)].filter(vis);
 const goto=el=>{if(!el)return false;el.focus();if(/^(text|number|search|tel)$/.test(el.type))try{el.select()}catch(_){}return true};
