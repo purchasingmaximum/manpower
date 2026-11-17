@@ -205,12 +205,45 @@ background-image:radial-gradient(color-mix(in srgb,var(--tx) 14%,transparent) 1p
 @media (max-width:760px){.rlw{width:100%}.scroll.rlw table.rl{width:100%!important;table-layout:auto}.rcgrid{grid-template-columns:repeat(auto-fill,minmax(212px,1fr))}}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 @media (max-width:720px){.home-btn span{display:none}.home-btn{padding:7px 9px}.top-title label,.title-in{font-size:22px}.st{padding:9px 10px}.sum b{font-size:1.15rem}}
-@media print{.homebar,#bar{display:none!important}}
+@media print{.homebar,#bar,dialog{display:none!important}}
+.homebar .theme-toggle{margin-left:0}
+.sync{margin-left:auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12.5px;font-weight:600;color:var(--mut)}
+.sync::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:currentColor;margin-right:7px;vertical-align:baseline}
+.sync.ok{color:var(--ok)}.sync.err{color:var(--red)}
+.evbtn{display:inline-flex;align-items:center;gap:7px;flex:none;white-space:nowrap;font-weight:600;font-size:.88rem;padding:7px 12px;color:var(--tx);border-color:var(--ln)}
+.evbtn:hover{border-color:var(--mut)}
+dialog#projects{border:1px solid var(--ln);border-radius:12px;background:var(--card);color:var(--tx);padding:18px 20px;width:min(720px,calc(100% - 28px));max-height:84vh;overflow:auto;font:inherit;box-shadow:var(--sh)}
+dialog#projects::backdrop{background:rgba(8,14,20,.5)}
+.pj-head{display:flex;justify-content:space-between;align-items:center}
+.pj-head h2{margin:0;font-size:18px}
+.pj-tools{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 8px;align-items:center}
+.pj-tools input{flex:1 1 180px}
+.pj-msg{min-height:20px;font-size:13px;color:var(--mut);margin-bottom:2px}
+.pj-count{font-size:12.5px;color:var(--mut);margin-bottom:2px}
+.pj-list{list-style:none;margin:0;padding:0}
+.pj-list li{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between;padding:12px 0;border-top:1px solid var(--ln2)}
+.pj-list li.cur{background:var(--hl);margin:0 -8px;padding:12px 8px;border-radius:8px}
+.pj-list .pj-empty{display:block;color:var(--mut);font-size:13.5px;text-align:center;padding:22px 0}
+.pj-info{min-width:0;flex:1 1 260px}
+.pj-list .nm{font-weight:600;overflow-wrap:anywhere}
+.pj-list .sub{font-size:12.5px;color:var(--mut)}
+.pj-list .st{font-size:12.5px;font-weight:600;margin-left:8px;color:var(--ac)}
+.pj-list .cur-tag{font-size:11px;font-weight:700;margin-left:8px;padding:1px 8px;border-radius:999px;background:var(--ac);color:var(--acink);vertical-align:1px}
+.pj-list .btns{display:flex;gap:6px;flex-wrap:wrap}
+.pj-list .btns .ghost{padding:5px 11px;font-size:13px}
+.pj-list .btns .ghost:disabled{opacity:.55;cursor:default}
+.ghost.danger:hover{color:var(--red);border-color:var(--red)}
+.pj-acct{margin-top:14px;padding-top:12px;border-top:1px solid var(--ln2);font-size:12.5px;color:var(--mut)}
+.pj-hint{margin-top:3px}
+@media (max-width:720px){.sync{font-size:0}.sync::before{margin-right:0}.evbtn{padding:7px 10px}}
+@media (max-width:560px){.evbtn span,.brand .bt{display:none}}
 </style></head>
 <body>
 <header class="homebar">
 <a class="home-btn" href="index.html" title="Menu utama"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg><span>Home</span></a>
-<div class="brand"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="0" y="0" width="6" height="6" rx="1"/><rect x="9" y="0" width="6" height="6" rx="1"/><rect x="18" y="0" width="6" height="6" rx="1"/><rect x="0" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/><rect x="18" y="9" width="6" height="6" rx="1"/><rect x="9" y="18" width="6" height="6" rx="1"/></svg>Kebutuhan Manpower</div>
+<div class="brand"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="0" y="0" width="6" height="6" rx="1"/><rect x="9" y="0" width="6" height="6" rx="1"/><rect x="18" y="0" width="6" height="6" rx="1"/><rect x="0" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/><rect x="18" y="9" width="6" height="6" rx="1"/><rect x="9" y="18" width="6" height="6" rx="1"/></svg><span class="bt">Kebutuhan Manpower</span></div>
+<span class="sync" id="sync" role="status" aria-live="polite"></span>
+<button type="button" class="ghost evbtn" id="pj-open" title="Daftar event tersimpan di cloud"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg><span>Daftar Event</span></button>
 <button type="button" class="theme-toggle" id="themeBtn">🌙 Gelap</button>
 </header>
 <main>
@@ -276,6 +309,14 @@ background-image:radial-gradient(color-mix(in srgb,var(--tx) 14%,transparent) 1p
 
 <div id="stage"><div id="stot"></div><div id="labels"></div></div>
 </main>
+<dialog id="projects" aria-labelledby="pj-title">
+<div class="pj-head"><h2 id="pj-title">Daftar Event</h2><button class="x" id="pj-close" type="button" aria-label="Tutup">×</button></div>
+<div class="pj-tools"><button class="primary" id="pj-new" type="button">+ Event baru</button><input id="pj-q" type="search" placeholder="Cari nama, venue, jenis…" aria-label="Cari event"><select id="pj-sort" aria-label="Urutkan"><option value="upd">Terakhir diubah</option><option value="name">Nama A–Z</option><option value="date">Tanggal event</option></select></div>
+<div class="pj-msg" id="pj-msg" role="status"></div>
+<div class="pj-count" id="pj-count"></div>
+<ul class="pj-list" id="pj-list"></ul>
+<div class="pj-acct" id="pj-acct"></div>
+</dialog>
 <script>
 (()=>{const b=document.getElementById('themeBtn'),r=document.documentElement,u=()=>{b.textContent=r.dataset.theme==='dark'?'☀️ Terang':'🌙 Gelap'};u();
 b.onclick=()=>{r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';try{localStorage.setItem('maximum-theme',r.dataset.theme)}catch(e){}u()}})();
@@ -305,7 +346,7 @@ const mk0=(n,q)=>({n,q,h:1,r:S.set.rate,g:'Crew',c:'',a:1,k:S.set.rm,m:[1,1,1]})
 let saved=null;try{saved=JSON.parse(localStorage.getItem('mp2'))}catch(e){}
 if(saved&&saved.data){Object.assign(S,saved)}else{for(const k in PRE){S.data[k]=PRE[k].map(([n,q])=>mk0(n,q));S.TR[k]={rows:[],um:0}}}
 let hist=[],ht;function snapSoon(){clearTimeout(ht);ht=setTimeout(()=>{const j=JSON.stringify(S);if(hist[hist.length-1]!==j){hist.push(j);if(hist.length>40)hist.shift()}},500)}
-const save=()=>{ASH=null;snapSoon();try{localStorage.setItem('mp2',JSON.stringify(S))}catch(e){}};
+const save=()=>{ASH=null;snapSoon();try{localStorage.setItem('mp2',JSON.stringify(S))}catch(e){}if(window.__mpTouch)window.__mpTouch()};
 const fmt=n=>'Rp '+Math.round(n).toLocaleString('id-ID');
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const days=()=>S.ev.s&&S.ev.e?Math.max(1,Math.round((new Date(S.ev.e)-new Date(S.ev.s))/864e5)+1):1;
@@ -337,7 +378,7 @@ run(f);f.style.transitionDelay=Math.random()*.3+'s';f.style.color=s.c;f.style.op
 while(figs.length>slots.length){const f=figs.pop();run(f);f.style.opacity=0;f.style.transform='translate('+(w+40)+'px,'+(f._y||0)+'px)';setTimeout(()=>f.remove(),1500)}}
 function cells(i){const c=cost(rs()[i]);$('s'+i).innerHTML='<b>'+fmt(c.s)+'</b>'}
 function tot(){ASH=null;let p=0,t=0,a=0,k=0;rs().forEach(r=>{const c=cost(r);p+=r.q;t+=c.t;a+=c.a;k+=c.k});if(ACCF().length)a=accTotal();const x=T().rows.reduce((s,y)=>s+y.p,0)*0;
-$('tp').textContent=p+' orang';$('tt').textContent=fmt(t);$('ta').textContent=fmt(a);$('tk').textContent=fmt(k);$('tc').textContent=fmt(t+a+k);$('ta').previousElementSibling.textContent='Akomodasi'+(ACCF().length?'':' (estimasi)');$('tc').previousElementSibling.textContent='Total biaya'+(ACCF().length?'':' (sementara)');rs().forEach((_,i)=>{if($('s'+i))cells(i)})}
+window.LT={p:p,c:t+a+k};$('tp').textContent=p+' orang';$('tt').textContent=fmt(t);$('ta').textContent=fmt(a);$('tk').textContent=fmt(k);$('tc').textContent=fmt(t+a+k);$('ta').previousElementSibling.textContent='Akomodasi'+(ACCF().length?'':' (estimasi)');$('tc').previousElementSibling.textContent='Total biaya'+(ACCF().length?'':' (sementara)');rs().forEach((_,i)=>{if($('s'+i))cells(i)})}
 function table(){tb.innerHTML=rs().map((r,i)=>'<tr data-nm="'+esc(r.n.toLowerCase())+'"><td><i class="dot" style="background:'+P[i%P.length]+'"></i><input type="text" style="width:calc(100% - 20px)" value="'+esc(r.n)+'" data-i="'+i+'" data-k="n"></td>'
 +'<td><input type="text" style="width:110px" value="'+esc(r.c)+'" data-i="'+i+'" data-k="c" placeholder="Company"></td>'
 +'<td><select data-i="'+i+'" data-k="g">'+GR.map(o=>'<option'+(o===r.g?' selected':'')+'>'+o+'</option>').join('')+'</select></td>'
@@ -841,4 +882,196 @@ if(h){if(t==='date')return;if(t==='text'){const a=el.selectionStart,b=el.selecti
 e.preventDefault();d?vert(el,d):horiz(el,h)});
 })();
 refresh();go(1);
+
+/* =====================================================================
+   CLOUD — simpan event, buka/edit, duplikat, hapus, dan edit bareng.
+   Pola sama dengan Input Report & Budget: Firebase Anonymous Auth +
+   Firestore, satu "ruang bersama", cadangan di browser + antrean offline.
+   Satu event = satu dokumen di  ruang/<WORKSPACE>/projects/<id>.
+   ===================================================================== */
+(()=>{
+const FIREBASE_CONFIG={apiKey:"AIzaSyDkT8cS__aQXw5PToC9Jf8F7C2zwWbBxCw",authDomain:"feasibilitymxm.firebaseapp.com",projectId:"feasibilitymxm",storageBucket:"feasibilitymxm.firebasestorage.app",messagingSenderId:"737498733330",appId:"1:737498733330:web:ac7c30d15483900fb771cb"};
+const FB_VER='10.14.1';
+/* Ruang bersama khusus Manpower (terpisah dari Budget, Feasibility & Input Report).
+   Semua yang membuka halaman ini melihat daftar event yang sama.
+   Jika aturan Firestore hanya mengizinkan nama ruang tertentu, ganti nilai ini. */
+const WORKSPACE='eTnJNyzUEMfL4q4xDMM5JusiO7_manpower';
+const K_STORE='mp-events-v1',K_LAST='mp-last-event',K_MIG='mp-migrated',BOOT_TIMEOUT=9000,MAXDOC=950000;
+
+const store=new Map(),dirty=new Set(),tomb=new Set(),timers={};
+let curId=null,fb=null,mode='connecting',note='',cloudUp=false,fromCache=false,pending=0,booted=false,applying=false,pendingRemote=false,lastSig='',flash='',flashT=null;
+const hadLocal=!!(saved&&saved.data);
+const J=s=>{try{return JSON.parse(s)}catch(e){return null}};
+const newId=()=>'mp'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const lsGet=k=>{try{return localStorage.getItem(k)}catch(e){return null}},lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},lsDel=k=>{try{localStorage.removeItem(k)}catch(e){}};
+const newest=(a,b)=>b.updated-a.updated;
+const nm0=it=>String(it.nama||'').trim()||'(tanpa nama)';
+const jenisTxt=j=>j==='Custom'?'Event lain':j;
+
+/* ---------- cadangan lokal ---------- */
+function persist(){lsSet(K_STORE,JSON.stringify({items:[...store.values()],dirty:[...dirty],tomb:[...tomb]}))}
+function readCache(){const v=J(lsGet(K_STORE)||'null');if(!v||!Array.isArray(v.items))return;
+v.items.forEach(it=>{if(it&&it.id&&typeof it.json==='string')store.set(it.id,it)});(v.dirty||[]).forEach(i=>dirty.add(i));(v.tomb||[]).forEach(i=>tomb.add(i))}
+
+/* ---------- status di header ---------- */
+function status(){
+let t,c='';
+if(!curId&&!String(S.ev&&S.ev.n||'').trim())t='Isi nama event agar tersimpan';
+else if(mode==='connecting')t='Menghubungkan ke cloud…';
+else if(mode==='cloud'){if(pending)t=fromCache?'Menunggu sambungan — perubahan aman di perangkat ini':'Menyimpan…';
+else if(dirty.size||tomb.size||fromCache){t='Menunggu sambungan — perubahan aman di perangkat ini'}
+else{t='Tersimpan di cloud (ruang bersama)';c='ok'}}
+else{t='Tersimpan di browser · '+(note||'cloud tidak tersedia');c='err'}
+if(note&&mode==='cloud'&&!pending){t=note;c='err'}
+const el=$('sync');if(!el)return;el.textContent=flash||t;el.title=t;el.className='sync '+(flash?'ok':c)}
+function flashMsg(t,ms){flash=t;status();clearTimeout(flashT);flashT=setTimeout(()=>{flash='';status()},ms||8000)}
+
+/* ---------- Firestore ---------- */
+const col=()=>fb.fsM.collection(fb.db,'ruang',WORKSPACE,'projects');
+const toDoc=it=>({kind:'manpower',nama:it.nama||'',venue:it.venue||'',jenis:it.jenis||'',mulai:it.mulai||'',selesai:it.selesai||'',orang:+it.orang||0,biaya:+it.biaya||0,updated:it.updated,owner:fb.user?fb.user.uid:'',state:it.json});
+const fromDoc=(id,d)=>({id,updated:+d.updated||0,json:d.state,nama:d.nama||'',venue:d.venue||'',jenis:d.jenis||'',mulai:d.mulai||'',selesai:d.selesai||'',orang:+d.orang||0,biaya:+d.biaya||0});
+
+function queue(id,now){clearTimeout(timers[id]);delete timers[id];dirty.add(id);tomb.delete(id);persist();status();
+if(now)run(id);else timers[id]=setTimeout(()=>run(id),700)}
+function run(id){clearTimeout(timers[id]);delete timers[id];
+const it=store.get(id);if(!it){dirty.delete(id);return}
+if(id===curId&&window.LT){it.orang=window.LT.p;it.biaya=window.LT.c}
+persist();
+if(!cloudUp){status();return}
+if(it.json.length>MAXDOC){note='Event terlalu besar untuk disimpan ke cloud';status();return}
+note='';pending++;status();
+fb.fsM.setDoc(fb.fsM.doc(col(),id),toDoc(it))
+.then(()=>{if(!timers[id]){dirty.delete(id);persist()}})
+.catch(e=>{note='Gagal menyimpan ke cloud ('+((e&&e.code)||'error')+')'})
+.finally(()=>{pending--;status()})}
+function flushAll(){Object.keys(timers).forEach(run)}
+function flushPending(){dirty.forEach(id=>{if(store.has(id))run(id);else dirty.delete(id)});
+tomb.forEach(id=>fb.fsM.deleteDoc(fb.fsM.doc(col(),id)).then(()=>{tomb.delete(id);persist()}).catch(()=>{}))}
+
+/* ---------- ambil state & ganti event yang tampil ---------- */
+function freshState(){const set={rate:300000,kp:20000,ks:30000,km:35000,pk:2,rm:300000},o={cur:'Exhibition',data:{},TR:{},set,ev:{n:'',v:'',s:'',e:'',p:''},ls:{d:[],p:50000},acc:{},hotels:[],mig3:1};
+for(const k in PRE){o.data[k]=PRE[k].map(([n,q])=>({n,q,h:1,r:set.rate,g:'Crew',c:'',a:1,k:set.rm,m:[1,1,1]}));o.TR[k]={rows:[],um:0}}return o}
+function load(st){applying=true;try{loadS(st);hist=[JSON.stringify(S)];lastSig=JSON.stringify(S)}finally{applying=false}status()}
+
+/* dipanggil dari save() setiap ada perubahan */
+function touch(){
+if(applying||!booted||!S.ev)return;
+const json=JSON.stringify(S);if(json===lastSig)return;
+if(!curId){if(!String(S.ev.n||'').trim()){status();return}curId=newId();lsSet(K_LAST,curId)}   /* event baru: tersimpan setelah diberi nama */
+lastSig=json;pendingRemote=false;
+const lt=window.LT||{};
+store.set(curId,{id:curId,updated:Date.now(),json,nama:S.ev.n||'',venue:S.ev.v||'',jenis:S.cur||'',mulai:S.ev.s||'',selesai:S.ev.e||'',orang:lt.p||0,biaya:lt.c||0});
+queue(curId);if(dlg.open)renderList()}
+window.__mpTouch=touch;
+
+/* ---------- terapkan perubahan dari pengguna lain ---------- */
+function applyRemote(){
+if(!pendingRemote||!curId||timers[curId]||applying)return;
+const a=document.activeElement;if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&a.closest('main'))return;   /* sedang mengetik: tunggu */
+const it=store.get(curId),st=it&&J(it.json);pendingRemote=false;if(!st)return;
+const y=window.scrollY;load(st);window.scrollTo({top:y,behavior:'instant'});
+flashMsg('Diperbarui dari pengguna lain · '+new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}))}
+document.addEventListener('focusout',()=>setTimeout(applyRemote,0));
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flushAll();else applyRemote()});
+addEventListener('pagehide',flushAll);
+
+/* ---------- aksi: buka, baru, duplikat, hapus ---------- */
+function openEvent(id){
+const it=store.get(id),st=it&&J(it.json);if(!st)return false;
+flushAll();curId=id;lsSet(K_LAST,id);pendingRemote=false;step=1;load(st);return true}
+function newEvent(){flushAll();curId=null;lsDel(K_LAST);pendingRemote=false;step=1;load(freshState());dlg.close();$('en').focus()}
+function dupEvent(id){
+const it=store.get(id);if(!it)return null;if(timers[id])run(id);
+const st=J(it.json);if(!st)return null;st.ev=st.ev||{};st.ev.n=(st.ev.n||'Event')+' (salinan)';
+const nid=newId();store.set(nid,Object.assign({},it,{id:nid,updated:Date.now(),json:JSON.stringify(st),nama:st.ev.n}));queue(nid,true);return st.ev.n}
+function delEvent(id){
+clearTimeout(timers[id]);delete timers[id];store.delete(id);dirty.delete(id);
+if(id===curId){const rest=[...store.values()].sort(newest);if(rest.length)openEvent(rest[0].id);else{curId=null;lsDel(K_LAST);pendingRemote=false;step=1;load(freshState())}}
+if(cloudUp){pending++;status();fb.fsM.deleteDoc(fb.fsM.doc(col(),id)).catch(e=>{tomb.add(id);persist();note='Gagal menghapus di cloud ('+((e&&e.code)||'error')+')'}).finally(()=>{pending--;status()})}
+else tomb.add(id);
+persist();status()}
+
+/* ---------- daftar event (dialog) ---------- */
+const dlg=$('projects'),pjMsg=t=>{$('pj-msg').textContent=t||''};
+const h=(tag,at,...kids)=>{const e=document.createElement(tag);for(const k in at||{}){if(k==='class')e.className=at[k];else if(k==='text')e.textContent=at[k];else if(k.startsWith('on'))e.addEventListener(k.slice(2),at[k]);else e.setAttribute(k,at[k])}kids.forEach(x=>x&&e.append(x));return e};
+const dFmt=s=>{if(!s)return'';const d=new Date(s+'T00:00:00');return isNaN(d)?'':d.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})};
+function renderAcct(){const b=$('pj-acct');b.textContent='';
+if(mode==='cloud'){b.append(h('span',{text:'Cloud · ruang bersama: semua yang membuka halaman ini melihat event yang sama dan perubahan muncul langsung.'}),h('div',{class:'pj-hint',text:'Siapa pun yang membuka halaman ini bisa melihat, mengubah, dan menghapus semua event.'}))}
+else b.append(h('span',{text:'Tersimpan di browser ini · '+(note||(mode==='connecting'?'masih menghubungkan ke cloud…':'cloud tidak tersedia'))}))}
+function renderList(){
+renderAcct();const ul=$('pj-list');ul.textContent='';
+const q=$('pj-q').value.trim().toLowerCase(),so=$('pj-sort').value;
+let L=[...store.values()];if(q)L=L.filter(it=>[it.nama,it.venue,jenisTxt(it.jenis)].some(f=>String(f||'').toLowerCase().includes(q)));
+L.sort(so==='name'?(a,b)=>nm0(a).localeCompare(nm0(b),'id',{sensitivity:'base',numeric:true}):so==='date'?(a,b)=>String(b.mulai||'').localeCompare(String(a.mulai||''))||newest(a,b):newest);
+$('pj-count').textContent=L.length===store.size?store.size+' event':L.length+' dari '+store.size+' event';
+if(!L.length){ul.append(h('li',{class:'pj-empty',text:store.size?'Tidak ada event yang cocok.':'Belum ada event tersimpan. Klik “+ Event baru”, lalu isi nama event.'}));return}
+L.forEach(it=>{const id=it.id,isCur=id===curId;
+const when=it.updated?new Date(it.updated).toLocaleString('id-ID',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):'-';
+const per=it.mulai&&it.selesai?dFmt(it.mulai)+' – '+dFmt(it.selesai):dFmt(it.mulai);
+const sub=[it.venue,jenisTxt(it.jenis),per,(it.orang||0)+' orang'].filter(Boolean).join(' · ');
+const info=h('div',{class:'pj-info'},h('div',{},h('span',{class:'nm',text:nm0(it)}),h('span',{class:'st ok',text:fmt(it.biaya||0)}),isCur?h('span',{class:'cur-tag',text:'sedang dibuka'}):null),h('div',{class:'sub',text:sub}),h('div',{class:'sub',text:'diubah '+when}));
+const open=h('button',{class:'ghost',type:'button',text:isCur?'Sedang dibuka':'Buka & edit'});
+if(isCur)open.disabled=true;else open.addEventListener('click',()=>{if(openEvent(id))dlg.close()});
+const dup=h('button',{class:'ghost',type:'button',text:'Duplikat',onclick:()=>{const n=dupEvent(id);renderList();pjMsg(n?'Disalin sebagai “'+n+'”.':'')}});
+let t=null;const del=h('button',{class:'ghost danger',type:'button',text:'Hapus'});
+del.addEventListener('click',()=>{if(!t){del.textContent='Yakin?';t=setTimeout(()=>{del.textContent='Hapus';t=null},3000);return}clearTimeout(t);delEvent(id);renderList();pjMsg('Event dihapus.')});
+ul.append(h('li',{class:isCur?'cur':''},info,h('div',{class:'btns'},open,dup,del)))})}
+$('pj-open').addEventListener('click',()=>{flushAll();pjMsg('');renderList();dlg.showModal()});
+$('pj-close').addEventListener('click',()=>dlg.close());
+dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+dlg.addEventListener('close',()=>setTimeout(applyRemote,0));
+$('pj-new').addEventListener('click',newEvent);
+$('pj-q').addEventListener('input',renderList);$('pj-sort').addEventListener('change',renderList);
+
+/* ---------- sambungan cloud ---------- */
+const FBLOAD=()=>{const b='https://www.gstatic.com/firebasejs/'+FB_VER+'/';return[import(b+'firebase-app.js'),import(b+'firebase-auth.js'),import(b+'firebase-firestore.js')]};
+async function initCloud(){
+const m=await Promise.all(FBLOAD());
+const app=m[0].initializeApp(FIREBASE_CONFIG),auth=m[1].getAuth(app);let db;
+try{db=m[2].initializeFirestore(app,{localCache:m[2].persistentLocalCache()})}catch(e){db=m[2].getFirestore(app)}
+fb={appM:m[0],authM:m[1],fsM:m[2],auth,db,user:null};
+let user=await new Promise(res=>{const off=m[1].onAuthStateChanged(auth,u=>{off();res(u)})});
+if(!user)user=(await m[1].signInAnonymously(auth)).user;
+fb.user=user}
+
+function listen(){return new Promise(resolve=>{let first=true;
+fb.fsM.onSnapshot(col(),snap=>{
+let changed=false,curNew=false;
+snap.docChanges().forEach(ch=>{const id=ch.doc.id,d=ch.doc.data();
+if(dirty.has(id)||tomb.has(id))return;                      /* perubahan lokal yang belum terkirim didahulukan */
+if(ch.type==='removed'){if(store.delete(id)){changed=true;if(id===curId)flashMsg('Event ini dihapus oleh pengguna lain. Mengubahnya lagi akan menyimpannya kembali.',12000)}return}
+if(!d||d.kind!=='manpower'||typeof d.state!=='string')return;
+const mine=store.get(id);if(mine&&(+d.updated||0)<=mine.updated)return;   /* gema tulisan sendiri / data lebih lama */
+store.set(id,fromDoc(id,d));changed=true;if(id===curId)curNew=true});
+mode='cloud';cloudUp=true;fromCache=!!(snap.metadata&&snap.metadata.fromCache);
+if(!fromCache&&snap.docs){const live=new Set();snap.docs.forEach(x=>live.add(x.id));   /* data server = sumber kebenaran */
+[...store.keys()].forEach(id=>{if(!live.has(id)&&!dirty.has(id)){store.delete(id);changed=true;if(id===curId)flashMsg('Event ini dihapus oleh pengguna lain. Mengubahnya lagi akan menyimpannya kembali.',12000)}})}
+if(changed)persist();
+if(first){first=false;flushPending();pickInitial();resolve()}
+if(curNew){pendingRemote=true;applyRemote()}
+status();if(dlg.open)renderList()},
+err=>{mode='local';cloudUp=false;note='Gagal membaca cloud ('+((err&&err.code)||'error')+')';if(first){first=false;resolve()}status()})})}
+
+/* setelah data cloud pertama tiba: buka event terakhir / terbaru bila belum ada yang dikerjakan */
+function pickInitial(){
+if(curId)return;                                                /* sudah ada event yang dikerjakan: biarkan */
+const edited=JSON.stringify(S)!==bootSig;
+if(!edited&&store.size){const r=[...store.values()].sort(newest)[0];openEvent(r.id)}}
+
+let bootSig='';
+function boot(){
+readCache();
+const last=lsGet(K_LAST);curId=store.has(last)?last:null;
+/* data lama di browser ini (sebelum ada fitur cloud) -> jadikan event pertama */
+if(!curId&&hadLocal&&!lsGet(K_MIG)&&String(S.ev.n||'').trim()){
+curId=newId();lsSet(K_LAST,curId);lsSet(K_MIG,'1');
+store.set(curId,{id:curId,updated:Date.now(),json:JSON.stringify(S),nama:S.ev.n||'',venue:S.ev.v||'',jenis:S.cur||'',mulai:S.ev.s||'',selesai:S.ev.e||'',orang:0,biaya:0});
+dirty.add(curId);persist()}
+lastSig=bootSig=JSON.stringify(S);booted=true;status();
+let done=false;const timer=setTimeout(()=>{if(!done&&mode==='connecting'){mode='local';note='cloud tidak menjawab — memakai salinan di browser ini';status()}},BOOT_TIMEOUT);
+initCloud().then(listen).then(()=>{done=true;clearTimeout(timer)}).catch(e=>{
+done=true;clearTimeout(timer);const c=(e&&e.code)||'';mode='local';
+note=c==='auth/operation-not-allowed'?'aktifkan Anonymous di Firebase Authentication':'cloud bermasalah ('+(c||(e&&e.message)||'error')+')';status()})}
+boot();
+})();
 </script></body></html>
